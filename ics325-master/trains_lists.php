@@ -46,7 +46,7 @@ if (!isset($_SESSION)) {
     <?PHP echo getTopNav(); ?>
 	<div class="container">
 		<hr>
-		<h3><font size="5" color="black"><img src="./icons/image16.png"/>Solution Trains (ST),<img src="./icons/image17.png"/>Agile Release Trains (ART),<img src="./icons/image20.png"/>Agile Teams (AT)</font></h3>
+		<h3><font size="5" color="black">Solution Trains (ST), Agile Release Trains (ART), Agile Teams (ATzz)</font></h3>
 		<hr>
 		<div class="row">
 			<div class="col-md-1">
