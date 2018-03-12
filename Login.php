@@ -39,95 +39,24 @@ if (!isset($_SESSION)) {
 		<hr>
 		<h3><font size="6" color="blue">Login</font></h3>
 		<hr>
-		<div class="row">
-			<div class="col-md-1">
-				<nav class="nav-left">
-					<ul class="nav nav-stacked">
-						<li><a href="#">List</a></li>
-						<li><a href="#">Grid</a></li>
-					</ul>
-				</nav>
-			</div>
-			<div class="col-md-10">
-				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
-					   width="100%">
-					 <colgroup>
-						<col span="9" style="background-color:lightblue">
-						<col style="background-color:yellow">
-					</colgroup>
-					<thead>
-						<tr>
-							<th>Employee_ID</th>
-							<th>Last_Name</th>
-							<th>First_Name</th>
-							<th>City</th>
-							<th>Country</th>
-							<th>Manager_ID</th>
-							<th>Email</th>
-							<th>Cost_Center</th>
-							<th>Status</th>
-							<th>Primary_Team</th>
-						</tr>
-					</thead>
-					<tbody>
-					<?php
-						require 'db_configuration.php';
-						
-						$sql = "SELECT * FROM organization_hierarchy";
-						$result = run_sql($sql);
-						
-						// output data of each
-						if ($result->num_rows > 0) {
-							while ($row = $result->fetch_assoc()) {
-								echo '<tr>
-									<td>' . $row["employee_id"] . "</td>
-									<td>" . $row["last_name"] . "</td>
-									<td>" . $row["first_name"] . "</td>
-									<td>" . $row["city"] . "</td>
-									<td>" . $row["country"] . "</td>
-									<td>" . $row["manager_id"] . "</td>
-									<td>" . $row["email_address"] . "</td>
-									<td>" . $row["cost_center"] . "</td>
-									<td>" . $row["status"] . "</td>
-									<td>" . $row["primary_team"] . "</td>
-								</tr>";
-						}
-					} else {
-						echo "0 results";
-					}
-					$result->close();
-		?>
-					</tbody>
-					<tfoot>
-						<tr>
-							<td>Employee_ID</td>
-							<td>Last_Name</td>
-							<td>First_Name</td>
-							<td>City</td>
-							<td>Country</td>
-							<td>Manager_ID</td>
-							<td>Email</td>
-							<td>Cost_Center</td>
-							<td>Status</td>
-							<td>Primary_Team</td>
-						</tr>
-					</tfoot>
-				</table>
-			</div>
-		</div>
-	</div>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('#info').DataTable();
-		});
-	</script>
+
+      <form class="form-signin" method="POST">
+        <h2 class="form-signin-heading">Please Login</h2>
+        <div class="input-group">
+	  <span class="input-group-addon" id="basic-addon1">@</span>
+	  <input type="text" name="username" class="form-control" placeholder="Username" required>
+	</div>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        <a class="btn btn-lg btn-primary btn-block" href="register.php">Register</a>
+      </form>
+		
 </body>
 </html>
 © 2018 GitHub, Inc.
+
 Terms
 Privacy
 Security
