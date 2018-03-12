@@ -52,18 +52,17 @@ if (!isset($_SESSION)) {
         <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
         <a class="btn btn-lg btn-primary btn-block" href="register.php">Register</a>
       </form>
+
+
+<?php
+$connection = mysqli_connect('localhost', 'root', 'blank fill');
+if (!$connection){
+    die("Database Connection Failed" . mysqli_error($connection));
+}
+$select_db = mysqli_select_db($connection, 'test');
+if (!$select_db){
+    die("Database Selection Failed" . mysqli_error($connection));
+}
 		
 </body>
 </html>
-© 2018 GitHub, Inc.
-
-Terms
-Privacy
-Security
-Status
-Help
-Contact GitHub
-API
-Training
-Shop
-Blog
