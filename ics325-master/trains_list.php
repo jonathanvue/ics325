@@ -46,7 +46,7 @@ if (!isset($_SESSION)) {
     <?PHP echo getTopNav(); ?>
 	<div class="container">
 		<hr>
-		<h3><font size="5" color="black"><img src="./icons/image16.png"/>Solution Trains (ST),<img src="./icons/image17.png"/>Agile Release Trains (ART),<img src="./icons/image20.png"/>Agile Teams (AT)</font></h3>
+		<h3><font size="5" color="black"><img src="./icons/image16.png" style="width:50px;height:60px;"/>Solution Trains (ST),<img src="./icons/image17.png"style="width:50px;height:60px;"/>Agile Release Trains (ART),<img src="./icons/image20.png" style="width:50px;height:60px;"/>Agile Teams (AT)</font></h3>
 		<hr>
 		<div class="row">
 			<div class="col-md-1">
@@ -81,18 +81,19 @@ if (!isset($_SESSION)) {
 					<?php
 						require 'db_configuration.php';
 						
-						$sql = "SELECT * FROM table_2";
+						$sql = "SELECT * FROM trains_and_teams";
 						$result = run_sql($sql);
 						
 						// output data of each
 						if ($result->num_rows > 0) {
 							while ($row = $result->fetch_assoc()) {
 								echo '<tr>
-									<td>' . $row[""] . "</td>
-									<td>" . $row[""] . "</td>
-									<td>" . $row[""] . "</td>
-									<td>" . $row[""] . "</td>
-									
+									<td>' . $row["type"] . "</td>
+									<td>" . $row["team_id"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["parent"] . "</td>
+									<td>" . $row["parent"] . "</td>
 								</tr>";
 						}
 					} else {
@@ -101,16 +102,6 @@ if (!isset($_SESSION)) {
 					$result->close();
 		?>
 					</tbody>
-					<tfoot>
-						<tr>
-							<td>Type</td>
-							<td>ID</td>
-							<td>Name</td>
-							<td>Scrum Master/RTE/STE</td>
-							<td>PM/PO</td>
-							<td>Parent</td>
-						</tr>
-					</tfoot>
 				</table>
 			</div>
 		</div>
