@@ -45,18 +45,15 @@ if (!isset($_SESSION)) {
 <body>
     <?PHP echo getTopNav(); ?>
 	<div class="container">
-		<hr>
-		<h3><font size="5" color="black">Solution Trains (ST), Agile Release Trains (ART), Agile Teams (ATzz)</font></h3>
-		<hr>
 		<div class="row">
 			<div class="col-md-1">
 				<nav class="nav-left">
 					<ul class="nav nav-stacked">
-						<li><a href="trains_list.php"><img class="icon" src="./icons/image11.png">List</a></li>
-						<li><a href="trains_lists.php"><img class="icon" src="./icons/image19.png" />Lists</a></li>
-						<li><a href="#"><img class="icon" src="./icons/image12.png" />Grid</a></li>
-						<li><a href="#"><img class="icon" src="./icons/image14.png" />Tree</a></li>
-						<li><a href="#"><img class="icon" src="./icons/image13.png" />Hybrid</a></li>
+						<li><a href="trains_list.php"><img class="icon" src="./icons/image11.png">&nbsp&nbsp&nbsp&nbsp&nbspList</a></li>
+						<li><a href="trains_lists.php"><img style="width:40px;height:50px"  src="./icons/image19.png" /><img src="./icons/image15.png" style="width:20px;height:30px;">&nbsp&nbsp&nbsp&nbspLists</a></li>
+						<li><a href="#"><img class="icon" src="./icons/image12.png" />&nbsp&nbsp&nbsp&nbspGrid</a></li>
+						<li><a href="#"><img class="icon" src="./icons/image14.png" />&nbsp&nbsp&nbsp&nbspTree</a></li>
+						<li><a href="#"><img class="icon" src="./icons/image13.png" />&nbsp&nbspHybrid</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -67,32 +64,31 @@ if (!isset($_SESSION)) {
 						<col span="9" style="background-color:lightblue">
 						<col style="background-color:yellow">
 					</colgroup>
-					<thead>
+					<font size="5" color="black"><img src="./icons/image16.png" style="width:50px;height:60px;"/>Solution Trains (ST)</font>
+						
+					<tbody>
 						<tr>
-							<th>Type</th>
 							<th>ID</th>
 							<th>Name</th>
-							<th>Scrum Master/RTE/STE</th>
-							<th>PM/PO</th>
-							<th>Parent</th>
+							<th>STE</th>
+							<th>PM</th>
+							<th>Solution Architect</th>
 						</tr>
-					</thead>
-					<tbody>
 					<?php
 						require 'db_configuration.php';
 						
-						$sql = "SELECT * FROM table_2";
+						$sql = "SELECT * FROM trains_and_teams";
 						$result = run_sql($sql);
 						
 						// output data of each
 						if ($result->num_rows > 0) {
 							while ($row = $result->fetch_assoc()) {
 								echo '<tr>
-									<td>' . $row[""] . "</td>
-									<td>" . $row[""] . "</td>
-									<td>" . $row[""] . "</td>
-									<td>" . $row[""] . "</td>
-									
+									<td>' . $row["team_id"] . "</td>
+									<td>" . $row["type"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
 								</tr>";
 						}
 					} else {
@@ -100,17 +96,24 @@ if (!isset($_SESSION)) {
 					}
 					$result->close();
 		?>
-					</tbody>
-					<tfoot>
+		<font size="5" color="black"><img src="./icons/image17.png"style="width:50px;height:60px;"/>Agile Release Trains (ART)</font>
 						<tr>
-							<td>Type</td>
-							<td>ID</td>
-							<td>Name</td>
-							<td>Scrum Master/RTE/STE</td>
-							<td>PM/PO</td>
-							<td>Parent</td>
+							<th>ID</th>
+							<th>Name</th>
+							<th>RTE</th>
+							<th>PM</th>
+							<th>Solution Train</th>
 						</tr>
-					</tfoot>
+		<font size="5" color="black"><img src="./icons/image20.png" style="width:50px;height:60px;"/>Agile Teams (AT)</font>
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Scrum Master</th>
+							<th>Product Owner</th>
+							<th>ART</th>
+						</tr>
+		
+					</tbody>
 				</table>
 			</div>
 		</div>

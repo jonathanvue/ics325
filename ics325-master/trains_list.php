@@ -52,11 +52,11 @@ if (!isset($_SESSION)) {
 			<div class="col-md-1">
 				<nav class="nav-left">
 					<ul class="nav nav-stacked">
-						<li><a href="trains_list.php"><img class="icon" src="./icons/image11.png">List</a></li>
-						<li><a href="trains_lists.php"><img class="icon" src="./icons/image19.png" />Lists</a></li>
-						<li><a href="#"><img class="icon" src="./icons/image12.png" />Grid</a></li>
-						<li><a href="#"><img class="icon" src="./icons/image14.png" />Tree</a></li>
-						<li><a href="#"><img class="icon" src="./icons/image13.png" />Hybrid</a></li>
+						<li><a href="trains_list.php"><img src="./icons/image11.png" style="width:40px;height:50px;"><img src="./icons/image15.png" style="width:20px;height:30px;">&nbsp&nbsp&nbsp&nbsp&nbspList</a></li>
+						<li><a href="trains_lists.php"><img class="icon" src="./icons/image19.png" />&nbsp&nbsp&nbsp&nbspLists</a></li>
+						<li><a href="#"><img class="icon" src="./icons/image12.png" />&nbsp&nbsp&nbsp&nbspGrid</a></li>
+						<li><a href="#"><img class="icon" src="./icons/image14.png" />&nbsp&nbsp&nbsp&nbspTree</a></li>
+						<li><a href="#"><img class="icon" src="./icons/image13.png" />&nbsp&nbspHybrid</a></li>
 					</ul>
 				</nav>
 			</div>
