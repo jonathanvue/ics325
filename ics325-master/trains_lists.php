@@ -99,6 +99,10 @@ if (!isset($_SESSION)) {
 		</table>
 		<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
+					    <colgroup>
+						<col span="9" style="background-color:lightblue">
+						<col style="background-color:yellow">
+					</colgroup>
 		<font size="5" color="black"><img src="./icons/image17.png"style="width:50px;height:60px;"/>Agile Release Trains (ART)</font>
 						<tr>
 							<th>ID</th>
@@ -108,7 +112,7 @@ if (!isset($_SESSION)) {
 							<th>Solution Train</th>
 						</tr>
 						<?php
-						require 'db_configuration.php';
+						
 						
 						$sql = "SELECT * FROM trains_and_teams LIMIT 5";
 						$result = run_sql($sql);
@@ -132,6 +136,10 @@ if (!isset($_SESSION)) {
 		</table>
 		<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
+					    <colgroup>
+						<col span="9" style="background-color:lightblue">
+						<col style="background-color:yellow">
+					</colgroup>
 		<font size="5" color="black"><img src="./icons/image20.png" style="width:50px;height:60px;"/>Agile Teams (AT)</font>
 						<tr>
 							<th>ID</th>
@@ -141,7 +149,7 @@ if (!isset($_SESSION)) {
 							<th>ART</th>
 						</tr>
 		<?php
-						require 'db_configuration.php';
+						
 						
 						$sql = "SELECT * FROM trains_and_teams LIMIT 5";
 						$result = run_sql($sql);
