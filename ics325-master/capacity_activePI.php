@@ -26,7 +26,7 @@ if (!isset($_SESSION)) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Capacity</title>
+	<title>Capacity - Active PI</title>
     
 	<!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -57,7 +57,40 @@ if (!isset($_SESSION)) {
 					</ul>
 				</nav>
 			</div>
+			<div class="col-md-10">
+				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
+					   width="100%">
+					 <colgroup>
+						<col span="9" style="background-color:lightblue">
+						<col style="background-color:yellow">
+					</colgroup>					
+					
+						<tr>
+							<th>Current Iteration Details</th>
+						</tr>
+					<?php
+						require 'db_configuration.php';
+						
+						$sql = "SELECT * FROM trains_and_teams LIMIT 5";
+						$result = run_sql($sql);
+						
+						// output data of each
+						if ($result->num_rows > 0) {
+							while ($row = $result->fetch_assoc()) {
+								echo '
+								<tr>	
+									<td>' . $row["team_id"] . "</td>
+									<td>" . $row["type"] . "</td>
+								</tr>";
+						}
+					} else {
+						echo "0 results";
+					}
+					$result->close();
+		?>
+		</table>
 		</div>
+	
 	</div>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
