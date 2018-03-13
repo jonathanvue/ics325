@@ -45,6 +45,7 @@ if (!isset($_SESSION)) {
 <body>
     <?PHP echo getTopNav(); ?>
 	<div class="container">
+	
 		<div class="row">
 			<div class="col-md-1">
 				<nav class="nav-left">
@@ -57,6 +58,51 @@ if (!isset($_SESSION)) {
 					</ul>
 				</nav>
 			</div>
+			<div class="col-md-10">
+			<hr>
+			<h3><font size="4" color="blue">Cadence:</font></h3>
+			</hr>	
+				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
+					   width="100%">
+					 <colgroup>
+						<col span="9" style="background-color:lightblue">
+						<col style="background-color:yellow">
+					</colgroup>
+						<tr>
+							<th>Sequence</th>
+							<th>Program Increment</th>
+							<th>Iteration</th>
+							<th>Start Date</th>
+							<th>End Date</th>
+							<th>Duration</th>
+							<th>Notes</th>
+						</tr>
+					<?php
+						require 'db_configuration.php';
+						
+						$sql = "SELECT * FROM trains_and_teams LIMIT 3";
+						$result = run_sql($sql);
+						
+						// output data of each
+						if ($result->num_rows > 0) {
+							while ($row = $result->fetch_assoc()) {
+								echo '<tr>
+									<td>' . $row["team_id"] . "</td>
+									<td>" . $row["type"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
+								</tr>";
+						}
+					} else {
+						echo "0 results";
+					}
+					$result->close();
+		?>
+		</table>
 		</div>
 	</div>
 
