@@ -77,7 +77,7 @@ if (!isset($_SESSION)) {
 					<?php
 						require 'db_configuration.php';
 						
-						$sql = "SELECT * FROM trains_and_teams";
+						$sql = "SELECT * FROM trains_and_teams LIMIT 3";
 						$result = run_sql($sql);
 						
 						// output data of each
@@ -96,6 +96,9 @@ if (!isset($_SESSION)) {
 					}
 					$result->close();
 		?>
+		</table>
+		<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
+					   width="100%">
 		<font size="5" color="black"><img src="./icons/image17.png"style="width:50px;height:60px;"/>Agile Release Trains (ART)</font>
 						<tr>
 							<th>ID</th>
@@ -104,6 +107,31 @@ if (!isset($_SESSION)) {
 							<th>PM</th>
 							<th>Solution Train</th>
 						</tr>
+						<?php
+						require 'db_configuration.php';
+						
+						$sql = "SELECT * FROM trains_and_teams LIMIT 5";
+						$result = run_sql($sql);
+						
+						// output data of each
+						if ($result->num_rows > 0) {
+							while ($row = $result->fetch_assoc()) {
+								echo '<tr>
+									<td>' . $row["team_id"] . "</td>
+									<td>" . $row["type"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
+								</tr>";
+						}
+					} else {
+						echo "0 results";
+					}
+					$result->close();
+		?>
+		</table>
+		<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
+					   width="100%">
 		<font size="5" color="black"><img src="./icons/image20.png" style="width:50px;height:60px;"/>Agile Teams (AT)</font>
 						<tr>
 							<th>ID</th>
@@ -112,7 +140,28 @@ if (!isset($_SESSION)) {
 							<th>Product Owner</th>
 							<th>ART</th>
 						</tr>
-		
+		<?php
+						require 'db_configuration.php';
+						
+						$sql = "SELECT * FROM trains_and_teams LIMIT 5";
+						$result = run_sql($sql);
+						
+						// output data of each
+						if ($result->num_rows > 0) {
+							while ($row = $result->fetch_assoc()) {
+								echo '<tr>
+									<td>' . $row["team_id"] . "</td>
+									<td>" . $row["type"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
+								</tr>";
+						}
+					} else {
+						echo "0 results";
+					}
+					$result->close();
+		?>
 					</tbody>
 				</table>
 			</div>
