@@ -52,7 +52,7 @@ if (!isset($_SESSION)) {
 					<ul class="nav nav-stacked">
 						<li><a href="capacity_activePI.php"><img src="./icons/capacity_active_pi.png" style="width:40px;height:50px;">Active PI</a></li>
 						<li><a href="capacity_cadence.php"><img style="width:40px;height:50px;" src="./icons/capacity_cadence.png" />Cadence</a></li>
-						<li><a href=""><img class="icon" src="./icons/capacity_calculate.png" />Calculate</a></li>
+						<li><a href="capacity_calculate.php"><img class="icon" src="./icons/capacity_calculate.png" />Calculate</a></li>
 						<li><a href="capacity_summary.php"><img src="./icons/capacity_summary.png" style="width:40px;height:50px;"/><img src="./icons/image15.png" style="width:20px;height:30px;">Summary</a></li>
 						<li><a href="#"><img class="icon" src="./icons/capacity_trend.png" />Trend</a></li>
 					</ul>
@@ -64,24 +64,25 @@ if (!isset($_SESSION)) {
 			</hr>	
 				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
-
-						<tr>
-							<th>id</th>
-							<th>Team ID</th>
-							<th>Team Name</th>
-							<th>Program Increment</th>
-							<th>Iteration 1</th>
-							<th>Iteration 2</th>
-							<th>Iteration 3</th>
-							<th>Iteration 4</th>
-							<th>Iteration 5</th>
-							<th>Iteration 6</th>
-							<th>Total</th>
-						</tr>
+					    <thead>
+							<tr>
+								<th>id</th>
+								<th>Team ID</th>
+								<th>Team Name</th>
+								<th>Program Increment</th>
+								<th>Iteration 1</th>
+								<th>Iteration 2</th>
+								<th>Iteration 3</th>
+								<th>Iteration 4</th>
+								<th>Iteration 5</th>
+								<th>Iteration 6</th>
+								<th>Total</th>
+							</tr>
+						</thead>
 					<?php
 						require 'db_configuration.php';
 						
-						$sql = "SELECT * FROM capacity LIMIT 3";
+						$sql = "SELECT * FROM capacity";
 						$result = run_sql($sql);
 						
 						// output data of each

@@ -26,7 +26,7 @@ if (!isset($_SESSION)) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Capacity - Cadence</title>
+	<title>Capacity - Calculate</title>
     
 	<!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -51,55 +51,53 @@ if (!isset($_SESSION)) {
 				<nav class="nav-left">
 					<ul class="nav nav-stacked">
 						<li><a href="capacity_activePI.php"><img src="./icons/capacity_active_pi.png" style="width:40px;height:50px;">Active PI</a></li>
-						<li><a href="capacity_cadence.php"><img style="width:40px;height:50px;" src="./icons/capacity_cadence.png" /><img src="./icons/image15.png" style="width:20px;height:30px;">Cadence</a></li>
-						<li><a href="capacity_calculate.php"><img class="icon" src="./icons/capacity_calculate.png" />Calculate</a></li>
-						<li><a href="capacity_summary.php"><img class="icon" src="./icons/capacity_summary.png" />Summary</a></li>
+						<li><a href="capacity_cadence.php"><img style="width:40px;height:50px;" src="./icons/capacity_cadence.png" />Cadence</a></li>
+						<li><a href="capacity_calculate.php"><img class="icon" src="./icons/capacity_calculate.png" /><img src="./icons/image15.png" style="width:20px;height:30px;">Calculate</a></li>
+						<li><a href="capacity_summary.php"><img src="./icons/capacity_summary.png" style="width:40px;height:50px;"/>Summary</a></li>
 						<li><a href="#"><img class="icon" src="./icons/capacity_trend.png" />Trend</a></li>
 					</ul>
 				</nav>
 			</div>
 			<div class="col-md-10">
 			<hr>
-			<h3><font size="4" color="blue">Cadence:</font></h3>
+			<h3><font size="4" color="blue">Calculate:</font></h3>
 			</hr>	
-				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
+				<!--<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
 					    <thead>
 							<tr>
-								<th>Sequence</th>
-								<th>Program Increment</th>
-								<th>Iteration</th>
-								<th>Start Date</th>
-								<th>End Date</th>
-								<th>Duration</th>
-								<th>Notes</th>
+								<th>Last Name</th>
+								<th>First Name</th>
+								<th>Role</th>
+								<th>% Velocity Available</th>
+								<th>Days Off (Vacation/Holidays/Sick Days)</th>
+								<th>Story Points</th>
 							</tr>
 						</thead>
 					<?php
 						require 'db_configuration.php';
 						
-						$sql = "SELECT * FROM cadence";
+						$sql = "SELECT * FROM capacity";
 						$result = run_sql($sql);
 						
 						// output data of each
 						if ($result->num_rows > 0) {
 							while ($row = $result->fetch_assoc()) {
 								echo '<tr>
-									<td>' . $row["sequence"] . "</td>
-									<td>" . $row["program_increment"] . "</td>
-									<td>" . $row["iteration"] . "</td>
-									<td>" . $row["start_date"] . "</td>
-									<td>" . $row["end_date"] . "</td>
-									<td>" . $row["duration"] . "</td>
-									<td>" . $row["notes"] . "</td>
+									<td>' . $row[""] . "</td>
+									<td>" . $row[""] . "</td>
+									<td>" . $row[""] . "</td>
+									<td>" . $row[""] . "</td>
+									<td>" . $row[""] . "</td>
+									<td>" . $row[""] . "</td>
 								</tr>";
+							}
+						} else {
+							echo "0 results";
 						}
-					} else {
-						echo "0 results";
-					}
-					$result->close();
-		?>
-		</table>
+						$result->close();
+					?>
+		</table>-->
 		</div>
 	</div>
 
