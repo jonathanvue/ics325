@@ -40,12 +40,12 @@
 									<font class="nav-font">SAFe Explorer</font>
 								</div>
 							</li>
-							<li><a class="navImg" href="#"><img class="icon" src="./icons/image4.png" /><div class="caption">Trains</div></a></li>
+							<li><a class="navImg" href="trains_list.php"><img class="icon" src="./icons/image4.png" />Trains</a></li>
 							<li><a class="navImg" href="org_list.php"><img class="icon" src="./icons/image2.png" />Org</a></li>
-							<li><a class="navImg" href="#"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
+							<li><a class="navImg" href="capacity_activePI.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image10.png" />Training</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image5.png" />Reports</a></li>
-							<li><a class="navImg" href="#"><img class="icon" src="./icons/image38.png" />Admin</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/admin.png" />Admin</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image8.png" />Help</a></li>
 							</ul>
@@ -68,12 +68,12 @@
 									<font class="nav-font">SAFe Explorer</font>
 								</div>
 							</li>
-							<li><a class="navImg" href="#"><img class="icon" src="./icons/image4.png" /><div class="caption">Trains</div></a></li>
+							<li><a class="navImg" href="trains_list.php"><img class="icon" src="./icons/image4.png" />Trains</a></li>
 							<li><a class="navImg" href="org_list.php"><img class="icon" src="./icons/image2.png" />Org</a></li>
-							<li><a class="navImg" href="#"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
+							<li><a class="navImg" href="capacity_activePI.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image10.png" />Training</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image5.png" />Reports</a></li>
-							<li><a class="navImg" href="#"><img class="icon" src="./icons/image38.png" />Admin</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/admin.png" />Admin</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image8.png" />Help</a></li>
 							</ul>
@@ -96,12 +96,12 @@
 									<font class="nav-font">SAFe Explorer</font>
 								</div>
 							</li>
-							<li><a class="navImg" href="#"><img class="icon" src="./icons/image4.png" /><div class="caption">Trains</div></a></li>
+							<li><a class="navImg" href="trains_list.php"><img class="icon" src="./icons/image4.png" />Trains</a></li>
 							<li><a class="navImg" href="org_list.php"><img class="icon" src="./icons/image2.png" />Org</a></li>
-							<li><a class="navImg" href="#"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
+							<li><a class="navImg" href="capacity_activePI.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image10.png" />Training</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image5.png" />Reports</a></li>
-							<li><a class="navImg" href="#"><img class="icon" src="./icons/image38.png" />Admin</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/admin.png" />Admin</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image8.png" />Help</a></li>
 							</ul>
