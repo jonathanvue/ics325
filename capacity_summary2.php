@@ -63,7 +63,7 @@ if (!isset($_SESSION)) {
 			<h3><font size="4" color="blue">Capacity Roll-up</font></h3>
 			<h4><font size="4" color="black">For the entire Program Increment PI-200 = 5500 Story Points</font></h4>	
 				</hr>	
-				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
+				<table style="font-family:arial;" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
 					    <thead>
 							<tr>
@@ -82,7 +82,7 @@ if (!isset($_SESSION)) {
 						</thead>
 					<?php
 						require 'db_configuration.php';					
-						$sql = "SELECT * FROM capacity JOIN trains_and_teams";
+						$sql = "SELECT *FROM capacity JOIN trains_and_teams WHERE program_increment = 'pi-200' AND parent = 'ST-200'";
 						$result = run_sql($sql);
 						
 						// output data of each

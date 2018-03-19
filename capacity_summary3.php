@@ -82,7 +82,7 @@ if (!isset($_SESSION)) {
 						</thead>
 					<?php
 						require 'db_configuration.php';					
-						$sql = "SELECT * FROM capacity JOIN trains_and_teams";
+						$sql = "SELECT *FROM capacity JOIN trains_and_teams WHERE program_increment = 'pi-300' AND parent = 'ST-300'";
 						$result = run_sql($sql);
 						
 						// output data of each

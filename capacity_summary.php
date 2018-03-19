@@ -63,7 +63,7 @@ if (!isset($_SESSION)) {
 			<h3><font size="4" color="blue">Capacity Roll-up</font></h3>
 			<h4><font size="4" color="black">For the entire Program Increment PI-100 = 5500 Story Points</font></h4>	
 				</hr>	
-				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
+				<table style="font-family:arial;" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
 					    <thead>
 							<tr>
@@ -82,7 +82,7 @@ if (!isset($_SESSION)) {
 						</thead>
 					<?php
 						require 'db_configuration.php';					
-						$sql = "SELECT *FROM capacity JOIN trains_and_teams WHERE program_increment = 'pi-100' AND parent = 'ST-100'";
+						$sql = "SELECT *FROM membership INNER JOIN capacity ON membership.team_name = capacity.team_name JOIN trains_and_teams WHERE program_increment = 'pi-100' AND parent = 'ST-100' AND role = 'Scrum Master (SM)'";
 						$result = run_sql($sql);
 						
 						// output data of each
@@ -92,7 +92,7 @@ if (!isset($_SESSION)) {
 									<td>' . $row["type"] . "</td>
 									<td>" . $row["team_id"] . "</td>
 									<td>" . $row["team_name"] . "</td>
-									<td>" . $row["program_increment"] . "</td>
+									<td>" . $row["role"] . "</td>
 									<td>" . $row["iteration_1"] . "</td>
 									<td>" . $row["iteration_2"] . "</td>
 									<td>" . $row["iteration_3"] . "</td>
