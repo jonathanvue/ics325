@@ -61,7 +61,7 @@ if (!isset($_SESSION)) {
 			<div class="col-md-10">
 			<hr>
 			<h3><font size="4" color="blue">Capacity Roll-up</font></h3>
-			<h4><font size="4" color="black">For the entire Program Increment PI-100 = 5500 Story Points</font></h4>	
+			<h4><font size="4" color="black">For the entire Program Increment</font><font>"  " = "  "</font></h4>	
 				</hr>	
 				<table style="font-family:arial;" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
@@ -82,9 +82,6 @@ if (!isset($_SESSION)) {
 						</thead>
 					<?php
 						require 'db_configuration.php';	
-						$page = (isset($_GET['page'])) ? $_GET['page'] : 1;
-
-						$startPoint = $page - 1;
 						$sql = "SELECT t.type, c.team_id AS id, c.team_name AS name, m.role AS 'sm_rte_ste',
 iteration_1, iteration_2, iteration_3, iteration_4, iteration_5, iteration_6, total
 FROM capacity c 
@@ -122,9 +119,8 @@ WHERE program_increment = 'pi-100'";
 					$result->close();
 		?>
 		</table>
-		<a href="capacity_summary.php?page=<?php echo $page - 1?>" style="background-color: #1E90FF;color: black;padding: 20px;text-align: center;display: inline-block;font-size: 16px;margin: 4px 2px; border-radius: 12px">Show Previous PI</a>
-		&nbsp
-		<a href="capacity_summary2.php?page=<?php echo $page + 1?>" style="background-color: #1E90FF;color: black;padding: 20px;text-align: center;display: inline-block;font-size: 16px;margin: 4px 2px; border-radius: 12px">Show Next PI</a>
+		<?php echo "<a href=\"capacity_summary.php?view=" . urlencode(0) . "\">Previous PI</a>"; ?>&nbsp;
+		<?php echo "<a href=\"capacity_summary.php?view=" . urlencode(1) . "\">Next PI</a>"; ?>
 		</div>
 	</div>
 
