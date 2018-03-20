@@ -17,7 +17,7 @@ if (!isset($_SESSION)) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Training</title>
+	<title>Capacity - Active PI</title>
     
 	<!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -36,85 +36,87 @@ if (!isset($_SESSION)) {
 <body>
     <?PHP echo getTopNav(); ?>
 	<div class="container">
-		<hr>
-		<h3><font size="6" color="blue">Training</font></h3>
-		<hr>
 		<div class="row">
 			<div class="col-md-1">
 				<nav class="nav-left">
 					<ul class="nav nav-stacked">
-						<li><a href="#">List</a></li>
-						<li><a href="#">Grid</a></li>
+						<li><a href="capacity_activePI.php"><img src="./icons/capacity_active_pi.png" style="width:40px;height:50px;"><img src="./icons/image15.png" style="width:20px;height:30px;">Active PI</a></li>
+						<li><a href="capacity_cadence.php"><img class="icon" src="./icons/capacity_cadence.png" />Cadence</a></li>
+						<li><a href="capacity_calculate.php"><img class="icon" src="./icons/capacity_calculate.png" />Calculate</a></li>
+						<li><a href="capacity_summary.php"><img class="icon" src="./icons/capacity_summary.png" />Summary</a></li>
+						<li><a href="#"><img class="icon" src="./icons/capacity_trend.png" />Trend</a></li>
 					</ul>
 				</nav>
 			</div>
 			<div class="col-md-10">
 				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
-					   width="100%">
-					 <colgroup>
-						<col span="9" style="background-color:lightblue">
-						<col style="background-color:yellow">
-					</colgroup>
-					<thead>
+					   width="100%">		
+					
 						<tr>
-							<th>Employee_ID</th>
-							<th>Last_Name</th>
-							<th>First_Name</th>
-							<th>City</th>
-							<th>Country</th>
-							<th>Manager_ID</th>
-							<th>Email</th>
-							<th>Cost_Center</th>
-							<th>Status</th>
-							<th>Primary_Team</th>
+							<th colspan="2">Current Iteration Details</th>
 						</tr>
-					</thead>
-					<tbody>
 					<?php
-						require 'db_configuration.php';
+					$pi;
+					require 'db_configuration.php';
+						echo '<tr>
+						<td>Todays Date</td>
+						<td>' . date("m/d/Y") . '</td>
+						</tr>';		
 						
-						$sql = "SELECT * FROM organization_hierarchy";
+						$sql = "SELECT * FROM cadence WHERE NOW() BETWEEN start_date AND end_date";
 						$result = run_sql($sql);
+						
 						
 						// output data of each
 						if ($result->num_rows > 0) {
 							while ($row = $result->fetch_assoc()) {
-								echo '<tr>
-									<td>' . $row["employee_id"] . "</td>
-									<td>" . $row["last_name"] . "</td>
-									<td>" . $row["first_name"] . "</td>
-									<td>" . $row["city"] . "</td>
-									<td>" . $row["country"] . "</td>
-									<td>" . $row["manager_id"] . "</td>
-									<td>" . $row["email_address"] . "</td>
-									<td>" . $row["cost_center"] . "</td>
-									<td>" . $row["status"] . "</td>
-									<td>" . $row["primary_team"] . "</td>
-								</tr>";
+								$pi = $row["program_increment"];
+								echo '
+								<tr>	
+									<td> Program Increment (PI) </td>
+									<td>' . $row["program_increment"] . '</td>
+								</tr>';
+								echo '
+								<tr>	
+									<td> Iteration (I)  </td>
+									<td>' . $row["iteration"] . '</td>
+								</tr>';
+								echo '
+								<tr>	
+									<td> Current Iteration Ends on  </td>
+									<td>'. $row["end_date"] .'</td>
+								</tr>';
+								
+								
+						}
+					} else {
+						echo "0 results";
+					}
+					$result->close();
+					
+						$sql = "SELECT program_increment, MAX(end_date) AS end_date FROM cadence WHERE program_increment = '". $pi ."' GROUP BY program_increment";
+						$result = run_sql($sql);
+						
+						
+						// output data of each
+						if ($result->num_rows > 0) {
+							while ($row = $result->fetch_assoc()) {
+								
+								echo '
+								<tr>	
+									<td> Current Program Increment Ends on </td>
+									<td>' . date_format($row["end_date"], 'm/d/Y') . '</td>
+								</tr>';
 						}
 					} else {
 						echo "0 results";
 					}
 					$result->close();
 		?>
-					</tbody>
-					<tfoot>
-						<tr>
-							<td>Employee_ID</td>
-							<td>Last_Name</td>
-							<td>First_Name</td>
-							<td>City</td>
-							<td>Country</td>
-							<td>Manager_ID</td>
-							<td>Email</td>
-							<td>Cost_Center</td>
-							<td>Status</td>
-							<td>Primary_Team</td>
-						</tr>
-					</tfoot>
-				</table>
-			</div>
+		
+		</table>
 		</div>
+	
 	</div>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -127,14 +129,3 @@ if (!isset($_SESSION)) {
 	</script>
 </body>
 </html>
-© 2018 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Help
-Contact GitHub
-API
-Training
-Shop
-Blog

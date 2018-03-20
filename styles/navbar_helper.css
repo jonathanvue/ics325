@@ -1,7 +1,23 @@
-.navImg {
+img#search.icon {
+	width: 100px
+}
+
+.container {
 	display: block;
-	height: 100px;
-	width: 100px;
+	width: 1440px !important;
+	overflow-y: scroll;
+}
+
+a {
+	text-decoration: none;
+}
+
+.buffer{
+	display: block;
+	top: o;
+	/*margin-top: 112px;
+	margin-left: 120px;*/
+	margin: 112px 0 0 120px;
 }
 
 .icon {
@@ -11,28 +27,39 @@
 	width: 50px;
 }
 
-img#search.icon {
-	width: 100px
+.small {
+	height: 50px;
+	width: 50px;
+	margin: 0 5px 5px 0px;
+	clear: right;
 }
 
-.container {
-	display: block;
-	width: 1440px !important;
+.active {
+	height: 10px;
+	width: 10px;
 }
 
-.buffer{
+.float {
+	float: left;
+}
+
+.logoBump {
+	position: fixed;
+	height: 80px;
+	width: 240px;
+}
+
+.navImg {
 	display: block;
-	top: o;
-	/*margin-top: 112px;
-	margin-left: 240px;*/
-	margin: 112px 0 0 240px;
+	height: 100px;
+	width: 100px;
 }
 
 .sideNav {
 	display: block;
 	float: left;
 	position: fixed;
-	background: #CCCCCC;
+	/*background: #CCCCCC;*/
 	margin: 112px 0 0 0;
 	width: 120px;
 	height: 100%;
@@ -52,10 +79,12 @@ img#search.icon {
 
 .sideNav .sideMenu .sideMenuItem {
 	flex-direction: column;
+	list-style-type: none;
+	padding: 0;
 }
 
-.logoBump {
-	position: fixed;
-	height: 80px;
-	width: 240px;
+.search {
+	height: 75px;
+	margin-top: 25px;
 }
+

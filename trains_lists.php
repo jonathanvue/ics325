@@ -44,19 +44,22 @@ if (!isset($_SESSION)) {
 
 <body>
     <?PHP echo getTopNav(); ?>
-	<div class="container">
+	<!-- Side navigation to be placed into -->
+	<div class="sideNav text-center">
+		<div class="sideMenu">
+			<ul class="sideMenuItem text-center">
+				<li><a class="navImg" href="trains_list.php"><img src="./icons/search_list.png" class="icon" />List</a></li>
+				<li><a class="navImg" href="trains_lists.php"><img class="icon" src="./icons/org_lists.png" /><img src="./icons/image15.png" style="width:20px;height:20px;"/>Lists</a></li>
+				<li><a class="navImg" href="#"><img class="icon" src="./icons/image12.png" />Grid</a></li>
+				<li><a class="navImg" href="#"><img class="icon" src="./icons/image14.png" />Tree</a></li>
+				<li><a class="navImg" href="#"><img class="icon" src="./icons/image13.png" />Hybrid</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<!-- Primary content goes here -->
+	<div class="container buffer">
 		<div class="row">
-			<div class="col-md-1">
-				<nav class="nav-left">
-					<ul class="nav nav-stacked">
-						<li><a href="trains_list.php"><img class="icon" src="./icons/image11.png">&nbsp&nbsp&nbsp&nbsp&nbspList</a></li>
-						<li><a href="trains_lists.php"><img style="width:40px;height:50px"  src="./icons/image19.png" /><img src="./icons/image15.png" style="width:20px;height:30px;">&nbsp&nbsp&nbsp&nbspLists</a></li>
-						<li><a href="#"><img class="icon" src="./icons/image12.png" />&nbsp&nbsp&nbsp&nbspGrid</a></li>
-						<li><a href="#"><img class="icon" src="./icons/image14.png" />&nbsp&nbsp&nbsp&nbspTree</a></li>
-						<li><a href="#"><img class="icon" src="./icons/image13.png" />&nbsp&nbspHybrid</a></li>
-					</ul>
-				</nav>
-			</div>
 			<div class="col-md-10">
 				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
@@ -64,7 +67,9 @@ if (!isset($_SESSION)) {
 						<col span="9" style="background-color:lightblue">
 						<col style="background-color:yellow">
 					</colgroup>
-					<font size="5" color="black"><img src="./icons/image16.png" style="width:50px;height:60px;"/>Solution Trains (ST)</font>
+					
+					<img class="small float" src="./icons/image16.png"/>
+					<h3 class="float">Solution Trains (ST) </h3>
 						
 					<tbody>
 						<tr>
@@ -100,10 +105,11 @@ if (!isset($_SESSION)) {
 		<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
 					    <colgroup>
-						<col span="9" style="background-color:lightblue">
-						<col style="background-color:yellow">
-					</colgroup>
-		<font size="5" color="black"><img src="./icons/image17.png"style="width:50px;height:60px;"/>Agile Release Trains (ART)</font>
+							<col span="9" style="background-color:lightblue">
+							<col style="background-color:yellow">
+						</colgroup>
+						<img class="small float" src="./icons/image17.png"/>
+						<h3 class="float">Agile Release Trains (ART)</h3>
 						<tr>
 							<th>ID</th>
 							<th>Name</th>
@@ -137,10 +143,11 @@ if (!isset($_SESSION)) {
 		<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
 					    <colgroup>
-						<col span="9" style="background-color:lightblue">
-						<col style="background-color:yellow">
-					</colgroup>
-		<font size="5" color="black"><img src="./icons/image20.png" style="width:50px;height:60px;"/>Agile Teams (AT)</font>
+							<col span="9" style="background-color:lightblue">
+							<col style="background-color:yellow">
+						</colgroup>
+						<img class="small float" src="./icons/image20.png" />
+						<h3 class="float">Agile Teams (AT)</h3>
 						<tr>
 							<th>ID</th>
 							<th>Name</th>
