@@ -46,7 +46,7 @@
 		<p>This page will be called with the current iteration or called with URL parameter</p>
 		<!-- Table to input data to pull in the datatables -->
 		<div class="row">
-			<div class="container">
+			<div class="container-fluid">
 				<table class="table" style="width: 800px;">
 					<th colspan="2">
 						Capacity Calculations for the Agile Team

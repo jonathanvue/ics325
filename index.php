@@ -28,7 +28,31 @@
 </head>
 <body>
     <!-- < ?PHP echo getTopNav(); ?> -->
-	<?PHP echo getTopNav(); ?>
+	<nav class="navbar navbar-static-top" role="navigation">				
+		<div class="container-fluid no-margin">
+			<ul class="nav navbar-nav text-center">
+				<li><a href="index.php"><img class="logo" src="./icons/image1.png" /></a>
+					<div class="name-wrapper">
+						<font class="nav-font">SAFe Explorer</font>
+					</div>
+				</li>
+				<li><a class="navImg" href="trains_list.php"><img class="icon" src="./icons/image4.png" />Trains</a></li>
+				<li><a class="navImg" href="org_list.php"><img class="icon" src="./icons/image2.png" />Org</a></li>
+				<li><a class="navImg" href="capacity_activePI.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
+				<li><a class="navImg" href="#"><img class="icon" src="./icons/image10.png" />Training</a></li>
+				<li><a class="navImg" href="#"><img class="icon" src="./icons/image5.png" />Reports</a></li>
+				<li><a class="navImg" href="#"><img class="icon" src="./icons/admin.png" />Admin</a></li>
+				<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
+				<li><a class="navImg" href="#"><img class="icon" src="./icons/image8.png" />Help</a></li>
+			</ul>
+			<form class="navbar-form navbar-right">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Search">
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+			</form>
+		</div>
+	</nav>
 	
 	<!-- Side navigation to be placed into -->
 	<div class="sideNav text-center">
@@ -39,6 +63,7 @@
 			</ul>
 		</div>
 	</div>
+	
 	<!-- Primary content goes here -->
 	<div class="container buffer">
 		<h1>This is the default landing page<p><small>Work in progress</small><p></h1>

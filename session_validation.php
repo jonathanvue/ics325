@@ -32,93 +32,87 @@
 		$topNav = "";
 		if (adminSessionExists()) {
 			$topNav = '
-				<div class="container-fluid">
-					<nav class="navbar navbar-fixed-top" role="navigation">
-						<div class="container-fluid">				
-							<ul class="nav navbar-nav text-center">
-								<li><a href="index.php"><img class="logo" src="./icons/image1.png" /></a>
-									<div class="name-wrapper">
-										<font class="nav-font">SAFe Explorer</font>
-									</div>
-								</li>
-								<li><a class="navImg" href="trains.php"><img class="icon" src="./icons/image4.png" />Trains</a></li>
-								<li><a class="navImg" href="org.php"><img class="icon" src="./icons/image2.png" />Org</a></li>
-								<li><a class="navImg" href="capacity.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
-								<li><a class="navImg" href="training.php"><img class="icon" src="./icons/image10.png" />Training</a></li>
-								<li><a class="navImg" href="reports.php"><img class="icon" src="./icons/image5.png" />Reports</a></li>
-								<li><a class="navImg" href="admin.php"><img class="icon" src="./icons/image38.png" />Admin</a></li>
-								<li><a class="navImg" href="login.php"><img class="icon" src="./icons/image7.png" />Login</a></li>
-								<li><a class="navImg" href="help.php"><img class="icon" src="./icons/image8.png" />Help</a></li>
-								</ul>
-								<form class="navbar-form navbar-right search">
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Search">
-									</div>
-									<button type="submit" class="btn btn-default">Submit</button>
-								</form>
-						</div>
-					</nav>
-				</div>';
+				<nav class="navbar navbar-fixed-top fill" role="navigation">				
+					<div class="container-fluid no-margin">
+						<ul class="nav navbar-nav text-center">
+							<li><a href="index.php"><img class="logo" src="./icons/image1.png" /></a>
+								<div class="name-wrapper">
+									<font class="nav-font">SAFe Explorer</font>
+								</div>
+							</li>
+							<li><a class="navImg" href="trains_list.php"><img class="icon" src="./icons/image4.png" />Trains</a></li>
+							<li><a class="navImg" href="org_list.php"><img class="icon" src="./icons/image2.png" />Org</a></li>
+							<li><a class="navImg" href="capacity_activePI.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/image10.png" />Training</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/image5.png" />Reports</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/admin.png" />Admin</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/image8.png" />Help</a></li>
+						</ul>
+						<form class="navbar-form navbar-right">
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Search">
+							</div>
+							<button type="submit" class="btn btn-default">Submit</button>
+						</form>
+					</div>
+				</nav>';
 		}
 		else if (sessionExists()) {
 			$topNav = '
-				<div class="container-fluid">
-					<nav class="navbar navbar-fixed-top" role="navigation">
-						<div class="container-fluid">				
-							<ul class="nav navbar-nav text-center">
-								<li><a href="index.php"><img class="logo" src="./icons/image1.png" /></a>
-									<div class="name-wrapper">
-										<font class="nav-font">SAFe Explorer</font>
-									</div>
-								</li>
-								<li><a class="navImg" href="trains.php"><img class="icon" src="./icons/image4.png" />Trains</a></li>
-								<li><a class="navImg" href="org.php"><img class="icon" src="./icons/image2.png" />Org</a></li>
-								<li><a class="navImg" href="capacity.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
-								<li><a class="navImg" href="training.php"><img class="icon" src="./icons/image10.png" />Training</a></li>
-								<li><a class="navImg" href="reports.php"><img class="icon" src="./icons/image5.png" />Reports</a></li>
-								<li><a class="navImg" href="admin.php"><img class="icon" src="./icons/image38.png" />Admin</a></li>
-								<li><a class="navImg" href="login.php"><img class="icon" src="./icons/image7.png" />Login</a></li>
-								<li><a class="navImg" href="help.php"><img class="icon" src="./icons/image8.png" />Help</a></li>
-								</ul>
-								<form class="navbar-form navbar-right search">
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Search">
-									</div>
-									<button type="submit" class="btn btn-default">Submit</button>
-								</form>
-						</div>
-					</nav>
-				</div>';
+				<nav class="navbar navbar-fixed-top fill" role="navigation">				
+					<div class="container-fluid no-margin">
+						<ul class="nav navbar-nav text-center">
+							<li><a href="index.php"><img class="logo" src="./icons/image1.png" /></a>
+								<div class="name-wrapper">
+									<font class="nav-font">SAFe Explorer</font>
+								</div>
+							</li>
+							<li><a class="navImg" href="trains_list.php"><img class="icon" src="./icons/image4.png" />Trains</a></li>
+							<li><a class="navImg" href="org_list.php"><img class="icon" src="./icons/image2.png" />Org</a></li>
+							<li><a class="navImg" href="capacity_activePI.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/image10.png" />Training</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/image5.png" />Reports</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/admin.png" />Admin</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/image8.png" />Help</a></li>
+						</ul>
+						<form class="navbar-form navbar-right">
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Search">
+							</div>
+							<button type="submit" class="btn btn-default">Submit</button>
+						</form>
+					</div>
+				</nav>';
 		}
 		else{
 			$topNav = '
-					<div class="container-fluid">
-						<nav class="navbar navbar-fixed-top" role="navigation">
-							<div class="container-fluid">				
-								<ul class="nav navbar-nav text-center">
-									<li><a href="index.php"><img class="logo" src="./icons/image1.png" /></a>
-										<div class="name-wrapper">
-											<font class="nav-font">SAFe Explorer</font>
-										</div>
-									</li>
-									<li><a class="navImg" href="trains.php"><img class="icon" src="./icons/image4.png" />Trains</a></li>
-									<li><a class="navImg" href="org.php"><img class="icon" src="./icons/image2.png" />Org</a></li>
-									<li><a class="navImg" href="capacity.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
-									<li><a class="navImg" href="training.php"><img class="icon" src="./icons/image10.png" />Training</a></li>
-									<li><a class="navImg" href="reports.php"><img class="icon" src="./icons/image5.png" />Reports</a></li>
-									<li><a class="navImg" href="admin.php"><img class="icon" src="./icons/image38.png" />Admin</a></li>
-									<li><a class="navImg" href="login.php"><img class="icon" src="./icons/image7.png" />Login</a></li>
-									<li><a class="navImg" href="help.php"><img class="icon" src="./icons/image8.png" />Help</a></li>
-									</ul>
-									<form class="navbar-form navbar-right search">
-										<div class="form-group">
-											<input type="text" class="form-control" placeholder="Search">
-										</div>
-										<button type="submit" class="btn btn-default">Submit</button>
-									</form>
+				<nav class="navbar navbar-fixed-top fill" role="navigation">				
+					<div class="container-fluid no-margin">
+						<ul class="nav navbar-nav text-center">
+							<li><a href="index.php"><img class="logo" src="./icons/image1.png" /></a>
+								<div class="name-wrapper">
+									<font class="nav-font">SAFe Explorer</font>
+								</div>
+							</li>
+							<li><a class="navImg" href="trains_list.php"><img class="icon" src="./icons/image4.png" />Trains</a></li>
+							<li><a class="navImg" href="org_list.php"><img class="icon" src="./icons/image2.png" />Org</a></li>
+							<li><a class="navImg" href="capacity_activePI.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/image10.png" />Training</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/image5.png" />Reports</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/admin.png" />Admin</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
+							<li><a class="navImg" href="#"><img class="icon" src="./icons/image8.png" />Help</a></li>
+						</ul>
+						<form class="navbar-form navbar-right">
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Search">
 							</div>
-						</nav>
-					</div>';
+							<button type="submit" class="btn btn-default">Submit</button>
+						</form>
+					</div>
+				</nav>';
 		}
 		return $topNav;
 	}
