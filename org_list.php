@@ -1,24 +1,12 @@
 <?php //include 'navbar.php';
-
-
 // Start session to store variables
-
 if (!isset($_SESSION)) {
-
     session_start();
-
 }
-
 // Allows user to return 'back' to this page
-
-
-
 ?>
-
 <!DOCTYPE html>
-
 <html>
-
 <head>
 	<?PHP
 		require('session_validation.php');
