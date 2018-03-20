@@ -35,19 +35,21 @@ if (!isset($_SESSION)) {
 
 <body>
     <?PHP echo getTopNav(); ?>
-	<div class="container">
+	<!-- Side navigation to be placed into -->
+	<div class="sideNav text-center">
+		<div class="sideMenu">
+			<ul class="sideMenuItem text-center">
+				<li><a class="navImg" href="#" ><img class="icon" src="./icons/search_list.png" />List</a></li>
+				<li><a class="navImg" href="#" ><img class="icon" src="./icons/org_lists.png" />Lists</a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- Primary content goes here -->
+	<div class="container buffer">
 		<hr>
 		<h3><font size="6" color="blue">Training</font></h3>
 		<hr>
-		<div class="row">
-			<div class="col-md-1">
-				<nav class="nav-left">
-					<ul class="nav nav-stacked">
-						<li><a href="#">List</a></li>
-						<li><a href="#">Grid</a></li>
-					</ul>
-				</nav>
-			</div>
+		<div class="row">s
 			<div class="col-md-10">
 				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
