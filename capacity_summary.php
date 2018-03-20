@@ -186,17 +186,17 @@ if (!isset($_SESSION)) {
 						$pi = "pi-";
 						$pi .= $currIncrement;	
 						$sql = "SELECT t.type, c.team_id AS id, c.team_name AS name, m.role AS 'sm_rte_ste',
-							iteration_1, iteration_2, iteration_3, iteration_4, iteration_5, iteration_6, total
-							FROM capacity c 
-							-- LEFT OUTER JOIN trains_and_teams t ON c.team_id = t.team_id
-							LEFT OUTER JOIN (
-							SELECT * FROM membership
-							WHERE (
-							role LIKE '%(AT)%'
-							OR  role LIKE '%(ART)%'
-							OR  role LIKE '%(ST)%')) AS m ON 'c.team_id' = 'm.team_id'
-							LEFT OUTER JOIN trains_and_teams t ON 'c.team_id' = 't.team_id'
-							WHERE program_increment = '" . $pi . "'";
+						iteration_1, iteration_2, iteration_3, iteration_4, iteration_5, iteration_6, total
+						FROM capacity c 
+						-- LEFT OUTER JOIN trains_and_teams t ON c.team_id = t.team_id
+						LEFT OUTER JOIN (
+						SELECT * FROM membership
+						WHERE (
+						role LIKE '%(SM)%'
+						OR  role LIKE '%(STE)%'
+						OR  role LIKE '%(RTE)%')) AS m ON c.team_id = m.team_id
+						LEFT OUTER JOIN trains_and_teams t ON c.team_id = t.team_id
+						WHERE program_increment = '" . $pi . "'";
 						$result = run_sql($sql);
 						
 						// output data of each
