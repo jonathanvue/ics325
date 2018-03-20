@@ -158,7 +158,7 @@ if (!isset($_SESSION)) {
 						}
 						else
 						{
-							$currIncrement = getStartingIncrement();
+							$currIncrement = 100;
 						}
 						echo
 							"<hr>
