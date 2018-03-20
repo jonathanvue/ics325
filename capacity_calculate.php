@@ -41,13 +41,13 @@
 	</div>
 	
 	<!-- Primary content goes here -->
-	<div class="container buffer">
+	<div class="container-fluid buffer">
 		<h1>Capacity<p><small>Calculate</small></p></h1>
 		<p>This page will be called with the current iteration or called with URL parameter</p>
 		<!-- Table to input data to pull in the datatables -->
 		<div class="row">
-			<div class="container-fluid">
-				<table class="table" style="width: 800px;">
+			<div class="col-md-8">
+				<table class="table" style="width: 100%;">
 					<th colspan="2">
 						Capacity Calculations for the Agile Team
 					</th>
@@ -73,10 +73,14 @@
 					</tr>
 				</table>
 			</div>
+			<div class="col-md-4">
+				<div class="col-md-6">This is for this iteration.</div>
+				<div class="col-md-6">This is for program increment.</div>
+			</div>
 		</div>
 		<!-- Datatable information goes below -->
 		<div class="row">
-			<div class="col-md-10">
+			<div class="col-md-12">
 				<table id="calc" class="datatable table table-striped table-bordered">
 					<colgroup>
 						<col span="9">

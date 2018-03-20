@@ -49,9 +49,9 @@ if (!isset($_SESSION)) {
 		</div>
 	</div>
 	
-	<div class="container buffer">
+	<div class="container-fluid buffer">
 		<div class="row">
-			<div class="col-md-10">
+			<div class="col-md-12">
 				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">		
 					

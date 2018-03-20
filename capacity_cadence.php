@@ -48,7 +48,7 @@ if (!isset($_SESSION)) {
 		</div>
 	</div>
 	<!-- Primary content goes here -->
-	<div class="container buffer">
+	<div class="container-fluid buffer">
 	
 		<div class="row">
 			<div class="col-md-10">

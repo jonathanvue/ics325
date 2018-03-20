@@ -43,12 +43,12 @@ if (!isset($_SESSION)) {
 	</div>
 	
 	<!-- Primary content goes here -->
-	<div class="container buffer">
+	<div class="container-fluid buffer">
 		<hr>
 		<h3><font size="6" color="blue">Organization List</font></h3>
 		<hr>
 		<div class="row">
-			<div class="col-md-10">
+			<div class="col-md-12">
 				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
 					 <colgroup>
