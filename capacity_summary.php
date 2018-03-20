@@ -60,10 +60,7 @@ if (!isset($_SESSION)) {
 				</nav>
 			</div>
 			<div class="col-md-10">
-			<hr>
-			<h3><font size="4" color="blue">Capacity Roll-up</font></h3>
-			<h4><font size="4" color="black">For the entire Program Increment</font><font>"  " = "  "</font></h4>	
-				</hr>	
+
 				<table style="font-family:arial;" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
 
@@ -88,15 +85,15 @@ if (!isset($_SESSION)) {
 							function getAllIncrements()
 							{
 								$sql = "SELECT DISTINCT program_increment FROM cadence";
-									$result = run_sql($sql);
+								$result = run_sql($sql);
 
-									while($row = mysql_fetch_assoc($result))
+								while($row = mysql_fetch_assoc($result))
+								{
+									if(strcmp($row["program_increment"], $currentIncrement) > 0)
 									{
-										if(strcmp($row["program_increment"], $currentIncrement) > 0)
-										{
-											return $row["program_increment"];
-										}
+										return $row["program_increment"];
 									}
+								}
 							}
 
 							function getNextIncrement($currentIncrement)
@@ -118,6 +115,21 @@ if (!isset($_SESSION)) {
 								{
 									return $currentIncrement;
 								}
+							}
+
+							function getProgramIncrementTotal($currIncrement)
+							{
+								$sql = "SELECT total FROM capacity WHERE program_increment = '" . $currIncrement . "'";
+								$result = run_sql($sql);
+
+								$total = 0;
+
+								while($row = $result->fetch_assoc())
+								{
+									$total += $row["total"];
+								}
+
+								return $total;
 							}
 
 							function previousTable()
@@ -145,6 +157,11 @@ if (!isset($_SESSION)) {
 						{
 							$currIncrement = getStartingIncrement();
 						}
+						echo
+							"<hr>
+								<h3><font size=" . "'4'" . " color=" . "'blue'" . ">Capacity Roll-up</font></h3>
+								<h4><font size=" . "'4'" . " color=" . "'black'" . ">For the entire Program Increment</font><font> = " .getProgramIncrementTotal($currIncrement) .  "</font></h4>	
+							</hr>";
 
 						echo 
 							"<thead>
