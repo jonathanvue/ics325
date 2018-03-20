@@ -51,7 +51,7 @@ if (!isset($_SESSION)) {
 					<ul class="nav nav-stacked">
 						<li><a href="capacity_activePI.php"><img src="./icons/capacity_active_pi.png" style="width:40px;height:50px;"><img src="./icons/image15.png" style="width:20px;height:30px;">Active PI</a></li>
 						<li><a href="capacity_cadence.php"><img class="icon" src="./icons/capacity_cadence.png" />Cadence</a></li>
-						<li><a href="capacity_calculate"><img class="icon" src="./icons/capacity_calculate.png" />Calculate</a></li>
+						<li><a href="capacity_calculate.php"><img class="icon" src="./icons/capacity_calculate.png" />Calculate</a></li>
 						<li><a href="capacity_summary.php"><img class="icon" src="./icons/capacity_summary.png" />Summary</a></li>
 						<li><a href="#"><img class="icon" src="./icons/capacity_trend.png" />Trend</a></li>
 					</ul>
@@ -60,49 +60,69 @@ if (!isset($_SESSION)) {
 			<div class="col-md-10">
 				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">		
+					
 						<tr>
-							<th >Current Iteration Details</th>
+							<th>Current Iteration Details</th>
 						</tr>
-						<tr>
-							<td>Today's Date</td>
-							<td>date</td> <!--Need php get date-->
-						</tr>
-						<tr>
-							<td>Program Increment (PI)</td>
-							<td>pi</td> <!--Need php-->
-						</tr>
-						<tr>
-							<td>Iteration (I)</td>
-							<td>iteration</td> <!--Need php-->
-						</tr>
-						<tr>
-							<td>Current Iteration Ends on</td>
-							<td>date (numberOfDays)</td> <!--Need php-->
-						</tr>
-						<tr>
-							<td>Current Program Increment Ends on</td>
-							<td>date (numberOfDays)</td> <!--Need php-->
-						</tr>
-						<!--<?php
-						require 'db_configuration.php';
+					<?php
+					$pi;
+					require 'db_configuration.php';
+						echo '<tr>
+						<td>Todays Date</td>
+						<td>' . date("m/d/Y") . '</td>
+						</tr>';		
 						
-						$sql = "SELECT * FROM trains_and_teams LIMIT 5";
+						$sql = "SELECT * FROM cadence WHERE NOW() BETWEEN start_date AND end_date";
 						$result = run_sql($sql);
+						
 						
 						// output data of each
 						if ($result->num_rows > 0) {
 							while ($row = $result->fetch_assoc()) {
+								$pi = $row["program_increment"];
 								echo '
 								<tr>	
-									<td>' . $row["team_id"] . "</td>
-									<td>" . $row["type"] . "</td>
-								</tr>";
+									<td> Program Increment (PI) </td>
+									<td>' . $row["program_increment"] . '</td>
+								</tr>';
+								echo '
+								<tr>	
+									<td> Iteration (I)  </td>
+									<td>' . $row["iteration"] . '</td>
+								</tr>';
+								echo '
+								<tr>	
+									<td> Current Iteration Ends on  </td>
+									<td>'. $row["end_date"] .'</td>
+								</tr>';
+								
+								
 						}
 					} else {
 						echo "0 results";
 					}
 					$result->close();
-		?>-->
+					
+						$sql = "SELECT program_increment, MAX(end_date) AS end_date FROM cadence WHERE program_increment = '". $pi ."' GROUP BY program_increment";
+						$result = run_sql($sql);
+						
+						
+						// output data of each
+						if ($result->num_rows > 0) {
+							while ($row = $result->fetch_assoc()) {
+								
+								echo '
+								<tr>	
+									<td> Current Program Increment Ends on </td>
+									<td>' . $row["end_date"] . '</td>
+								</tr>';
+						}
+					} else {
+						echo "0 results";
+					}
+					$result->close();
+		?>
+		
 		</table>
 		</div>
 	

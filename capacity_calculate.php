@@ -50,19 +50,63 @@ if (!isset($_SESSION)) {
 			<div class="col-md-1">
 				<nav class="nav-left">
 					<ul class="nav nav-stacked">
-						<li><a href="capacity_activePI.php"><img src="./icons/capacity_active_pi.png" style="width:40px;height:50px;">Active PI</a></li>
-						<li><a href="capacity_cadence.php"><img style="width:40px;height:50px;" src="./icons/capacity_cadence.png" />Cadence</a></li>
-						<li><a href="capacity_calculate.php"><img class="icon" src="./icons/capacity_calculate.png" /><img src="./icons/image15.png" style="width:20px;height:30px;">Calculate</a></li>
-						<li><a href="capacity_summary.php"><img src="./icons/capacity_summary.png" style="width:40px;height:50px;"/>Summary</a></li>
+						<li><a href="capacity_activePI.php"><img class="icon" src="./icons/capacity_active_pi.png">Active PI</a></li>
+						<li><a href="capacity_cadence.php"><img class="icon" src="./icons/capacity_cadence.png" />Cadence</a></li>
+						<li><a href="capacity_calculate.php"><img style="width:40px;height:50px;" src="./icons/capacity_calculate.png" /><img src="./icons/image15.png" style="width:20px;height:30px;">Calculate</a></li>
+						<li><a href="capacity_summary.php"><img class="icon" src="./icons/capacity_summary.png"/>Summary</a></li>
 						<li><a href="#"><img class="icon" src="./icons/capacity_trend.png" />Trend</a></li>
 					</ul>
 				</nav>
 			</div>
 			<div class="col-md-10">
 			<hr>
-			<h3><font size="4" color="blue">Calculate:</font></h3>
+			<h3><font size="4" color="blue">Capacity Calculations for the Agile Team</font></h3>
+			<h4><font size="4" color="black">
+			<table >
+			<?php
+						require 'db_configuration.php';
+						
+						$sql = "SELECT * FROM preferences, capacity INNER JOIN cadence ON capacity.program_increment = cadence.program_increment WHERE iteration = 'pi100-1' AND team_id = 'AT-710' AND preferences.name= 'OVERHEAD_PERCENTAGE'";
+						$result = run_sql($sql);
+						
+						// output data of each
+						if ($result->num_rows > 0) {
+							while ($row = $result->fetch_assoc()) {
+								echo '
+								<tr>	
+									<td> Team: </td>
+									<td>'. $row["team_name"] .'</td>
+								</tr>';
+								echo '
+								<tr>	
+									<td> Program Increment (PI): </td>
+									<td>' . $row["program_increment"] . '</td>
+								</tr>';
+								echo '
+								<tr>	
+									<td> Iteration (I):  </td>
+									<td>' . $row["iteration"] . '</td>
+								</tr>';
+								echo '
+								<tr>	
+									<td> No. of Days in the Iteration: </td>
+									<td>'. $row["duration"] .'</td>
+								</tr>';
+								echo '
+								<tr>	
+									<td> Overhead Percentage: </td>
+									<td>'. $row["value"] .'</td>
+								</tr>';
+							}
+						} else {
+							echo "0 results";
+						}
+						$result->close();
+					?>
+					</table></font></h4>
+				
 			</hr>	
-				<!--<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
+				<table style="font-family:arial;" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
 					    <thead>
 							<tr>
@@ -75,21 +119,19 @@ if (!isset($_SESSION)) {
 							</tr>
 						</thead>
 					<?php
-						require 'db_configuration.php';
-						
-						$sql = "SELECT * FROM capacity";
+						$sql = "SELECT * FROM membership WHERE team_name = 'Agile Team 710' ORDER BY role DESC";
 						$result = run_sql($sql);
 						
 						// output data of each
 						if ($result->num_rows > 0) {
 							while ($row = $result->fetch_assoc()) {
 								echo '<tr>
-									<td>' . $row[""] . "</td>
-									<td>" . $row[""] . "</td>
-									<td>" . $row[""] . "</td>
-									<td>" . $row[""] . "</td>
-									<td>" . $row[""] . "</td>
-									<td>" . $row[""] . "</td>
+									<td>' . $row["last_name"] . "</td>
+									<td>" . $row["first_name"] . "</td>
+									<td>" . $row["role"] . "</td>
+									<td>" . $row["id"] . "</td>
+									<td>" . $row["id"] . "</td>
+									<td>" . $row["id"] . "</td>
 								</tr>";
 							}
 						} else {
@@ -97,7 +139,12 @@ if (!isset($_SESSION)) {
 						}
 						$result->close();
 					?>
-		</table>-->
+		</table>
+		<a href="#" style="background-color: #1E90FF;color:white;padding: 20px;text-align: center;display: inline-block;font-size: 16px;margin: 4px 2px; border-radius: 12px">Submit</a>
+		&nbsp
+		<a href="#" style="background-color: #1E90FF;color: white;padding: 20px;text-align: center;display: inline-block;font-size: 16px;margin: 4px 2px; border-radius: 12px">Restore Defaults</a>
+		&nbsp
+		<a href="#" style="background-color: #1E90FF;color: white;padding: 20px;text-align: center;display: inline-block;font-size: 16px;margin: 4px 2px; border-radius: 12px">Show Next Iteration</a>
 		</div>
 	</div>
 

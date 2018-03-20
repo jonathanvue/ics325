@@ -64,17 +64,16 @@ if (!isset($_SESSION)) {
 			</hr>	
 				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
-					    <thead>
-							<tr>
-								<th>Sequence</th>
-								<th>Program Increment</th>
-								<th>Iteration</th>
-								<th>Start Date</th>
-								<th>End Date</th>
-								<th>Duration</th>
-								<th>Notes</th>
-							</tr>
-						</thead>
+
+						<tr>
+							<th>Sequence</th>
+							<th>Program Increment</th>
+							<th>Iteration</th>
+							<th>Start Date</th>
+							<th>End Date</th>
+							<th>Duration</th>
+							<th>Notes</th>
+						</tr>
 					<?php
 						require 'db_configuration.php';
 						

@@ -22,6 +22,7 @@ if (!isset($_SESSION)) {
 <head>
 	<?PHP
 		require('session_validation.php');
+		require ('db_configuration.php');
     ?>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -60,39 +61,133 @@ if (!isset($_SESSION)) {
 			</div>
 			<div class="col-md-10">
 			<hr>
-			<h3><font size="4" color="blue">Summary:</font></h3>
-			</hr>	
-				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
+			<h3><font size="4" color="blue">Capacity Roll-up</font></h3>
+			<h4><font size="4" color="black">For the entire Program Increment</font><font>"  " = "  "</font></h4>	
+				</hr>	
+				<table style="font-family:arial;" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
-					    <thead>
-							<tr>
-								<th>id</th>
-								<th>Team ID</th>
-								<th>Team Name</th>
-								<th>Program Increment</th>
-								<th>Iteration 1</th>
-								<th>Iteration 2</th>
-								<th>Iteration 3</th>
-								<th>Iteration 4</th>
-								<th>Iteration 5</th>
-								<th>Iteration 6</th>
-								<th>Total</th>
-							</tr>
-						</thead>
+
+						<?php
+							
+							function getStartingIncrement()
+							{
+								$sql = "SELECT program_increment FROM cadence WHERE CURDATE() BETWEEN start_date AND end_date";
+								$result = run_sql($sql);
+
+								while($row = $result->fetch_assoc())
+								{
+									return $row["program_increment"];
+								}	
+							}
+
+							function getPreviousIncrement()
+							{
+
+							}
+
+							function getAllIncrements()
+							{
+								$sql = "SELECT DISTINCT program_increment FROM cadence";
+									$result = run_sql($sql);
+
+									while($row = mysql_fetch_assoc($result))
+									{
+										if(strcmp($row["program_increment"], $currentIncrement) > 0)
+										{
+											return $row["program_increment"];
+										}
+									}
+							}
+
+							function getNextIncrement($currentIncrement)
+							{
+								if($currentIncrement < getStartingIncrement())
+								{
+									$sql = "SELECT DISTINCT program_increment FROM cadence";
+									$result = run_sql($sql);
+
+									while($row = $result->fetch_assoc())
+									{
+										if(strcmp($row["program_increment"], $currentIncrement) > 0)
+										{
+											return $row["program_increment"];
+										}
+									}
+								}
+								else
+								{
+									return $currentIncrement;
+								}
+							}
+
+							function previousTable()
+							{
+
+							}
+
+							function nextTable()
+							{
+								getNextIncrement($currentIncrement);
+							}
+
+						?>
+
+
 					<?php
-						require 'db_configuration.php';
-						
-						$sql = "SELECT * FROM capacity";
+
+						$team_id;
+
+						if(isset($_GET["team_id"]))
+						{
+							$currIncrement = $_GET["team_id"];
+						}
+						else
+						{
+							$currIncrement = getStartingIncrement();
+						}
+
+						echo 
+							"<thead>
+								<tr>
+									<th>Type</th>
+									<th>ID</th>
+									<th>Name</th>
+									<th>Scrum Master/RTE/STE</th>
+									<th>". $currIncrement ."-1</th>
+									<th>". $currIncrement ."-2</th>
+									<th>". $currIncrement ."-3</th>
+									<th>". $currIncrement ."-4</th>
+									<th>". $currIncrement ."-5</th>
+									<th>". $currIncrement ."-6</th>
+									<th>Total</th>
+								</tr>
+							</thead>";
+
+						//$team_id = $Get["team_id"];
+
+						//require 'db_configuration.php';	
+						$sql = "SELECT t.type, c.team_id AS id, c.team_name AS name, m.role AS 'sm_rte_ste',
+							iteration_1, iteration_2, iteration_3, iteration_4, iteration_5, iteration_6, total
+							FROM capacity c 
+							-- LEFT OUTER JOIN trains_and_teams t ON c.team_id = t.team_id
+							LEFT OUTER JOIN (
+							SELECT * FROM membership
+							WHERE (
+							role LIKE '%(AT)%'
+							OR  role LIKE '%(ART)%'
+							OR  role LIKE '%(ST)%')) AS m ON 'c.team_id' = 'm.team_id'
+							LEFT OUTER JOIN trains_and_teams t ON 'c.team_id' = 't.team_id'
+							WHERE program_increment = '" . $currIncrement . "'";
 						$result = run_sql($sql);
 						
 						// output data of each
 						if ($result->num_rows > 0) {
 							while ($row = $result->fetch_assoc()) {
 								echo '<tr>
-									<td>' . $row["id"] . "</td>
-									<td>" . $row["team_id"] . "</td>
-									<td>" . $row["team_name"] . "</td>
-									<td>" . $row["program_increment"] . "</td>
+									<td>' . $row["type"] . "</td>
+									<td>" . $row["id"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["sm_rte_ste"] . "</td>
 									<td>" . $row["iteration_1"] . "</td>
 									<td>" . $row["iteration_2"] . "</td>
 									<td>" . $row["iteration_3"] . "</td>
@@ -108,6 +203,8 @@ if (!isset($_SESSION)) {
 					$result->close();
 		?>
 		</table>
+		<?php echo "<a href=\"capacity_summary.php?team_id=\">Previous PI</a>"; ?>&nbsp;
+		<?php echo "<a href=\"capacity_summary.php?team_id=" .getNextIncrement($currIncrement). "\">Next</a>"; ?>
 		</div>
 	</div>
 
