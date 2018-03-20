@@ -49,7 +49,7 @@ if (!isset($_SESSION)) {
 		<div class="sideMenu">
 			<ul class="sideMenuItem text-center">
 				<li><a class="navImg" href="trains_list.php"><img src="./icons/search_list.png" class="icon" />List</a></li>
-				<li><a class="navImg" href="trains_lists.php"><img class="icon" src="./icons/org_lists.png" /><img src="./icons/image15.png" style="width:20px;height:20px;"/>Lists</a></li>
+				<li><a class="navImg" href="trains_lists.php"><img class="icon" src="./icons/org_lists.png" /><img class="active" src="./icons/image15.png" />Lists</a></li>
 				<li><a class="navImg" href="#"><img class="icon" src="./icons/image12.png" />Grid</a></li>
 				<li><a class="navImg" href="#"><img class="icon" src="./icons/image14.png" />Tree</a></li>
 				<li><a class="navImg" href="#"><img class="icon" src="./icons/image13.png" />Hybrid</a></li>
