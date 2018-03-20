@@ -22,6 +22,7 @@ if (!isset($_SESSION)) {
 <head>
 	<?PHP
 		require('session_validation.php');
+		require ('db_configuration.php');
     ?>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -59,41 +60,161 @@ if (!isset($_SESSION)) {
 				</nav>
 			</div>
 			<div class="col-md-10">
-			<hr>
-			<h3><font size="4" color="blue">Capacity Roll-up</font></h3>
-			<h4><font size="4" color="black">For the entire Program Increment</font><font>"  " = "  "</font></h4>	
-				</hr>	
+
 				<table style="font-family:arial;" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
-					    <thead>
-							<tr>
-								<th>Type</th>
-								<th>ID</th>
-								<th>Name</th>
-								<th>Scrum Master/RTE/STE</th>
-								<th>Pi100-1</th>
-								<th>Pi100-2</th>
-								<th>Pi100-3</th>
-								<th>Pi100-4</th>
-								<th>Pi100-5</th>
-								<th>Pi100-6</th>
-								<th>Total</th>
-							</tr>
-						</thead>
+
+						<?php
+							
+							function getStartingIncrement()
+							{
+								$sql = "SELECT program_increment FROM cadence WHERE CURDATE() BETWEEN start_date AND end_date";
+								$result = run_sql($sql);
+
+								while($row = $result->fetch_assoc())
+								{
+									return $row["program_increment"];
+								}	
+							}
+
+							function getPreviousIncrement($currentIncrement)
+							{
+								if($currentIncrement < getStartingIncrement())
+								{
+									$sql = "SELECT DISTINCT program_increment FROM cadence";
+									$result = run_sql($sql);
+
+									while($row = $result->fetch_assoc())
+									{
+										if(strcmp($row["program_increment"], $currentIncrement) > 0)
+										{
+											return $row["program_increment"];
+										}
+									}
+								}
+								else
+								{
+									return $currentIncrement;
+								}
+
+							}
+
+							function getAllIncrements()
+							{
+								$sql = "SELECT DISTINCT program_increment FROM cadence";
+								$result = run_sql($sql);
+
+								while($row = mysql_fetch_assoc($result))
+								{
+									if(strcmp($row["program_increment"], $currentIncrement) > 0)
+									{
+										return $row["program_increment"];
+									}
+								}
+							}
+
+							function getNextIncrement($currentIncrement)
+							{
+								if($currentIncrement < getStartingIncrement())
+								{
+									$sql = "SELECT DISTINCT program_increment FROM cadence";
+									$result = run_sql($sql);
+
+									while($row = $result->fetch_assoc())
+									{
+										if(strcmp($row["program_increment"], $currentIncrement) > 0)
+										{
+											return $row["program_increment"];
+										}
+									}
+								}
+								else
+								{
+									return $currentIncrement;
+								}
+							}
+
+							function getProgramIncrementTotal($currIncrement)
+							{
+								$pi = "pi-";
+								$pi .= $currIncrement;
+								$sql = "SELECT total FROM capacity WHERE program_increment = '" . $pi . "'";
+								$result = run_sql($sql);
+
+								$total = 0;
+
+								while($row = $result->fetch_assoc())
+								{
+									$total += $row["total"];
+								}
+
+								return $total;
+							}
+
+							function previousTable()
+							{
+
+							}
+
+							function nextTable()
+							{
+								getNextIncrement($currentIncrement);
+							}
+
+						?>
+
+
 					<?php
-						require 'db_configuration.php';	
+
+						$team_id;
+
+						if(isset($_GET["team_id"]))
+						{
+							$currIncrement = $_GET["team_id"];
+						}
+						else
+						{
+							$currIncrement = 100;
+						}
+						echo
+							"<hr>
+								<h3><font size=" . "'4'" . " color=" . "'blue'" . ">Capacity Roll-up</font></h3>
+								<h4><font size=" . "'4'" . " color=" . "'black'" . ">For the entire Program Increment</font><font> = " .getProgramIncrementTotal($currIncrement) .  "</font></h4>	
+							</hr>";
+
+						echo 
+							"<thead>
+								<tr>
+									<th>Type</th>
+									<th>ID</th>
+									<th>Name</th>
+									<th>Scrum Master/RTE/STE</th>
+									<th>". $currIncrement ."-1</th>
+									<th>". $currIncrement ."-2</th>
+									<th>". $currIncrement ."-3</th>
+									<th>". $currIncrement ."-4</th>
+									<th>". $currIncrement ."-5</th>
+									<th>". $currIncrement ."-6</th>
+									<th>Total</th>
+								</tr>
+							</thead>";
+
+						//$team_id = $Get["team_id"];
+
+						$pi = "pi-";
+						$pi .= $currIncrement;	
 						$sql = "SELECT t.type, c.team_id AS id, c.team_name AS name, m.role AS 'sm_rte_ste',
-iteration_1, iteration_2, iteration_3, iteration_4, iteration_5, iteration_6, total
-FROM capacity c 
--- LEFT OUTER JOIN trains_and_teams t ON c.team_id = t.team_id
-LEFT OUTER JOIN (
-SELECT * FROM membership
-WHERE (
-role LIKE '%(SM)%'
-OR  role LIKE '%(STE)%'
-OR  role LIKE '%(RTE)%')) AS m ON c.team_id = m.team_id
-LEFT OUTER JOIN trains_and_teams t ON c.team_id = t.team_id
-WHERE program_increment = 'pi-100'";
+						iteration_1, iteration_2, iteration_3, iteration_4, iteration_5, iteration_6, total
+						FROM capacity c 
+						-- LEFT OUTER JOIN trains_and_teams t ON c.team_id = t.team_id
+						LEFT OUTER JOIN (
+						SELECT * FROM membership
+						WHERE (
+						role LIKE '%(SM)%'
+						OR  role LIKE '%(STE)%'
+						OR  role LIKE '%(RTE)%')) AS m ON c.team_id = m.team_id
+						LEFT OUTER JOIN trains_and_teams t ON c.team_id = t.team_id
+						WHERE program_increment = '" . $pi . "'";
 						$result = run_sql($sql);
 						
 						// output data of each
@@ -119,8 +240,8 @@ WHERE program_increment = 'pi-100'";
 					$result->close();
 		?>
 		</table>
-		<?php echo "<a href=\"capacity_summary.php?view=" . urlencode(0) . "\">Previous PI</a>"; ?>&nbsp;
-		<?php echo "<a href=\"capacity_summary.php?view=" . urlencode(1) . "\">Next PI</a>"; ?>
+		<?php echo "<a href=\"capacity_summary.php?team_id=" .getPreviousIncrement(preg_replace('/[^0-9]/', '', $currIncrement)-100). "\">Previous PI</a>"; ?>&nbsp;
+		<?php echo "<a href=\"capacity_summary.php?team_id=" .getNextIncrement(preg_replace('/[^0-9]/', '', $currIncrement)+100). "\">Next PI</a>"; ?>
 		</div>
 	</div>
 
