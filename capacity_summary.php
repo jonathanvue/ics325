@@ -81,7 +81,10 @@ if (!isset($_SESSION)) {
 							</tr>
 						</thead>
 					<?php
-						require 'db_configuration.php';					
+						require 'db_configuration.php';	
+						$page = (isset($_GET['page'])) ? $_GET['page'] : 1;
+
+						$startPoint = $page - 1;
 						$sql = "SELECT t.type, c.team_id AS id, c.team_name AS name, m.role AS 'sm_rte_ste',
 iteration_1, iteration_2, iteration_3, iteration_4, iteration_5, iteration_6, total
 FROM capacity c 
@@ -119,9 +122,9 @@ WHERE program_increment = 'pi-100'";
 					$result->close();
 		?>
 		</table>
-		<a href="capacity_summary.php" style="background-color: #1E90FF;color: black;padding: 20px;text-align: center;display: inline-block;font-size: 16px;margin: 4px 2px; border-radius: 12px">Show Previous PI</a>
+		<a href="capacity_summary.php?page=<?php echo $page - 1?>" style="background-color: #1E90FF;color: black;padding: 20px;text-align: center;display: inline-block;font-size: 16px;margin: 4px 2px; border-radius: 12px">Show Previous PI</a>
 		&nbsp
-		<a href="capacity_summary2.php" style="background-color: #1E90FF;color: black;padding: 20px;text-align: center;display: inline-block;font-size: 16px;margin: 4px 2px; border-radius: 12px">Show Next PI</a>
+		<a href="capacity_summary2.php?page=<?php echo $page + 1?>" style="background-color: #1E90FF;color: black;padding: 20px;text-align: center;display: inline-block;font-size: 16px;margin: 4px 2px; border-radius: 12px">Show Next PI</a>
 		</div>
 	</div>
 

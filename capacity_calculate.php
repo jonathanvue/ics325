@@ -144,7 +144,7 @@ if (!isset($_SESSION)) {
 		&nbsp
 		<a href="#" style="background-color: #1E90FF;color: white;padding: 20px;text-align: center;display: inline-block;font-size: 16px;margin: 4px 2px; border-radius: 12px">Restore Defaults</a>
 		&nbsp
-		<a href="capacity_calculate2.php" style="background-color: #1E90FF;color: white;padding: 20px;text-align: center;display: inline-block;font-size: 16px;margin: 4px 2px; border-radius: 12px">Show Next Iteration</a>
+		<a href="#" style="background-color: #1E90FF;color: white;padding: 20px;text-align: center;display: inline-block;font-size: 16px;margin: 4px 2px; border-radius: 12px">Show Next Iteration</a>
 		</div>
 	</div>
 

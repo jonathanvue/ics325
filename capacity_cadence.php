@@ -52,8 +52,8 @@ if (!isset($_SESSION)) {
 					<ul class="nav nav-stacked">
 						<li><a href="capacity_activePI.php"><img src="./icons/capacity_active_pi.png" style="width:40px;height:50px;">Active PI</a></li>
 						<li><a href="capacity_cadence.php"><img style="width:40px;height:50px;" src="./icons/capacity_cadence.png" /><img src="./icons/image15.png" style="width:20px;height:30px;">Cadence</a></li>
-						<li><a href="#"><img class="icon" src="./icons/capacity_calculate.png" />Calculate</a></li>
-						<li><a href="#"><img class="icon" src="./icons/capacity_summary.png" />Summary</a></li>
+						<li><a href="capacity_calculate.php"><img class="icon" src="./icons/capacity_calculate.png" />Calculate</a></li>
+						<li><a href="capacity_summary.php"><img class="icon" src="./icons/capacity_summary.png" />Summary</a></li>
 						<li><a href="#"><img class="icon" src="./icons/capacity_trend.png" />Trend</a></li>
 					</ul>
 				</nav>
@@ -77,21 +77,20 @@ if (!isset($_SESSION)) {
 					<?php
 						require 'db_configuration.php';
 						
-						$sql = "SELECT * FROM trains_and_teams LIMIT 3";
+						$sql = "SELECT * FROM cadence";
 						$result = run_sql($sql);
 						
 						// output data of each
 						if ($result->num_rows > 0) {
 							while ($row = $result->fetch_assoc()) {
 								echo '<tr>
-									<td>' . $row["team_id"] . "</td>
-									<td>" . $row["type"] . "</td>
-									<td>" . $row["name"] . "</td>
-									<td>" . $row["name"] . "</td>
-									<td>" . $row["name"] . "</td>
-									<td>" . $row["name"] . "</td>
-									<td>" . $row["name"] . "</td>
-									<td>" . $row["name"] . "</td>
+									<td>' . $row["sequence"] . "</td>
+									<td>" . $row["program_increment"] . "</td>
+									<td>" . $row["iteration"] . "</td>
+									<td>" . $row["start_date"] . "</td>
+									<td>" . $row["end_date"] . "</td>
+									<td>" . $row["duration"] . "</td>
+									<td>" . $row["notes"] . "</td>
 								</tr>";
 						}
 					} else {

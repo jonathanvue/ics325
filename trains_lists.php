@@ -50,7 +50,7 @@ if (!isset($_SESSION)) {
 				<nav class="nav-left">
 					<ul class="nav nav-stacked">
 						<li><a href="trains_list.php"><img class="icon" src="./icons/image11.png">&nbsp&nbsp&nbsp&nbsp&nbspList</a></li>
-						<li><a href="trains_lists.php"><img style="width:40px;height:50px"  src="./icons/image19.png" /><img src="./icons/image15.png" style="width:20px;height:30px;">&nbsp&nbsp&nbsp&nbspLists</a></li>
+						<li><a href="trains_lists.php"><img style="width:40px;height:50px"  src="./icons/trains_lists.png" /><img src="./icons/image15.png" style="width:20px;height:30px;">&nbsp&nbsp&nbsp&nbspLists</a></li>
 						<li><a href="#"><img class="icon" src="./icons/image12.png" />&nbsp&nbsp&nbsp&nbspGrid</a></li>
 						<li><a href="#"><img class="icon" src="./icons/image14.png" />&nbsp&nbsp&nbsp&nbspTree</a></li>
 						<li><a href="#"><img class="icon" src="./icons/image13.png" />&nbsp&nbspHybrid</a></li>
@@ -64,7 +64,7 @@ if (!isset($_SESSION)) {
 						<col span="9" style="background-color:lightblue">
 						<col style="background-color:yellow">
 					</colgroup>
-					<font size="5" color="black"><img src="./icons/image16.png" style="width:50px;height:60px;"/>Solution Trains (ST)</font>
+					<font size="5" color="black"><img src="./icons/solution_train.png" style="width:50px;height:60px;"/>Solution Trains (ST)</font>
 						
 					<tbody>
 						<tr>

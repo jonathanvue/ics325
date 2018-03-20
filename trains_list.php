@@ -46,14 +46,14 @@ if (!isset($_SESSION)) {
     <?PHP echo getTopNav(); ?>
 	<div class="container">
 		<hr>
-		<h3><font size="5" color="black"><img src="./icons/image16.png" style="width:50px;height:60px;"/>Solution Trains (ST),<img src="./icons/image17.png"style="width:50px;height:60px;"/>Agile Release Trains (ART),<img src="./icons/image20.png" style="width:50px;height:60px;"/>Agile Teams (AT)</font></h3>
+		<h3><font size="5" color="black"><img src="./icons/solution_train.png" style="width:50px;height:60px;"/>Solution Trains (ST),<img src="./icons/image17.png"style="width:50px;height:60px;"/>Agile Release Trains (ART),<img src="./icons/image20.png" style="width:50px;height:60px;"/>Agile Teams (AT)</font></h3>
 		<hr>
 		<div class="row">
 			<div class="col-md-1">
 				<nav class="nav-left">
 					<ul class="nav nav-stacked">
 						<li><a href="trains_list.php"><img src="./icons/image11.png" style="width:40px;height:50px;"><img src="./icons/image15.png" style="width:20px;height:30px;">&nbsp&nbsp&nbsp&nbsp&nbspList</a></li>
-						<li><a href="trains_lists.php"><img class="icon" src="./icons/image19.png" />&nbsp&nbsp&nbsp&nbspLists</a></li>
+						<li><a href="trains_lists.php"><img class="icon" src="./icons/trains_lists.png" />&nbsp&nbsp&nbsp&nbspLists</a></li>
 						<li><a href="#"><img class="icon" src="./icons/image12.png" />&nbsp&nbsp&nbsp&nbspGrid</a></li>
 						<li><a href="#"><img class="icon" src="./icons/image14.png" />&nbsp&nbsp&nbsp&nbspTree</a></li>
 						<li><a href="#"><img class="icon" src="./icons/image13.png" />&nbsp&nbspHybrid</a></li>
