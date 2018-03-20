@@ -120,7 +120,9 @@ if (!isset($_SESSION)) {
 
 							function getProgramIncrementTotal($currIncrement)
 							{
-								$sql = "SELECT total FROM capacity WHERE program_increment = '" . $currIncrement . "'";
+								$pi = "pi-";
+								$pi .= $currIncrement;
+								$sql = "SELECT total FROM capacity WHERE program_increment = '" . $pi . "'";
 								$result = run_sql($sql);
 
 								$total = 0;
