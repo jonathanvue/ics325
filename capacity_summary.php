@@ -120,7 +120,9 @@ if (!isset($_SESSION)) {
 
 							function getProgramIncrementTotal($currIncrement)
 							{
-								$sql = "SELECT total FROM capacity WHERE program_increment = '" . $currIncrement . "'";
+								$pi = "pi-";
+								$pi .= $currIncrement;
+								$sql = "SELECT total FROM capacity WHERE program_increment = '" . $pi . "'";
 								$result = run_sql($sql);
 
 								$total = 0;
@@ -143,9 +145,6 @@ if (!isset($_SESSION)) {
 								getNextIncrement($currentIncrement);
 							}
 
-							function updateCapacityTotal()
-							{}
-
 						?>
 
 
@@ -164,7 +163,7 @@ if (!isset($_SESSION)) {
 						echo
 							"<hr>
 								<h3><font size=" . "'4'" . " color=" . "'blue'" . ">Capacity Roll-up</font></h3>
-								<h4><font size=" . "'4'" . " color=" . "'black'" . ">For the entire Program Increment</font><font> = " .getProgramIncrementTotal(getNextIncrement(preg_replace('/[^0-9]/', '', $currIncrement))-100) .  "</font></h4>	
+								<h4><font size=" . "'4'" . " color=" . "'black'" . ">For the entire Program Increment</font><font> = " .getProgramIncrementTotal(getNextIncrement(preg_replace('/[^0-9]/', '', $currIncrement)+100)) .  "</font></h4>	
 							</hr>";
 
 						echo 
@@ -189,17 +188,17 @@ if (!isset($_SESSION)) {
 						$pi = "pi-";
 						$pi .= $currIncrement;	
 						$sql = "SELECT t.type, c.team_id AS id, c.team_name AS name, m.role AS 'sm_rte_ste',
-							iteration_1, iteration_2, iteration_3, iteration_4, iteration_5, iteration_6, total
-							FROM capacity c 
-							-- LEFT OUTER JOIN trains_and_teams t ON c.team_id = t.team_id
-							LEFT OUTER JOIN (
-							SELECT * FROM membership
-							WHERE (
-							role LIKE '%(AT)%'
-							OR  role LIKE '%(ART)%'
-							OR  role LIKE '%(ST)%')) AS m ON 'c.team_id' = 'm.team_id'
-							LEFT OUTER JOIN trains_and_teams t ON 'c.team_id' = 't.team_id'
-							WHERE program_increment = '" . $pi . "'";
+						iteration_1, iteration_2, iteration_3, iteration_4, iteration_5, iteration_6, total
+						FROM capacity c 
+						-- LEFT OUTER JOIN trains_and_teams t ON c.team_id = t.team_id
+						LEFT OUTER JOIN (
+						SELECT * FROM membership
+						WHERE (
+						role LIKE '%(SM)%'
+						OR  role LIKE '%(STE)%'
+						OR  role LIKE '%(RTE)%')) AS m ON c.team_id = m.team_id
+						LEFT OUTER JOIN trains_and_teams t ON c.team_id = t.team_id
+						WHERE program_increment = '" . $pi . "'";
 						$result = run_sql($sql);
 						
 						// output data of each
