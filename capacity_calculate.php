@@ -41,6 +41,7 @@
 	</div>
 	
 	<!-- Primary content goes here -->
+	<hr>
 	<div class="container-fluid buffer">
 		<!-- Table to input data to pull in the datatables -->
 		<?php 

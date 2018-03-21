@@ -16,9 +16,9 @@
 	<!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     
-	<!-- Latest compiled JavaScript 
+	<!-- Latest compiled JavaScript  -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -43,8 +43,64 @@
 	</div>
 	
 	<!-- Primary content goes here -->
+	<hr>
 	<div class="container-fluid buffer">
 		<h1>Capacity Trends for the Teams and Trains</h1>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="btn-group dropdown">
+					<button type="button" class="btn btn-default">Solution Train</button>
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="caret"></span>
+						<span class="sr-only"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="#">Option 1</a></li>
+						<li><a href="#">Option 2</a></li>
+						<li><a href="#">Option 6</a></li>
+						<li><a href="#">Option 10</a></li>
+					</ul>
+				</div>
+				<div class="btn-group dropdown">
+					<button type="button" class="btn btn-default">Agile Release Train</button>
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="caret"></span>
+						<span class="sr-only"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="#">ART 1</a></li>
+						<li><a href="#">ART 2</a></li>
+						<li><a href="#">ART 3</a></li>
+						<li><a href="#">ART 4</a></li>
+					</ul>
+				</div>
+				<div class="btn-group dropdown">
+					<button type="button" class="btn btn-default">Agile Teams</button>
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="caret"></span>
+						<span class="sr-only"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="#">Team 1</a></li>
+						<li><a href="#">Team 2</a></li>
+						<li><a href="#">Team 3</a></li>
+						<li><a href="#">Team 7</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="container">
+				<div class="jumbotron">
+					<div class="container">
+						<h1>Chart goes here</h1>
+						<p>This is where all the fancy chart stuff would go after a user selects from the above buttons.</p>
+						<p>For future reference: <a href="https://developers.google.com/chart/interactive/docs/php_example">Google Charts</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
