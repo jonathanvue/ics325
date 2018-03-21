@@ -42,40 +42,89 @@
 	
 	<!-- Primary content goes here -->
 	<div class="container-fluid buffer">
-		<h1>Capacity<p><small>Calculate</small></p></h1>
-		<p>This page will be called with the current iteration or called with URL parameter</p>
 		<!-- Table to input data to pull in the datatables -->
+		<?php 
+			require 'db_configuration.php';
+		?>
+		
 		<div class="row">
 			<div class="col-md-8">
-				<table class="table" style="width: 100%;">
-					<th colspan="2">
-						Capacity Calculations for the Agile Team
-					</th>
-					<tr>
-						<td>Team:</td>
-						<td>(user input team)</td>
-					</tr>
-					<tr>
-						<td>Program Increment (PI):</td>
-						<td>(selection list of program increments not past end date)</td>
-					</tr>
-					<tr>
-						<td>Iteration (I):</td>
-						<td>(current iteration pulled from database)</td>
-					</tr>
-					<tr>
-						<td>No. of Days in the iteration:</td>
-						<td>(calculated iteration days between start and end date)</td>
-					</tr>
-					<tr>
-						<td>Overhead Percentage:</td>
-						<td>(default value from database)</td>
-					</tr>
-				</table>
+				<!-- Form here -->
+				<form action="" method="post">
+					<table class="table" style="width: 100%;">
+						<th colspan="2">
+							Capacity Calculations for the Agile Team
+						</th>
+						<tr>
+							<td>Team:</td>
+							<td>
+								<select name="team">
+									<?php 
+										$sql = "SELECT DISTINCT team_id FROM capacity";
+										$result = run_sql($sql);
+										
+										if($result->num_rows > 0) {
+											while ($row = $result->fetch_assoc()) {
+												echo '<option value="'.$row["team_id"].'">'.$row["team_id"].'</option>';	
+											}
+										}
+										
+										$result->close();
+									?>
+								</select>
+								Team id is required before any of the rest of the information can be chosen as an option.
+							</td>
+						</tr>
+						<tr>
+							<td>Program Increment (PI):</td>
+							<td>
+								<select>
+									<?php 
+										$sql;
+										if(isset($_GET['team'])){
+											$sql = "SELECT DISTINCT program_increment FROM capacity WHERE team_id ='".$_GET['team']."'";
+										} else {
+											$sql = "SELECT DISTINCT program_increment FROM capacity";
+										}
+											
+										$result = run_sql($sql);
+									
+										if($result->num_rows > 0) {
+											while ($row = $result->fetch_assoc()) {
+											echo '<option value="'.$row["program_increment"].'">'.$row["program_increment"].'</option>';	
+											}
+										}
+										
+										$result->close();
+									?>
+								</select>
+								(selection list of program increments not past end date)
+							</td>
+						</tr>
+						<tr>
+							<td>Iteration (I):</td>
+							<td>(current iteration pulled from database)</td>
+						</tr>
+						<tr>
+							<td>No. of Days in the iteration:</td>
+							<td>(calculated iteration days between start and end date)</td>
+						</tr>
+						<tr>
+							<td>Overhead Percentage:</td>
+							<td>(default value from database)</td>
+						</tr>
+					</table>
+				</form>
 			</div>
-			<div class="col-md-4">
-				<div class="col-md-6">This is for this iteration.</div>
-				<div class="col-md-6">This is for program increment.</div>
+			<div class="col-md-4 text-center">
+				<div class="col-md-6">
+					<h2 class="well">SOME NUMBER</h2>
+					<p>This is for this iteration.<p>
+				</div>
+				<div class="col-md-6">
+					<h2 class="well">SOME NUMBER</h2>
+					<p>This is for program increment.</p>
+				</div>
 			</div>
 		</div>
 		<!-- Datatable information goes below -->
@@ -107,12 +156,81 @@
 							<td>100</td>
 							<td>0</td>
 							<td>8</td>
+						</tr><tr>
+							<td>Smith</td>
+							<td>John</td>
+							<td>SM</td>
+							<td>100</td>
+							<td>0</td>
+							<td>8</td>
+						</tr><tr>
+							<td>Smith</td>
+							<td>John</td>
+							<td>SM</td>
+							<td>100</td>
+							<td>0</td>
+							<td>8</td>
+						</tr><tr>
+							<td>Smith</td>
+							<td>John</td>
+							<td>SM</td>
+							<td>100</td>
+							<td>0</td>
+							<td>8</td>
+						</tr><tr>
+							<td>Smith</td>
+							<td>John</td>
+							<td>SM</td>
+							<td>100</td>
+							<td>0</td>
+							<td>8</td>
+						</tr><tr>
+							<td>Smith</td>
+							<td>John</td>
+							<td>SM</td>
+							<td>100</td>
+							<td>0</td>
+							<td>8</td>
+						</tr><tr>
+							<td>Smith</td>
+							<td>John</td>
+							<td>SM</td>
+							<td>100</td>
+							<td>0</td>
+							<td>8</td>
+						</tr><tr>
+							<td>Smith</td>
+							<td>John</td>
+							<td>SM</td>
+							<td>100</td>
+							<td>0</td>
+							<td>8</td>
+						</tr><tr>
+							<td>Smith</td>
+							<td>John</td>
+							<td>SM</td>
+							<td>100</td>
+							<td>0</td>
+							<td>8</td>
+						</tr><tr>
+							<td>Smith</td>
+							<td>John</td>
+							<td>SM</td>
+							<td>100</td>
+							<td>0</td>
+							<td>8</td>
 						</tr>
 						'
 					?>
 					</tbody>
 				</table>
 			</div>
+		</div>
+		<!-- buttons -->
+		<div class="row">
+			<button class="btn btn-default" type="submit">Submit</button>
+			<button class="btn btn-default" type="submit">Restore Defaults</button>
+			<button class="btn btn-default" type="submit">Next</button>
 		</div>
 	</div>
 	
@@ -121,9 +239,11 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
 	<script type="text/javascript">
 
+		// datatable init and config
 		$(document).ready(function () {
-
-			$('#calc').DataTable();
+			$('#calc').DataTable({
+					//"lengthMenu": [ 8, 16, 32, 64, -1]
+			});
 
 		});
 
