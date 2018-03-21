@@ -43,7 +43,7 @@ if (!isset($_SESSION)) {
 				<li><a class="navImg" href="capacity_cadence.php"><img class="icon" src="./icons/capacity_cadence.png" />Cadence</a></li>
 				<li><a class="navImg" href="capacity_calculate.php"><img class="icon" src="./icons/capacity_calculate.png" />Calculate</a></li>
 				<li><a class="navImg" href="capacity_summary.php"><img class="icon" src="./icons/capacity_summary.png" />Summary</a></li>
-				<li><a class="navImg" href="#"><img class="icon" src="./icons/capacity_trend.png" />Trend</a></li>
+				<li><a class="navImg" href="capacity_trend.php"><img class="icon" src="./icons/capacity_trend.png" />Trend</a></li>
 			</ul>
 		</div>
 	</div>
