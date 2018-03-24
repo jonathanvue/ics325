@@ -42,8 +42,8 @@
 							</li>
 							<li><a class="navImg" href="trains_list.php"><img class="icon" src="./icons/image4.png" />Trains</a></li>
 							<li><a class="navImg" href="org_list.php"><img class="icon" src="./icons/image2.png" />Org</a></li>
-							<li><a class="navImg" href="capacity_activePI.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
-							<li><a class="navImg" href="#"><img class="icon" src="./icons/image10.png" />Training</a></li>
+							<li><a class="navImg" href="capacity.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
+							<li><a class="navImg" href="training.php"><img class="icon" src="./icons/image10.png" />Training</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image5.png" />Reports</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/admin.png" />Admin</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
@@ -70,8 +70,8 @@
 							</li>
 							<li><a class="navImg" href="trains_list.php"><img class="icon" src="./icons/image4.png" />Trains</a></li>
 							<li><a class="navImg" href="org_list.php"><img class="icon" src="./icons/image2.png" />Org</a></li>
-							<li><a class="navImg" href="capacity_activePI.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
-							<li><a class="navImg" href="#"><img class="icon" src="./icons/image10.png" />Training</a></li>
+							<li><a class="navImg" href="capacity.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
+							<li><a class="navImg" href="training.php"><img class="icon" src="./icons/image10.png" />Training</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image5.png" />Reports</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/admin.png" />Admin</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
@@ -98,8 +98,8 @@
 							</li>
 							<li><a class="navImg" href="trains_list.php"><img class="icon" src="./icons/image4.png" />Trains</a></li>
 							<li><a class="navImg" href="org_list.php"><img class="icon" src="./icons/image2.png" />Org</a></li>
-							<li><a class="navImg" href="capacity_activePI.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
-							<li><a class="navImg" href="#"><img class="icon" src="./icons/image10.png" />Training</a></li>
+							<li><a class="navImg" href="capacity.php"><img class="icon" src="./icons/image6.png" />Capacity</a></li>
+							<li><a class="navImg" href="training.php"><img class="icon" src="./icons/image10.png" />Training</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image5.png" />Reports</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/admin.png" />Admin</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
