@@ -45,8 +45,8 @@
 	
 	<!-- Primary content goes here -->
 	<?php
-		$firstName = $lastName = $emailAddress = $city = $country = $managerName = '';
-		$team = $teamName = $role = '';
+		$empNbr = $firstName = $lastName = $emailAddress = $city = $country = $managerName = '';
+		$agileTeamName = $agileReleaseTrainName = $solutionTrainName = $role = '';
 		$status = $courseName = $courseCode = $trainer = $dates = '';
 		$type = $id = '';
 		
@@ -54,49 +54,106 @@
 			$type = $_GET['type'];
 		}
 		
-		if (isset($_GET["id"])) {
-			$id = $_GET["id"];
+		// Employees query
+		if (count($_GET) == 0) {
+			$sql = "SELECT e.employee_nbr,
+				e.first_name, 
+				e.last_name, 
+				e.email_address, 
+				e.city, 
+				e.country, 
+				CONCAT(m.first_name, ' ', m.last_name) AS manager_name,
+				mt.role,
+				mt.at_name,
+				mt.art_name,
+				mt.st_name,
+				tec.status,
+				tec.course_name,
+				tec.course_code,
+				tec.trainer,
+				tec.dates
+			FROM employees e
+			LEFT OUTER JOIN employees m ON e.managers_nbr = m.employee_nbr
+			LEFT OUTER JOIN (
+				SELECT m.employee_nbr,
+					m.role, 
+					tt_at.name AS at_name, 
+					tt_art.name AS art_name, 
+					tt_st.name AS st_name
+				FROM trains_and_teams tt_at
+				JOIN trains_and_teams tt_art ON tt_at.parent = tt_art.team_id
+				JOIN trains_and_teams tt_st ON tt_art.parent = tt_st.team_id
+				LEFT OUTER JOIN membership m ON tt_at.team_id = m.team_id) mt
+				ON e.employee_nbr = mt.employee_nbr
+			LEFT OUTER JOIN (
+				SELECT te.first_name, 
+					te.last_name,
+					te.email AS email_address,
+					tc.status, 
+					tc.course_name, 
+					tc.course_code, 
+					CONCAT(tc.trainer_first_name, ' ', tc.trainer_last_name) AS trainer,
+					CONCAT(DATE_FORMAT(tc.start_date, '%m/%d/%Y'), ' - ', DATE_FORMAT(tc.end_date, '%m/%d/%Y')) AS dates
+				FROM training_calendar tc
+				JOIN training_enrollment te ON tc.training_id = te.training_id) tec
+				ON (e.first_name = tec.first_name
+					AND e.last_name = tec.last_name
+					AND e.email_address = tec.email_address
+					)
+				";
+		} else {
+			if (isset($_GET["id"])) {
+				$id = $_GET["id"];
+			}
+			
+			$sql = "SELECT e.employee_nbr,
+				e.first_name, 
+				e.last_name, 
+				e.email_address, 
+				e.city, 
+				e.country, 
+				CONCAT(m.first_name, ' ', m.last_name) AS manager_name,
+				mt.role,
+				mt.at_name,
+				mt.art_name,
+				mt.st_name,
+				tec.status,
+				tec.course_name,
+				tec.course_code,
+				tec.trainer,
+				tec.dates
+			FROM employees e
+			LEFT OUTER JOIN employees m ON e.managers_nbr = m.employee_nbr
+			LEFT OUTER JOIN (
+				SELECT m.employee_nbr,
+					m.role, 
+					tt_at.name AS at_name, 
+					tt_art.name AS art_name, 
+					tt_st.name AS st_name
+				FROM trains_and_teams tt_at
+				JOIN trains_and_teams tt_art ON tt_at.parent = tt_art.team_id
+				JOIN trains_and_teams tt_st ON tt_art.parent = tt_st.team_id
+				LEFT OUTER JOIN membership m ON tt_at.team_id = m.team_id) mt
+				ON e.employee_nbr = mt.employee_nbr
+			LEFT OUTER JOIN (
+				SELECT te.first_name, 
+					te.last_name,
+					te.email AS email_address,
+					tc.status, 
+					tc.course_name, 
+					tc.course_code, 
+					CONCAT(tc.trainer_first_name, ' ', tc.trainer_last_name) AS trainer,
+					CONCAT(DATE_FORMAT(tc.start_date, '%m/%d/%Y'), ' - ', DATE_FORMAT(tc.end_date, '%m/%d/%Y')) AS dates
+				FROM training_calendar tc
+				JOIN training_enrollment te ON tc.training_id = te.training_id) tec
+				ON (e.first_name = tec.first_name
+					AND e.last_name = tec.last_name
+					AND e.email_address = tec.email_address
+					)
+			WHERE e.employee_nbr = '".$id."';";
+
+			// other parameters added here
 		}
-		
-		$sql = "SELECT e.first_name, 
-			e.last_name, 
-			e.email_address, 
-			e.city, 
-			e.country, 
-			CONCAT(m.first_name, ' ', m.last_name) AS manager_name,
-			mt.team,
-			mt.team_name,
-			mt.role,
-			tec.status, 
-			tec.course_name, 
-			tec.course_code, 
-			tec.trainer,
-			tec.dates
-		FROM employees e
-		LEFT OUTER JOIN employees m ON e.managers_nbr = m.employee_nbr
-		LEFT OUTER JOIN (
-			SELECT employee_nbr,
-				CASE
-					WHEN type = 'AT' THEN 'Agile Team'
-					WHEN type = 'ART' THEN 'Agile Release Train'
-					WHEN type = 'ST' THEN 'Solution Train'
-				END AS Team,
-				name AS 'team_name',
-				role
-			FROM trains_and_teams t
-			JOIN membership m
-			ON t.team_id = m.team_id
-			) mt ON e.employee_nbr = mt.employee_nbr
-		LEFT OUTER JOIN (
-			SELECT te.first_name, te.last_name, tc.status, tc.course_name, tc.course_code, CONCAT(tc.trainer_first_name, ' ', tc.trainer_last_name) AS trainer,
-				CONCAT(DATE_FORMAT(tc.start_date, '%m/%d/%Y'), ' - ', DATE_FORMAT(tc.end_date, '%m/%d/%Y')) AS dates
-			FROM training_calendar tc
-			JOIN training_enrollment te ON tc.training_id = te.training_id
-			) tec ON (e.first_name = tec.first_name AND e.last_name = tec.last_name)
-		WHERE e.employee_nbr LIKE '%".$id."' 
-		;
-		";
-		
 		
 		// Need to check against SQL injection one day...
 		$result = run_sql($sql);
@@ -104,14 +161,16 @@
 		// output data of each row
 		if ($result->num_rows > 0) {
 			while ($row=$result->fetch_assoc()) {
+				$empNbr = $row["employee_nbr"];
 				$firstName = $row["first_name"];
 				$lastName = $row["last_name"];
 				$emailAddress = $row["email_address"];
 				$city = $row["city"];
 				$country = $row["country"];
 				$managerName = $row["manager_name"];
-				$team= $row["team"];
-				$teamName = $row["team_name"];
+				$agileTeamName = $row["at_name"];
+				$agileReleaseTrainName = $row["art_name"];
+				$solutionTrainName = $row["st_name"];
 				$role = $row["role"];
 				$status = $row["status"];
 				$courseName = $row["course_name"];
@@ -121,6 +180,8 @@
 			}
 		}
 		
+		$result->close();	
+		
 	?>
 	
 	<div class="container-fluid buffer">
@@ -129,10 +190,10 @@
 			<div class="col-md-9">
 				<table class="table table-condensed table-bordered">
 					<tr>
-						<thead colspan="2"><h3>Employee</h3></thead>
+						<thead colspan="2" ><h3>Employee</h3></thead>
 					</tr>
 					<tr>
-						<td>First Name</td>
+						<td style="width:200px;">First Name</td>
 						<td><?php echo $firstName ?></td>
 					</tr>
 					<tr>
@@ -164,17 +225,27 @@
 			<div class="col-md-9">
 				<table class="table table-condensed table-bordered">
 					<tr>
-						<thead colspan="2"><h3>Teams</h3></thead>
+						<thead colspan="3" ><h3>Teams</h3></thead>
 					</tr>
 					<tr>
-						<th>Team</th>
+						<th style="width:200px;">Team</th>
 						<th>Team Name</th>
 						<th>Role</th>
 					</tr>
 					
 					<tr>
+						<td>Agile Team</td>
+						<td><?php echo $agileTeamName ?></td>
+						<td><?php echo $role ?></td>
+					</tr>
+					<tr>
+						<td>Agile Release Train</td>
+						<td><?php echo $agileReleaseTrainName ?></td>
 						<td></td>
-						<td></td>
+					</tr>
+					<tr>
+						<td>Solution Train</td>
+						<td><?php echo $solutionTrainName ?></td>
 						<td></td>
 					</tr>
 				</table>
@@ -186,10 +257,10 @@
 			<div class="col-md-9">
 				<table class="table table-condensed table-bordered">
 					<tr>
-						<thead><h3>Training</h3></thead>
+						<thead colspan="2"><h3>Training</h3></thead>
 					</tr>
 					<tr>
-						<td>Status</td>
+						<td style="width:200px;">Status</td>
 						<td><?php echo $status ?></td>
 					</tr>
 					<tr>
