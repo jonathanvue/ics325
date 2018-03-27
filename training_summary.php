@@ -45,10 +45,19 @@
 	
 	<!-- Primary content goes here -->
 	<?php
-		$empNbr = $firstName = $lastName = $emailAddress = $city = $country = $managerName = '';
-		$agileTeamName = $agileReleaseTrainName = $solutionTrainName = $role = '';
-		$status = $courseName = $courseCode = $trainer = $dates = '';
-		$type = $id = '';
+		function displayValues(&$array) {
+			$array = array_unique($array);
+			
+			foreach($array as $v) {
+				echo $v."<br>";
+			}
+		}
+	?>
+	<?php
+		$empNbr = $firstName = $lastName = $emailAddress = $city = $country = $managerName = $employeeType = '';
+		$agileTeamName = $agileReleaseTrainName = $solutionTrainName = '';
+		$role = $status = $courseName = $courseCode = $trainer = $dates = array();
+		$type = $id = $rows = '';
 		
 		if (isset($_GET['type'])) {
 			$type = $_GET['type'];
@@ -100,10 +109,15 @@
 					AND e.last_name = tec.last_name
 					AND e.email_address = tec.email_address
 					)
+				LIMIT 1
 				";
 		} else {
 			if (isset($_GET["id"])) {
 				$id = $_GET["id"];
+			}
+
+			if(isset($_GET["type"])){
+				$employeeType = $_GET["type"];
 			}
 			
 			$sql = "SELECT e.employee_nbr,
@@ -150,13 +164,17 @@
 					AND e.last_name = tec.last_name
 					AND e.email_address = tec.email_address
 					)
-			WHERE e.employee_nbr = '".$id."';";
-
+			WHERE e.employee_nbr LIKE '%".$id."' ";
+			
 			// other parameters added here
+			if (!empty($type)) {
+				$sql .= "AND e.status LIKE '%".$employeeType."%' ";
+			}
 		}
 		
 		// Need to check against SQL injection one day...
 		$result = run_sql($sql);
+		$rows = $result->num_rows;
 		
 		// output data of each row
 		if ($result->num_rows > 0) {
@@ -171,12 +189,12 @@
 				$agileTeamName = $row["at_name"];
 				$agileReleaseTrainName = $row["art_name"];
 				$solutionTrainName = $row["st_name"];
-				$role = $row["role"];
-				$status = $row["status"];
-				$courseName = $row["course_name"];
-				$courseCode = $row["course_code"];
-				$trainer = $row["trainer"];
-				$dates = $row["dates"];
+				$role[] = $row["role"];
+				$status[] = $row["status"];
+				$courseName[] = $row["course_name"];
+				$courseCode[] = $row["course_code"];
+				$trainer[] = $row["trainer"];
+				$dates[] = $row["dates"];
 			}
 		}
 		
@@ -236,12 +254,12 @@
 					<tr>
 						<td>Agile Team</td>
 						<td><?php echo $agileTeamName ?></td>
-						<td><?php echo $role ?></td>
+						<td><?php displayValues($role) ?></td>
 					</tr>
 					<tr>
 						<td>Agile Release Train</td>
 						<td><?php echo $agileReleaseTrainName ?></td>
-						<td></td>
+						<td class="disabled"></td>
 					</tr>
 					<tr>
 						<td>Solution Train</td>
@@ -261,23 +279,23 @@
 					</tr>
 					<tr>
 						<td style="width:200px;">Status</td>
-						<td><?php echo $status ?></td>
+						<td><?php displayValues($status) ?></td>
 					</tr>
 					<tr>
 						<td>Course Name</td>
-						<td><?php echo $courseName ?></td>
+						<td><?php displayValues($courseName) ?></td>
 					</tr>
 					<tr>
 						<td>Course Code</td>
-						<td><?php echo $courseCode ?></td>
+						<td><?php  displayValues($courseCode) ?></td>
 					</tr>
 					<tr>
 						<td>Trainer</td>
-						<td><?php echo $trainer ?></td>
+						<td><?php  displayValues($trainer) ?></td>
 					</tr>
 					<tr>
 						<td>Dates</td>
-						<td><?php echo $dates ?></td>
+						<td><?php  displayValues($dates) ?></td>
 					</tr>
 				</table>
 			</div>
