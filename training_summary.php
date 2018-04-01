@@ -2,10 +2,13 @@
 <html>
 <head>
 	 <?PHP
-    session_start();
-    require('session_validation.php');
-	require('db_configuration.php');
-	require('Employee.php');
+	    session_start();
+	    require('session_validation.php');
+		require('db_configuration.php');
+		require('Employee.php');
+		require('AgileTeams.php');
+		require('AgileReleaseTrain.php');
+		require('SolutionTrain.php');
     ?>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -45,67 +48,77 @@
 	</div>
 	
 	<!-- Primary content goes here -->
-
-
 	<?php
 		function createEmployee()
 		{
-			global $employee;
-			global $sql;
+			$tableObject;
+			$sql;
 		
-		/*if (isset($_GET['type'])) {
-			$type = $_GET['type'];
-		}*/
-		
-		// Employees query
-		if (count($_GET) == 0)
-		{
-			$sql = queryEmployeeNoParams();
-		}
-		else
-		{
-			if (isset($_GET["id"]) && isset($_GET["type"]))
+			/*if (isset($_GET['type'])) {
+				$type = $_GET['type'];
+			}*/
+			
+			// Employees query
+			if (count($_GET) == 0)
 			{
-				$sql = queryEmployee($_GET["id"], $_GET["type"]);
+				$sql = queryEmployeeNoParams();
 			}
-		}
-				//$rows = $result->num_rows;
-		
-		// output data of each result
-		if ($result = run_sql($sql))
-		{
-			while ($queryObject = $result->fetch_object())
+			else
 			{
-				return $employee = new Employee($queryObject);
-
-				/*
-				$empNbr = $result["employee_nbr"];
-				$firstName = $result["first_name"];
-				$lastName = $result["last_name"];
-				$emailAddress = $row["email_address"];
-				$city = $row["city"];
-				$country = $row["country"];
-				$managerName = $row["manager_name"];
-				$agileTeamName = $row["at_name"];
-				$agileReleaseTrainName = $row["art_name"];
-				$solutionTrainName = $row["st_name"];
-				$role[] = $row["role"];
-				$status[] = $row["status"];
-				$courseName[] = $row["course_name"];
-				$courseCode[] = $row["course_code"];
-				$trainer[] = $row["trainer"];
-				$dates[] = $row["dates"];
-				*/
+				if (isset($_GET["id"]) && isset($_GET["type"]))
+				{
+					$sql = queryEmployee($_GET["id"], $_GET["type"]);
+				}
 			}
+					//$rows = $result->num_rows;
+			
+			// output data of each result
+			if ($result = run_sql($sql))
+			{
+				while ($queryObject = $result->fetch_object())
+				{
+					if($_GET["type"] === "EMP")
+					{
+						return $employee = new Employee($queryObject);
+					}
+					else if($_GET["type"] === "ART")
+					{
+						return $tableObject = new AgileReleaseTrain($queryObject);
+					}
+					else if($_GET["type"] === "AT")
+					{
+						return $tableObject = new AgileTeams($queryObject);
+					}
+					else if($_GET["type"] === "ST")
+					{
+						return $tableObject = new SolutionTrain($queryObject);
+					}
+
+
+					/*
+					$empNbr = $result["employee_nbr"];
+					$firstName = $result["first_name"];
+					$lastName = $result["last_name"];
+					$emailAddress = $row["email_address"];
+					$city = $row["city"];
+					$country = $row["country"];
+					$managerName = $row["manager_name"];
+					$agileTeamName = $row["at_name"];
+					$agileReleaseTrainName = $row["art_name"];
+					$solutionTrainName = $row["st_name"];
+					$role[] = $row["role"];
+					$status[] = $row["status"];
+					$courseName[] = $row["course_name"];
+					$courseCode[] = $row["course_code"];
+					$trainer[] = $row["trainer"];
+					$dates[] = $row["dates"];
+					*/
+				}
+			}
+			
+			$result->close();
 		}
-				$result->close();
-	}
 		
-
-
-
-		
-
 		function queryEmployeeNoParams()
 		{
 			return "SELECT e.employee_nbr,
