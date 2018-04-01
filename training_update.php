@@ -33,8 +33,11 @@
 	<div class="sideNav text-center">
 		<div class="sideMenu">
 			<ul class="sideMenuItem text-center">
-				<li><a class="navImg" href="#" ><img class="icon" src="./icons/search_list.png" />List</a></li>
-				<li><a class="navImg" href="#" ><img class="icon" src="./icons/org_lists.png" />Lists</a></li>
+				<li><a class="navImg" href="training_summary.php" ><img class="icon" src="./icons/training_summary.png" />Summary</a></li>
+				<li><a class="navImg" href="training_calendar.php" ><img class="icon" src="./icons/training_calendar.png" />Calendar</a></li>
+				<li><a class="navImg" href="training_roles.php" ><img class="icon" src="./icons/training_roles.png" />Roles</a></li>
+				<li><a class="navImg" href="training_update.php" ><img class="icon" src="./icons/training_update.png" /><img class="active" src="./icons/image15.png" />Update</a></li>
+				<li><a class="navImg" href="training_costs.php" ><img class="icon" src="./icons/training_costs.png" />Costs</a></li>
 			</ul>
 		</div>
 	</div>
@@ -43,5 +46,17 @@
 	<div class="container-fluid buffer">
 		<h1>This is the default landing page<p><small>Work in progress</small><p></h1>
 	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
+	<script type="text/javascript">
+
+		$(document).ready(function () {
+
+			$('#info').DataTable();
+
+		});
+
+	</script>
 </body>
 </html>

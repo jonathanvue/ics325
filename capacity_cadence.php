@@ -1,18 +1,9 @@
 <?php //include 'navbar.php';
-
-
 // Start session to store variables
-
 if (!isset($_SESSION)) {
-
     session_start();
-
 }
-
 // Allows user to return 'back' to this page
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -44,20 +35,22 @@ if (!isset($_SESSION)) {
 
 <body>
     <?PHP echo getTopNav(); ?>
-	<div class="container">
+	<!-- Side navigation to be placed into -->
+	<div class="sideNav text-center">
+		<div class="sideMenu">
+			<ul class="sideMenuItem text-center">
+				<li><a class="navImg" href="capacity_activePI.php"><img class="icon" src="./icons/capacity_active_pi.png" >Active PI</a></li>
+				<li><a class="navImg" href="capacity_cadence.php"><img class="icon" src="./icons/capacity_cadence.png" /><img class="active" src="./icons/image15.png" >Cadence</a></li>
+				<li><a class="navImg" href="capacity_calculate.php"><img class="icon" src="./icons/capacity_calculate.png" />Calculate</a></li>
+				<li><a class="navImg" href="capacity_summary.php"><img class="icon" src="./icons/capacity_summary.png" />Summary</a></li>
+				<li><a class="navImg" href="capacity_trend.php"><img class="icon" src="./icons/capacity_trend.png" />Trend</a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- Primary content goes here -->
+	<div class="container-fluid buffer">
 	
 		<div class="row">
-			<div class="col-md-1">
-				<nav class="nav-left">
-					<ul class="nav nav-stacked">
-						<li><a href="capacity_activePI.php"><img src="./icons/capacity_active_pi.png" style="width:40px;height:50px;">Active PI</a></li>
-						<li><a href="capacity_cadence.php"><img style="width:40px;height:50px;" src="./icons/capacity_cadence.png" /><img src="./icons/image15.png" style="width:20px;height:30px;">Cadence</a></li>
-						<li><a href="capacity_calculate.php"><img class="icon" src="./icons/capacity_calculate.png" />Calculate</a></li>
-						<li><a href="capacity_summary.php"><img class="icon" src="./icons/capacity_summary.png" />Summary</a></li>
-						<li><a href="#"><img class="icon" src="./icons/capacity_trend.png" />Trend</a></li>
-					</ul>
-				</nav>
-			</div>
 			<div class="col-md-10">
 			<hr>
 			<h3><font size="4" color="blue">Cadence:</font></h3>
@@ -77,20 +70,21 @@ if (!isset($_SESSION)) {
 					<?php
 						require 'db_configuration.php';
 						
-						$sql = "SELECT * FROM cadence";
+						$sql = "SELECT * FROM trains_and_teams LIMIT 3";
 						$result = run_sql($sql);
 						
 						// output data of each
 						if ($result->num_rows > 0) {
 							while ($row = $result->fetch_assoc()) {
 								echo '<tr>
-									<td>' . $row["sequence"] . "</td>
-									<td>" . $row["program_increment"] . "</td>
-									<td>" . $row["iteration"] . "</td>
-									<td>" . $row["start_date"] . "</td>
-									<td>" . $row["end_date"] . "</td>
-									<td>" . $row["duration"] . "</td>
-									<td>" . $row["notes"] . "</td>
+									<td>' . $row["team_id"] . "</td>
+									<td>" . $row["type"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
+									<td>" . $row["name"] . "</td>
 								</tr>";
 						}
 					} else {
