@@ -77,6 +77,14 @@
 			{
 				while ($queryObject = $result->fetch_object())
 				{
+					/*
+					* If URL params don't include ?type=###&id=#### then this is default display 
+					* otherwise an object is created based upon the type of table needed
+					*/
+					if(count($_GET) == 0)
+					{
+						return $employee = new Employee($queryObject);
+					}
 					if($_GET["type"] === "EMP")
 					{
 						return $employee = new Employee($queryObject);
@@ -93,7 +101,6 @@
 					{
 						return $tableObject = new SolutionTrain($queryObject);
 					}
-
 
 					/*
 					$empNbr = $result["employee_nbr"];
