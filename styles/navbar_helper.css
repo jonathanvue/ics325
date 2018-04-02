@@ -1,9 +1,27 @@
-.navImg {
-	display: block;
-	height: 100px;
-	width: 100px;
+img#search.icon {
+	width: 100px
 }
 
+/*.container {
+	display: block;
+	width: 100% !important;
+	overflow-y: scroll;
+}*/
+
+a {
+	text-decoration: none;
+}
+
+.buffer{
+	display: block;
+	/*margin-top: 112px;
+	margin-left: 120px;*/
+	margin: 112px 0 0 120px;
+}
+
+.fill {
+	background-color: #FFFFFF;
+}
 .icon {
 	display: block;
 	margin: 0 auto;
@@ -11,8 +29,11 @@
 	width: 50px;
 }
 
-img#search.icon {
-	width: 100px
+.small {
+	height: 50px;
+	width: 50px;
+	margin: 0 5px 5px 0px;
+	clear: right;
 }
 
 .container {
