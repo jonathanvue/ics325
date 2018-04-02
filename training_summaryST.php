@@ -209,12 +209,12 @@
 						<thead colspan="3" ><h3><br><br>Information:</h3></thead>
 					</tr>
 					<tr>
-						<td style="width:200px;">Team ID</td>
-						<td><?php echo $st ?></td>
+						<td style="width:200px;"><b>Team ID</b></td>
+						<td></td>
 					</tr>
 					<tr>
-						<td>Agile Release Train (ART) Name</td>
-						<td><?php echo $ART ?></td>
+						<td><b>Agile Release Train (ART) Name</b></td>
+						<td></td>
 					</tr>
 				</table>
 			</div>
@@ -239,7 +239,25 @@
 					</thead>
 					<tbody>
 					<?php
-						$sql = "";
+						$sql = "SELECT e.first_name, 
+e.last_name, 
+   e.email_address,
+m.role,
+   tc.course_name,
+   CONCAT(e.city, ', ', e.country) AS location
+FROM employees e
+JOIN membership m ON e.employee_nbr = m.employee_nbr
+JOIN training_enrollment te ON (
+e.first_name = te.first_name AND
+   e.last_name = te.last_name AND
+   e.email_address = te.email
+   )
+JOIN training_calendar tc ON te.training_id = tc.training_id
+WHERE m.team_id IN (
+SELECT team_id 
+   FROM trains_and_teams
+   WHERE parent LIKE '%ST-100%'
+   )";
 						$result = run_sql($sql);
 						
 						// output data of each
@@ -248,7 +266,7 @@
 								echo '<tr>
 									<td>' . $row["first_name"] . "</td>
 									<td>" . $row["last_name"] . "</td>
-									<td>" . $row["email"] . "</td>
+									<td>" . $row["email_address"] . "</td>
 									<td>" . $row["role"] . "</td>
 									<td>" . $row["certification"] . "</td>
 									<td>" . $row["location"] . "</td>
@@ -281,7 +299,25 @@
 					</thead>
 					<tbody>
 					<?php
-						$sql = "";
+						$sql = "SELECT e.first_name, 
+e.last_name, 
+   e.email_address,
+m.role,
+   tc.course_name,
+   CONCAT(e.city, ', ', e.country) AS location
+FROM employees e
+JOIN membership m ON e.employee_nbr = m.employee_nbr
+JOIN training_enrollment te ON (
+e.first_name = te.first_name AND
+   e.last_name = te.last_name AND
+   e.email_address = te.email
+   )
+JOIN training_calendar tc ON te.training_id = tc.training_id
+WHERE m.team_id IN (
+SELECT team_id 
+   FROM trains_and_teams
+   WHERE parent LIKE '%ST-100%'
+   )";
 						$result = run_sql($sql);
 						
 						// output data of each
@@ -315,19 +351,19 @@
 					</tr>
 					<tr>
 						<td style="width:200px;"><b>Team Size</b></td>
-						<td><?php displayValues($size) ?></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td><b>All Roles Filled</b></td>
-						<td><?php displayValues($filledRoles) ?></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td><b>All are trained</b></td>
-						<td><?php displayValues($numTrained) ?></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td><b>Co-located</b></td>
-						<td><?php  displayValues($located) ?></td>
+						<td></td>
 					</tr>
 				</table>
 			</div>
