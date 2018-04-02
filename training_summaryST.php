@@ -206,7 +206,7 @@
 			<div class="col-md-9">
 				<table class="table table-condensed table-bordered">
 					<tr>
-						<thead colspan="3" ><h3>Information:</h3></thead>
+						<thead colspan="3" ><h3><br><br>Information:</h3></thead>
 					</tr>
 					<tr>
 						<td style="width:200px;">Team ID</td>
@@ -238,7 +238,7 @@
 					
 				</table>
 			</div>
-			
+		</div>	
 		<!-- Participating ARTs -->
 		<div class="row">
 			<div class="col-md-9">
@@ -264,19 +264,19 @@
 						<thead colspan="2"><h3>SAFe Review Comments:</h3></thead>
 					</tr>
 					<tr>
-						<td style="width:200px;">Team Size</td>
+						<td style="width:200px;"><b>Team Size</b></td>
 						<td><?php displayValues($status) ?></td>
 					</tr>
 					<tr>
-						<td>All Roles Filled</td>
+						<td><b>All Roles Filled</b></td>
 						<td><?php displayValues($status) ?></td>
 					</tr>
 					<tr>
-						<td>All are trained</td>
+						<td><b>All are trained</b></td>
 						<td><?php displayValues($courseName) ?></td>
 					</tr>
 					<tr>
-						<td>Co-located</td>
+						<td><b>Co-located</b></td>
 						<td><?php  displayValues($courseCode) ?></td>
 					</tr>
 				</table>
