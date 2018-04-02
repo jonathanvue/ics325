@@ -128,8 +128,6 @@
 				e.country, 
 				CONCAT(m.first_name, ' ', m.last_name) AS manager_name,
 				mt.role,
-				mt.at_name,
-				mt.art_name,
 				mt.st_name,
 				tec.status,
 				tec.course_name,
@@ -203,99 +201,133 @@
 	?>
 	
 	<div class="container-fluid buffer">
-		<!-- Employee -->
+		<!-- Information -->
 		<div class="row">
 			<div class="col-md-9">
 				<table class="table table-condensed table-bordered">
 					<tr>
-						<thead colspan="2" ><h3>Employee</h3></thead>
+						<thead colspan="3" ><h3><br><br>Information:</h3></thead>
 					</tr>
 					<tr>
-						<td style="width:200px;">First Name</td>
-						<td><?php echo $firstName ?></td>
+						<td style="width:200px;">Team ID</td>
+						<td><?php echo $st ?></td>
 					</tr>
 					<tr>
-						<td>Last Name</td>
-						<td><?php echo $lastName ?></td>
-					</tr>
-					<tr>
-						<td>Email</td>
-						<td><?php echo $emailAddress ?></td>
-					</tr>
-					<tr>
-						<td>City</td>
-						<td><?php echo $city ?></td>
-					</tr>
-					<tr>
-						<td>Country</td>
-						<td><?php echo $country ?></td>
-					</tr>
-					<tr>
-						<td>Manager's Name</td>
-						<td><?php echo $managerName ?></td>
+						<td>Agile Release Train (ART) Name</td>
+						<td><?php echo $ART ?></td>
 					</tr>
 				</table>
 			</div>
 		</div>
 		
-		<!-- Teams -->
+		<!-- Team Members -->
 		<div class="row">
 			<div class="col-md-9">
 				<table class="table table-condensed table-bordered">
+					<hr>
+					<h3>Team Members:</h3>
+					</hr>
+					<thead>
 					<tr>
-						<thead colspan="3" ><h3>Teams</h3></thead>
-					</tr>
-					<tr>
-						<th style="width:200px;">Team</th>
-						<th>Team Name</th>
+						<th style="width:200px;">First Name</th>
+						<th>Last Name</th>
+						<th>Email</th>
 						<th>Role</th>
+						<th>Certifications</th>
+						<th>Location</th>
 					</tr>
+					</thead>
+					<tbody>
+					<?php
+						$sql = "";
+						$result = run_sql($sql);
+						
+						// output data of each
+						if ($result->num_rows > 0) {
+							while ($row = $result->fetch_assoc()) {
+								echo '<tr>
+									<td>' . $row["first_name"] . "</td>
+									<td>" . $row["last_name"] . "</td>
+									<td>" . $row["email"] . "</td>
+									<td>" . $row["role"] . "</td>
+									<td>" . $row["certification"] . "</td>
+									<td>" . $row["location"] . "</td>
+								</tr>";
+						}
+					} else {
+						echo "0 results";
+					}
+					$result->close();
+		?>
+					</tbody>
 					
+				</table>
+			</div>
+		</div>	
+		<!-- Participating ARTs -->
+		<div class="row">
+			<div class="col-md-9">
+				<table class="table table-condensed table-bordered">
+					<hr>
+						<h3>Participating Agile Release Trains (ARTs):</h3>
+					</hr>
+					<thead colspan="3" >
 					<tr>
-						<td>Agile Team</td>
-						<td><?php echo $agileTeamName ?></td>
-						<td><?php displayValues($role) ?></td>
+						<th style="width:200px;">Team ID</th>
+						<th>Team Name</th>
+						<th>Release Train Engineer (RTE)</th>
+						<th>Product Owner (PO)</th>
 					</tr>
-					<tr>
-						<td>Agile Release Train</td>
-						<td><?php echo $agileReleaseTrainName ?></td>
-						<td class="disabled"></td>
-					</tr>
-					<tr>
-						<td>Solution Train</td>
-						<td><?php echo $solutionTrainName ?></td>
-						<td></td>
-					</tr>
+					</thead>
+					<tbody>
+					<?php
+						$sql = "";
+						$result = run_sql($sql);
+						
+						// output data of each
+						if ($result->num_rows > 0) {
+							while ($row = $result->fetch_assoc()) {
+								echo '<tr>
+									<td>' . $row["first_name"] . "</td>
+									<td>" . $row["last_name"] . "</td>
+									<td>" . $row["email"] . "</td>
+									<td>" . $row["role"] . "</td>
+									<td>" . $row["certification"] . "</td>
+									<td>" . $row["location"] . "</td>
+								</tr>";
+						}
+					} else {
+						echo "0 results";
+					}
+					$result->close();
+		?>
+					</tbody>
 				</table>
 			</div>
 		</div>
 		
-		<!-- Training -->
+		<!-- Comments -->
 		<div class="row">
 			<div class="col-md-9">
 				<table class="table table-condensed table-bordered">
 					<tr>
-						<thead colspan="2"><h3>Training</h3></thead>
+						<thead colspan="2"><h3>SAFe Review Comments:</h3></thead>
 					</tr>
 					<tr>
-						<td style="width:200px;">Status</td>
-						<td><?php displayValues($status) ?></td>
+						<td style="width:200px;"><b>Team Size</b></td>
+						<td><?php displayValues($size) ?></td>
 					</tr>
 					<tr>
-						<td>Course Name</td>
-						<td><?php displayValues($courseName) ?></td>
+						<td><b>All Roles Filled</b></td>
+						<td><?php displayValues($filledRoles) ?></td>
 					</tr>
 					<tr>
-						<td>Course Code</td>
-						<td><?php  displayValues($courseCode) ?></td>
+						<td><b>All are trained</b></td>
+						<td><?php displayValues($numTrained) ?></td>
 					</tr>
 					<tr>
-						<td>Trainer</td>
-						<td><?php  displayValues($trainer) ?></td>
-					</tr>
-					<tr>
-						<td>Dates</td>
-						<td><?php  displayValues($dates) ?></td>
+						<td><b>Co-located</b></td>
+						<td><?php  displayValues($located) ?></td>
 					</tr>
 				</table>
 			</div>

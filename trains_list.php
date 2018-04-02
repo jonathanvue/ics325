@@ -60,21 +60,15 @@ if (!isset($_SESSION)) {
 	<!-- Primary content goes here -->
 	<div class="container-fluid buffer">
 		<hr>
-		<h3><font size="5" color="black"><img src="./icons/solution_train.png" style="width:50px;height:60px;"/>Solution Trains (ST),<img src="./icons/image17.png"style="width:50px;height:60px;"/>Agile Release Trains (ART),<img src="./icons/image20.png" style="width:50px;height:60px;"/>Agile Teams (AT)</font></h3>
+		<h3>
+			<img class="small" src="./icons/image16.png" >Solution Trains (ST), 
+			<img class="small" src="./icons/image17.png"/>Agile Release Trains (ART), 
+			<img class="small" src="./icons/image20.png" />Agile Teams (AT)
+		</h3>
 		<hr>
 		<div class="row">
-			<div class="col-md-1">
-				<nav class="nav-left">
-					<ul class="nav nav-stacked">
-						<li><a href="trains_list.php"><img src="./icons/image11.png" style="width:40px;height:50px;"><img src="./icons/image15.png" style="width:20px;height:30px;">&nbsp&nbsp&nbsp&nbsp&nbspList</a></li>
-						<li><a href="trains_lists.php"><img class="icon" src="./icons/trains_lists.png" />&nbsp&nbsp&nbsp&nbspLists</a></li>
-						<li><a href="#"><img class="icon" src="./icons/image12.png" />&nbsp&nbsp&nbsp&nbspGrid</a></li>
-						<li><a href="#"><img class="icon" src="./icons/image14.png" />&nbsp&nbsp&nbsp&nbspTree</a></li>
-						<li><a href="#"><img class="icon" src="./icons/image13.png" />&nbsp&nbspHybrid</a></li>
-					</ul>
-				</nav>
-			</div>
-			<div class="col-md-10">
+			
+			<div class="col-md-12">
 				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">
 					 <colgroup>
