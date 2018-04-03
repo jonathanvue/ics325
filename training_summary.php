@@ -2,9 +2,14 @@
 <html>
 <head>
 	 <?PHP
-    session_start();
-    require('session_validation.php');
-	require('db_configuration.php')
+	    session_start();
+	    require('session_validation.php');
+		require('db_configuration.php');
+		require('Employee.php');
+		require('AgileTeams.php');
+		require('AgileReleaseTrain.php');
+		require('SolutionTrain.php');
+		require('ViewAgileTeams.php');
     ?>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -48,9 +53,95 @@
 		function displayValues(&$array) {
 			$array = array_unique($array);
 			
-			foreach($array as $v) {
-				echo $v."<br>";
+			
+			if (count($_GET) == 0) //Creates a display message that no information was found.
+			{
+				return null;
 			}
+			else  //If parameters are present, then an appropriate Object can be created.
+			{
+				if (isset($_GET["id"]) && isset($_GET["type"]))
+				{
+					if($_GET["type"] === "EMP")
+					{
+						$sql = Employee::queryEmployee($_GET["id"], $_GET["type"]);
+					}
+					else if($_GET["type"] === "ART")
+					{
+						$sql = AgileReleaseTrain::queryEmployee($_GET["id"], $_GET["type"]);
+					}
+					else if($_GET["type"] === "AT")
+					{
+						$sql = AgileTeams::queryEmployee($_GET["id"], $_GET["type"]);
+					}
+					else if($_GET["type"] === "ST")
+					{
+						$sql = SolutionTrain::queryEmployee($_GET["id"], $_GET["type"]);
+					}
+				}
+			}
+					//$rows = $result->num_rows;
+			
+			// output data of each result
+			if ($result = run_sql($sql))
+			{
+				while ($queryObject = $result->fetch_object())
+				{
+					/*
+					* If URL params don't include ?type=###&id=#### then this is default display 
+					* otherwise an object is created based upon the type of table needed
+					*/
+					/*
+					if(count($_GET) == 0)
+					{
+						return $employee = new Employee($queryObject);
+					}
+					*/
+					if($_GET["type"] === "EMP")
+					{
+						return $employee = new Employee($queryObject);
+					}
+					else if($_GET["type"] === "ART")
+					{
+						return $tableObject = new AgileReleaseTrain($queryObject);
+					}
+					else if($_GET["type"] === "AT")
+					{
+						return $tableObject = new AgileTeams($queryObject);
+					}
+					else if($_GET["type"] === "ST")
+					{
+						return $tableObject = new SolutionTrain($queryObject);
+					}
+
+					/*
+					$role[] = $row["role"];
+					$empNbr = $result["employee_nbr"];
+					$firstName = $result["first_name"];
+					$lastName = $result["last_name"];
+					$emailAddress = $row["email_address"];
+					$city = $row["city"];
+					$country = $row["country"];
+					$managerName = $row["manager_name"];
+
+					$agileTeamName = $row["at_name"];
+					$agileReleaseTrainName = $row["art_name"];
+					$solutionTrainName = $row["st_name"];
+
+
+
+					$status[] = $row["status"];
+					$courseName[] = $row["course_name"];
+					$courseCode[] = $row["course_code"];
+					$trainer[] = $row["trainer"];
+					$dates[] = $row["dates"];
+					*/
+				}
+			}
+			
+			$result->close();
+
+
 		}
 	?>
 	<?php
@@ -59,249 +150,45 @@
 		$role = $status = $courseName = $courseCode = $trainer = $dates = array();
 		$type = $id = $rows = '';
 		
-		if (isset($_GET['type'])) {
-			$type = $_GET['type'];
-		}
-		
-		// Employees query
-		if (count($_GET) == 0) {
-			$sql = "SELECT e.employee_nbr,
-				e.first_name, 
-				e.last_name, 
-				e.email_address, 
-				e.city, 
-				e.country, 
-				CONCAT(m.first_name, ' ', m.last_name) AS manager_name,
-				mt.role,
-				mt.at_name,
-				mt.art_name,
-				mt.st_name,
-				tec.status,
-				tec.course_name,
-				tec.course_code,
-				tec.trainer,
-				tec.dates
-			FROM employees e
-			LEFT OUTER JOIN employees m ON e.managers_nbr = m.employee_nbr
-			LEFT OUTER JOIN (
-				SELECT m.employee_nbr,
-					m.role, 
-					tt_at.name AS at_name, 
-					tt_art.name AS art_name, 
-					tt_st.name AS st_name
-				FROM trains_and_teams tt_at
-				JOIN trains_and_teams tt_art ON tt_at.parent = tt_art.team_id
-				JOIN trains_and_teams tt_st ON tt_art.parent = tt_st.team_id
-				LEFT OUTER JOIN membership m ON tt_at.team_id = m.team_id) mt
-				ON e.employee_nbr = mt.employee_nbr
-			LEFT OUTER JOIN (
-				SELECT te.first_name, 
-					te.last_name,
-					te.email AS email_address,
-					tc.status, 
-					tc.course_name, 
-					tc.course_code, 
-					CONCAT(tc.trainer_first_name, ' ', tc.trainer_last_name) AS trainer,
-					CONCAT(DATE_FORMAT(tc.start_date, '%m/%d/%Y'), ' - ', DATE_FORMAT(tc.end_date, '%m/%d/%Y')) AS dates
-				FROM training_calendar tc
-				JOIN training_enrollment te ON tc.training_id = te.training_id) tec
-				ON (e.first_name = tec.first_name
-					AND e.last_name = tec.last_name
-					AND e.email_address = tec.email_address
-					)
-				LIMIT 1
-				";
-		} else {
-			if (isset($_GET["id"])) {
-				$id = $_GET["id"];
+
+	?>
+
+	<!-- HTML for displaying Objects. Use switch or if statement with class type.
+	<div class="container-fluid buffer">
+		<?php
+			//If commenting out this div statement /**/ out the variable contained in here.
+			/*
+			$emp = createEmployee();
+			$view = new ViewAgileTeams($emp);
+			$view->displayHTML($emp);
+			*/
+		?>
+	</div>-->
+
+
+	<!-- Displays the tables with no gap between the navbar menu items and the first table header -->
+		<?php
+			$emp = createEmployee();
+
+			if($emp instanceof Employee)
+			{
+				$emp->displayHTML();
+			}
+			elseif($emp instanceof AgileTeams)
+			{
+
+			}
+			elseif($emp instanceof AgileReleaseTrain)
+			{
+				$emp->displayHTML();
+			}
+			else
+			{
+				echo '<body><div class="container-fluid buffer"><strong>No Information Found</strong></div></body>';
 			}
 
-			if(isset($_GET["type"])){
-				$employeeType = $_GET["type"];
-			}
-			
-			$sql = "SELECT e.employee_nbr,
-				e.first_name, 
-				e.last_name, 
-				e.email_address, 
-				e.city, 
-				e.country, 
-				CONCAT(m.first_name, ' ', m.last_name) AS manager_name,
-				mt.role,
-				mt.at_name,
-				mt.art_name,
-				mt.st_name,
-				tec.status,
-				tec.course_name,
-				tec.course_code,
-				tec.trainer,
-				tec.dates
-			FROM employees e
-			LEFT OUTER JOIN employees m ON e.managers_nbr = m.employee_nbr
-			LEFT OUTER JOIN (
-				SELECT m.employee_nbr,
-					m.role, 
-					tt_at.name AS at_name, 
-					tt_art.name AS art_name, 
-					tt_st.name AS st_name
-				FROM trains_and_teams tt_at
-				JOIN trains_and_teams tt_art ON tt_at.parent = tt_art.team_id
-				JOIN trains_and_teams tt_st ON tt_art.parent = tt_st.team_id
-				LEFT OUTER JOIN membership m ON tt_at.team_id = m.team_id) mt
-				ON e.employee_nbr = mt.employee_nbr
-			LEFT OUTER JOIN (
-				SELECT te.first_name, 
-					te.last_name,
-					te.email AS email_address,
-					tc.status, 
-					tc.course_name, 
-					tc.course_code, 
-					CONCAT(tc.trainer_first_name, ' ', tc.trainer_last_name) AS trainer,
-					CONCAT(DATE_FORMAT(tc.start_date, '%m/%d/%Y'), ' - ', DATE_FORMAT(tc.end_date, '%m/%d/%Y')) AS dates
-				FROM training_calendar tc
-				JOIN training_enrollment te ON tc.training_id = te.training_id) tec
-				ON (e.first_name = tec.first_name
-					AND e.last_name = tec.last_name
-					AND e.email_address = tec.email_address
-					)
-			WHERE e.employee_nbr LIKE '%".$id."' ";
-			
-			// other parameters added here
-			if (!empty($type)) {
-				$sql .= "AND e.status LIKE '%".$employeeType."%' ";
-			}
-		}
-		
-		// Need to check against SQL injection one day...
-		$result = run_sql($sql);
-		$rows = $result->num_rows;
-		
-		// output data of each row
-		if ($result->num_rows > 0) {
-			while ($row=$result->fetch_assoc()) {
-				$empNbr = $row["employee_nbr"];
-				$firstName = $row["first_name"];
-				$lastName = $row["last_name"];
-				$emailAddress = $row["email_address"];
-				$city = $row["city"];
-				$country = $row["country"];
-				$managerName = $row["manager_name"];
-				$agileTeamName = $row["at_name"];
-				$agileReleaseTrainName = $row["art_name"];
-				$solutionTrainName = $row["st_name"];
-				$role[] = $row["role"];
-				$status[] = $row["status"];
-				$courseName[] = $row["course_name"];
-				$courseCode[] = $row["course_code"];
-				$trainer[] = $row["trainer"];
-				$dates[] = $row["dates"];
-			}
-		}
-		
-		$result->close();	
-		
-	?>
-	
-	<div class="container-fluid buffer">
-		<!-- Employee -->
-		<div class="row">
-			<div class="col-md-9">
-				<table class="table table-condensed table-bordered">
-					<tr>
-						<thead colspan="2" ><h3>Employee</h3></thead>
-					</tr>
-					<tr>
-						<td style="width:200px;">First Name</td>
-						<td><?php echo $firstName ?></td>
-					</tr>
-					<tr>
-						<td>Last Name</td>
-						<td><?php echo $lastName ?></td>
-					</tr>
-					<tr>
-						<td>Email</td>
-						<td><?php echo $emailAddress ?></td>
-					</tr>
-					<tr>
-						<td>City</td>
-						<td><?php echo $city ?></td>
-					</tr>
-					<tr>
-						<td>Country</td>
-						<td><?php echo $country ?></td>
-					</tr>
-					<tr>
-						<td>Manager's Name</td>
-						<td><?php echo $managerName ?></td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		
-		<!-- Teams -->
-		<div class="row">
-			<div class="col-md-9">
-				<table class="table table-condensed table-bordered">
-					<tr>
-						<thead colspan="3" ><h3>Teams</h3></thead>
-					</tr>
-					<tr>
-						<th style="width:200px;">Team</th>
-						<th>Team Name</th>
-						<th>Role</th>
-					</tr>
-					
-					<tr>
-						<td>Agile Team</td>
-						<td><?php echo $agileTeamName ?></td>
-						<td><?php displayValues($role) ?></td>
-					</tr>
-					<tr>
-						<td>Agile Release Train</td>
-						<td><?php echo $agileReleaseTrainName ?></td>
-						<td class="disabled"></td>
-					</tr>
-					<tr>
-						<td>Solution Train</td>
-						<td><?php echo $solutionTrainName ?></td>
-						<td></td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		
-		<!-- Training -->
-		<div class="row">
-			<div class="col-md-9">
-				<table class="table table-condensed table-bordered">
-					<tr>
-						<thead colspan="2"><h3>Training</h3></thead>
-					</tr>
-					<tr>
-						<td style="width:200px;">Status</td>
-						<td><?php displayValues($status) ?></td>
-					</tr>
-					<tr>
-						<td>Course Name</td>
-						<td><?php displayValues($courseName) ?></td>
-					</tr>
-					<tr>
-						<td>Course Code</td>
-						<td><?php  displayValues($courseCode) ?></td>
-					</tr>
-					<tr>
-						<td>Trainer</td>
-						<td><?php  displayValues($trainer) ?></td>
-					</tr>
-					<tr>
-						<td>Dates</td>
-						<td><?php  displayValues($dates) ?></td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		
-	</div>
+		?>
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
