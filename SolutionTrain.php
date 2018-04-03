@@ -7,6 +7,12 @@ class SolutionTrain
 	{
 
 	}
+
+	public function querySolutionTrain()
+	{
+
+	}
+
 }
 
 
