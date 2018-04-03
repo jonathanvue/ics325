@@ -2,14 +2,10 @@
 <html>
 <head>
 	 <?PHP
-	    session_start();
-	    require('session_validation.php');
-		require('db_configuration.php');
-		require('Employee.php');
-		require('AgileTeams.php');
-		require('AgileReleaseTrain.php');
-		require('SolutionTrain.php');
-		require('ViewAgileTeams.php');
+    session_start();
+    require('session_validation.php');
+	require('db_configuration.php');
+	require('view.php');
     ?>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -49,146 +45,36 @@
 	</div>
 	
 	<!-- Primary content goes here -->
-	<?php
-		function displayValues(&$array) {
-			$array = array_unique($array);
-			
-			
-			if (count($_GET) == 0) //Creates a display message that no information was found.
-			{
-				return null;
-			}
-			else  //If parameters are present, then an appropriate Object can be created.
-			{
-				if (isset($_GET["id"]) && isset($_GET["type"]))
-				{
-					if($_GET["type"] === "EMP")
-					{
-						$sql = Employee::queryEmployee($_GET["id"], $_GET["type"]);
-					}
-					else if($_GET["type"] === "ART")
-					{
-						$sql = AgileReleaseTrain::queryEmployee($_GET["id"], $_GET["type"]);
-					}
-					else if($_GET["type"] === "AT")
-					{
-						$sql = AgileTeams::queryEmployee($_GET["id"], $_GET["type"]);
-					}
-					else if($_GET["type"] === "ST")
-					{
-						$sql = SolutionTrain::queryEmployee($_GET["id"], $_GET["type"]);
-					}
-				}
-			}
-					//$rows = $result->num_rows;
-			
-			// output data of each result
-			if ($result = run_sql($sql))
-			{
-				while ($queryObject = $result->fetch_object())
-				{
-					/*
-					* If URL params don't include ?type=###&id=#### then this is default display 
-					* otherwise an object is created based upon the type of table needed
-					*/
-					/*
-					if(count($_GET) == 0)
-					{
-						return $employee = new Employee($queryObject);
-					}
-					*/
-					if($_GET["type"] === "EMP")
-					{
-						return $employee = new Employee($queryObject);
-					}
-					else if($_GET["type"] === "ART")
-					{
-						return $tableObject = new AgileReleaseTrain($queryObject);
-					}
-					else if($_GET["type"] === "AT")
-					{
-						return $tableObject = new AgileTeams($queryObject);
-					}
-					else if($_GET["type"] === "ST")
-					{
-						return $tableObject = new SolutionTrain($queryObject);
-					}
-
-					/*
-					$role[] = $row["role"];
-					$empNbr = $result["employee_nbr"];
-					$firstName = $result["first_name"];
-					$lastName = $result["last_name"];
-					$emailAddress = $row["email_address"];
-					$city = $row["city"];
-					$country = $row["country"];
-					$managerName = $row["manager_name"];
-
-					$agileTeamName = $row["at_name"];
-					$agileReleaseTrainName = $row["art_name"];
-					$solutionTrainName = $row["st_name"];
-
-
-
-					$status[] = $row["status"];
-					$courseName[] = $row["course_name"];
-					$courseCode[] = $row["course_code"];
-					$trainer[] = $row["trainer"];
-					$dates[] = $row["dates"];
-					*/
-				}
-			}
-			
-			$result->close();
-
-
+	<?php 
+		$type = $id = '';
+	
+		// Get params from url
+		if (isset($_GET["id"])) {
+			$id = strtolower($_GET["id"]);
+		} 
+		
+		if (isset($_GET["type"])) {
+			$type = strtolower($_GET["type"]);
+		}
+				
+		// Query type check
+		switch($type){
+			case 'emp':
+				emp_query($id);
+				break;
+			case 'at':
+				at_query($id);
+				break;
+			case 'art':
+				art_query($id);
+				break;
+			case 'st':
+				st_query($id);
+				break;
 		}
 	?>
-	<?php
-		$empNbr = $firstName = $lastName = $emailAddress = $city = $country = $managerName = $employeeType = '';
-		$agileTeamName = $agileReleaseTrainName = $solutionTrainName = '';
-		$role = $status = $courseName = $courseCode = $trainer = $dates = array();
-		$type = $id = $rows = '';
-		
 
-	?>
-
-	<!-- HTML for displaying Objects. Use switch or if statement with class type.
-	<div class="container-fluid buffer">
-		<?php
-			//If commenting out this div statement /**/ out the variable contained in here.
-			/*
-			$emp = createEmployee();
-			$view = new ViewAgileTeams($emp);
-			$view->displayHTML($emp);
-			*/
-		?>
-	</div>-->
-
-
-	<!-- Displays the tables with no gap between the navbar menu items and the first table header -->
-		<?php
-			$emp = createEmployee();
-
-			if($emp instanceof Employee)
-			{
-				$emp->displayHTML();
-			}
-			elseif($emp instanceof AgileTeams)
-			{
-
-			}
-			elseif($emp instanceof AgileReleaseTrain)
-			{
-				$emp->displayHTML();
-			}
-			else
-			{
-				echo '<body><div class="container-fluid buffer"><strong>No Information Found</strong></div></body>';
-			}
-
-		?>
-
+	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
