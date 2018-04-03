@@ -83,6 +83,7 @@
 		$(document).ready(function () {
 
 			$('#info').DataTable();
+			$('#info2').DataTable();
 
 		});
 
