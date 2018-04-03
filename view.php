@@ -17,16 +17,7 @@ function createObject()
 {
 	$tableObject;
 	$sql;
-	
-	/*if (isset($_GET['type'])) {
-		$type = $_GET['type'];
-	}*/
-			
-	/*
-	* $sql = will need to be changed to their respective classes. Employee is used or most of them 
-	* as a default until the actual queries are written.
-	* 
-	*/
+
 	if (count($_GET) == 0) //Creates a display message that no information was found.
 	{
 		return null;
@@ -45,24 +36,23 @@ function createObject()
 			}
 			else if($_GET["type"] === "AT")
 			{
-				$sql = Employee::queryEmployee($_GET["id"], $_GET["type"]); //Change to queryAgileTeam
+				$sql = Employee::queryEmployee($_GET["id"], $_GET["type"]); //Change to queryAgileTeam once implemented
 			}
 			else if($_GET["type"] === "ST")
 			{
-				$sql = Employee::queryEmployee($_GET["id"], $_GET["type"]);
+				$sql = Employee::queryEmployee($_GET["id"], $_GET["type"]); //Change to querySolutionTrain once implemented
 			}
 		}
 	}
-	//$rows = $result->num_rows;
 
-	// output data of each result
+	// Create Object from Query data and return it.
 	if ($result = run_sql($sql))
 	{
 		while ($queryObject = $result->fetch_object())
 		{
 			if($_GET["type"] === "EMP")
 			{
-				return $employee = new Employee($queryObject);
+				return $tableObject = new Employee($queryObject);
 			}
 			else if($_GET["type"] === "ART")
 			{
@@ -76,58 +66,50 @@ function createObject()
 			{
 				return $tableObject = new SolutionTrain($queryObject);
 			}
-
-			/*
-			$role[] = $row["role"];
-			$empNbr = $result["employee_nbr"];
-			$firstName = $result["first_name"];
-			$lastName = $result["last_name"];
-			$emailAddress = $row["email_address"];
-			$city = $row["city"];
-			$country = $row["country"];
-			$managerName = $row["manager_name"];
-			$agileTeamName = $row["at_name"];
-			$agileReleaseTrainName = $row["art_name"];
-			$solutionTrainName = $row["st_name"];
-
-
-			$status[] = $row["status"];
-			$courseName[] = $row["course_name"];
-			$courseCode[] = $row["course_code"];
-			$trainer[] = $row["trainer"];
-			$dates[] = $row["dates"];
-			*/
+			else
+			{
+				return null;
+			}
 		}
 	}
 
 	$result->close();
 }
 
-$emp = createObject();
+	function displayObject($emp)
+	{
+		if($emp instanceof Employee)
+		{
+			EmployeeView::instance()->displayHTML($emp);
+		}
+		elseif($emp instanceof AgileTeam)
+		{
+			AgileTeamView::instance()->displayHTML($emp);
+		}
+		elseif($emp instanceof SolutionTrain)
+		{
+			SolutionTrainView::instance()->displayHTML($emp);
+		}
+		elseif($emp instanceof AgileReleaseTrain)
+		{
+			AgileReleaseTrainView::instance()->displayHTML($emp);
+		}
+		else //No information retrieved
+		{
+			echo '<body><div class="container-fluid buffer"><strong>No Information Found</strong></div></body>';
+		}
+	}
 
-if($emp instanceof Employee)
-{
-	EmployeeView::instance()->displayHTML($emp);
-}
-elseif($emp instanceof AgileTeam)
-{
-	AgileTeamView::instance()->displayHTML($emp);
-}
-elseif($emp instanceof SolutionTrain)
-{
-	SolutionTrainView::instance()->displayHTML($emp);
-}
-elseif($emp instanceof AgileReleaseTrain)
-{
-	AgileReleaseTrainView::instance()->displayHTML($emp);
-}
-else
-{
-	echo '<body><div class="container-fluid buffer"><strong>No Information Found</strong></div></body>';
-}
+/**
+* Runner for the page. An object type is taken from the URL type= parameter and then queried for the 
+* propper information to populate it. Then the Object is created and passed back. It is then displayed
+*/
+$emp = createObject();
+displayObject($emp);
+
 ?>
 
-
+<!-- Start of the HTML -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -153,8 +135,6 @@ else
 	<link rel="stylesheet" href="./styles/navbar_helper.css">
 </head>
 <body>
-    <!-- < ?PHP echo getTopNav(); ?> -->
-	
 	<!-- Side navigation to be placed into -->
 	<div class="sideNav text-center">
 		<div class="sideMenu">
@@ -168,8 +148,6 @@ else
 		</div>
 	</div>
 	
-	<!-- Primary content goes here -->
-	
 	<!-- HTML for displaying Objects. Use switch or if statement with class type.
 	<div class="container-fluid buffer">
 		<?php
@@ -182,21 +160,14 @@ else
 		?>
 	</div>-->
 
-
-	<!-- Displays the tables with no gap between the navbar menu items and the first table header -->
-
-
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
 	<script type="text/javascript">
-
-		$(document).ready(function () {
-
+		$(document).ready(function ()
+		{
 			$('#info').DataTable();
-
 		});
-
 	</script>
 </body>
 </html>
