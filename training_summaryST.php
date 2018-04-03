@@ -346,41 +346,7 @@ SELECT team_id
 		<div class="row">
 			<div class="col-md-9">
 				<table class="table table-condensed table-bordered">
-				<?php 
-				$sql = "SELECT e.first_name, 
-e.last_name, 
-   e.email_address,
-m.role,
-   tc.course_name,
-   CONCAT(e.city, ', ', e.country) AS location
-FROM employees e
-JOIN membership m ON e.employee_nbr = m.employee_nbr
-JOIN training_enrollment te ON (
-e.first_name = te.first_name AND
-   e.last_name = te.last_name AND
-   e.email_address = te.email
-   )
-JOIN training_calendar tc ON te.training_id = tc.training_id
-WHERE m.team_id IN (
-SELECT team_id 
-   FROM trains_and_teams
-   WHERE parent LIKE '%ST-100%'
-   )";
-   $result = run_sql($sql);
-		$rows = $result->num_rows;
-		
-		// output data of each row
-		if ($result->num_rows > 0) {
-			while ($row=$result->fetch_assoc()) {
 				
-				
-				$location[] = $row["location"];
-			}
-		}
-		
-		$result->close();
-				
-				?>
 				
 					<tr>
 						<thead colspan="2"><h3>SAFe Review Comments:</h3></thead>
@@ -397,7 +363,8 @@ SELECT team_id
 						<td><b>All are trained</b></td>
 						<td></td>
 					</tr>
-					<tr>
+				
+				<tr>
 						<td><b>Co-located</b></td>
 						<td><?php echo $location ?></td>
 					</tr>
