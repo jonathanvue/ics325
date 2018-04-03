@@ -32,11 +32,11 @@ final class SolutionTrainView
 							</tr>
 							<tr>
 								<td style="width:200px;">Team ID</td>
-								<td></td>
+								<td>'; echo $st->getTeamID(); echo '</td>
 							</tr>
 							<tr>
-								<td>Agile Release Train (ART) Name</td>
-								<td></td>
+								<td>Solution Train Name</td>
+								<td>'; echo $st->getSTName(); echo '</td>
 							</tr>
 						</table>
 					</div>
@@ -61,12 +61,12 @@ final class SolutionTrainView
 							</tr>
 							
 							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td>'; echo $st->getFirstName(); echo '</td>
+								<td>'; echo $st->getLastName(); echo '</td>
+								<td>'; echo $st->getEmailAddress(); echo '</td>
+								<td>'; echo $st->getRole(); echo '</td>
+								<td>'; echo $st->getCertifications(); echo '</td>
+								<td>'; echo $st->getLocationName(); echo '</td>
 							</tr>
 						</table>
 					</div>
@@ -90,12 +90,10 @@ final class SolutionTrainView
 							</tr>
 							
 							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td>'; echo $st->getTeamID(); echo '</td>
+								<td>'; echo $st->getSTName(); echo '</td>
+								<td>'; echo $st->getRelease(); echo '</td>
+								<td>'; echo $st->getProductOwner(); echo '</td>
 							</tr>
 						</table>
 					</div>
@@ -110,19 +108,19 @@ final class SolutionTrainView
 					</tr>
 					<tr>
 						<th style="width:200px;">Team Size</th>
-						<td></td>
+						<td>'; echo $st->getSize(); echo '</td>
 					</tr>
 					<tr>
 						<th>All Roles Filled</th>
-						<td></td>
+						<td>'; echo $st->getFilledRoles(); echo '</td>
 					</tr>
 					<tr>
 						<th>All Are Trained</th>
-						<td></td>
+						<td>'; echo $st->getTrained(); echo '</td>
 					</tr>
 					<tr>
 						<th>Co-Located</th>
-						<td></td>
+						<td>'; echo $st->getCoLocation(); echo '</td>
 					</tr>
 				</table>
 			</div>
