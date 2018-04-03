@@ -240,24 +240,24 @@
 					<tbody>
 					<?php
 						$sql = "SELECT e.first_name, 
-e.last_name, 
-   e.email_address,
-m.role,
-   tc.course_name,
-   CONCAT(e.city, ', ', e.country) AS location
-FROM employees e
-JOIN membership m ON e.employee_nbr = m.employee_nbr
-JOIN training_enrollment te ON (
-e.first_name = te.first_name AND
-   e.last_name = te.last_name AND
-   e.email_address = te.email
-   )
-JOIN training_calendar tc ON te.training_id = tc.training_id
-WHERE m.team_id IN (
-SELECT team_id 
-   FROM trains_and_teams
-   WHERE parent LIKE '%ST-100%'
-   )";
+						e.last_name, 
+						   e.email_address,
+						m.role,
+						   tc.course_name,
+						   CONCAT(e.city, ', ', e.country) AS location
+						FROM employees e
+						JOIN membership m ON e.employee_nbr = m.employee_nbr
+						JOIN training_enrollment te ON (
+						e.first_name = te.first_name AND
+						   e.last_name = te.last_name AND
+						   e.email_address = te.email
+						   )
+						JOIN training_calendar tc ON te.training_id = tc.training_id
+						WHERE m.team_id IN (
+						SELECT team_id 
+						   FROM trains_and_teams
+						   WHERE parent LIKE '%ST-100%'
+						   )";
 						$result = run_sql($sql);
 						
 						// output data of each
@@ -268,7 +268,7 @@ SELECT team_id
 									<td>" . $row["last_name"] . "</td>
 									<td>" . $row["email_address"] . "</td>
 									<td>" . $row["role"] . "</td>
-									<td>" . $row["role"] . "</td>
+									<td>" . $row["course_name"] . "</td>
 									<td>" . $row["location"] . "</td>
 								</tr>";
 						}
@@ -300,24 +300,24 @@ SELECT team_id
 					<tbody>
 					<?php
 						$sql = "SELECT e.first_name, 
-e.last_name, 
-   e.email_address,
-m.role,
-   tc.course_name,
-   CONCAT(e.city, ', ', e.country) AS location
-FROM employees e
-JOIN membership m ON e.employee_nbr = m.employee_nbr
-JOIN training_enrollment te ON (
-e.first_name = te.first_name AND
-   e.last_name = te.last_name AND
-   e.email_address = te.email
-   )
-JOIN training_calendar tc ON te.training_id = tc.training_id
-WHERE m.team_id IN (
-SELECT team_id 
-   FROM trains_and_teams
-   WHERE parent LIKE '%ST-100%'
-   )";
+							e.last_name, 
+							   e.email_address,
+							m.role,
+							   tc.course_name,
+							   CONCAT(e.city, ', ', e.country) AS location
+							FROM employees e
+							JOIN membership m ON e.employee_nbr = m.employee_nbr
+							JOIN training_enrollment te ON (
+							e.first_name = te.first_name AND
+							   e.last_name = te.last_name AND
+							   e.email_address = te.email
+							   )
+							JOIN training_calendar tc ON te.training_id = tc.training_id
+							WHERE m.team_id IN (
+							SELECT team_id 
+							   FROM trains_and_teams
+							   WHERE parent LIKE '%ST-100%'
+							   )";
 						$result = run_sql($sql);
 						
 						// output data of each
@@ -326,8 +326,6 @@ SELECT team_id
 								echo '<tr>
 									<td>' . $row["first_name"] . "</td>
 									<td>" . $row["last_name"] . "</td>
-									<td>" . $row["email_address"] . "</td>
-									<td>" . $row["role"] . "</td>
 									<td>" . $row["role"] . "</td>
 									<td>" . $row["location"] . "</td>
 								</tr>";
@@ -348,58 +346,188 @@ SELECT team_id
 				<table class="table table-condensed table-bordered">
 				<?php 
 				$sql = "SELECT e.first_name, 
-e.last_name, 
-   e.email_address,
-m.role,
-   tc.course_name,
-   CONCAT(e.city, ', ', e.country) AS location
-FROM employees e
-JOIN membership m ON e.employee_nbr = m.employee_nbr
-JOIN training_enrollment te ON (
-e.first_name = te.first_name AND
-   e.last_name = te.last_name AND
-   e.email_address = te.email
-   )
-JOIN training_calendar tc ON te.training_id = tc.training_id
-WHERE m.team_id IN (
-SELECT team_id 
-   FROM trains_and_teams
-   WHERE parent LIKE '%ST-100%'
-   )";
-   $result = run_sql($sql);
-		$rows = $result->num_rows;
-		
-		// output data of each row
-		if ($result->num_rows > 0) {
-			while ($row=$result->fetch_assoc()) {
+					e.last_name, 
+					   e.email_address,
+					m.role,
+					   tc.course_name,
+					   CONCAT(e.city, ', ', e.country) AS location
+					FROM employees e
+					JOIN membership m ON e.employee_nbr = m.employee_nbr
+					JOIN training_enrollment te ON (
+					e.first_name = te.first_name AND
+					   e.last_name = te.last_name AND
+					   e.email_address = te.email
+					   )
+					JOIN training_calendar tc ON te.training_id = tc.training_id
+					WHERE m.team_id IN (
+					SELECT team_id 
+					   FROM trains_and_teams
+					   WHERE parent LIKE '%ST-100%'
+					   )";
+				   $result = run_sql($sql);
+						$rows = $result->num_rows;
+						
+						// output data of each row
+						if ($result->num_rows > 0) {
+							while ($row=$result->fetch_assoc()) {
+								
+								
+								$location[] = $row["location"];
+					}
+				}
 				
-				
-				$location[] = $row["location"];
-			}
-		}
-		
-		$result->close();
+				$result->close();
 				
 				?>
 				
+				<?php
+				
+				// Solution Train Counts
+				$sql = "					
+					SELECT (
+						SELECT COUNT(team_id)
+						FROM membership
+						WHERE team_id LIKE '%ST-100%'
+						) st_team_members,
+						COUNT(*) total_team_members
+					FROM membership
+					WHERE team_id IN (
+						SELECT tt.team_id 
+						FROM trains_and_teams tt
+						JOIN trains_and_teams tt_st ON tt_st.team_id = tt.parent
+						WHERE (tt_st.team_id LIKE '%ST-100%'
+							OR tt_st.parent LIKE '%ST-100%'
+							)
+							
+						UNION
+
+						SELECT team_id
+						FROM trains_and_teams
+						WHERE team_id LIKE '%ST-100%'
+						)
+				";
+				
+				$result = run_sql($sql);
+					$rows = $result->num_rows;
+					
+					// output data of each row
+					if ($result->num_rows >0) {
+						while($row=$result->fetch_assoc()) {
+							$stSize = $row["st_team_members"];
+							$totalSize = $row["total_team_members"];
+						}
+					}
+				
+				$result->close();
+				
+				// Roles
+				$sql = "
+					SELECT MAX(role IS NULL) AS role_not_filled
+					FROM membership
+					WHERE team_id IN (
+						SELECT tt.team_id 
+						FROM trains_and_teams tt
+						JOIN trains_and_teams tt_st ON tt_st.team_id = tt.parent
+						WHERE (tt_st.team_id LIKE '%ST-100%'
+							OR tt_st.parent LIKE '%ST-100%'
+							)
+							
+						UNION
+
+						SELECT team_id
+						FROM trains_and_teams
+						WHERE team_id LIKE '%ST-100%'
+					)";
+				
+				$result = run_sql($sql);
+					$rows = $result->num_rows;
+					
+					// output data of each row
+					if ($result->num_rows >0) {
+						while($row=$result->fetch_assoc()) {
+							$isRoleNotFilled = $row["role_not_filled"];
+						}
+					}
+				
+				$result->close();
+				
+				// Trained
+				$sql = "
+					SELECT 
+						CASE
+							WHEN COUNT(*) > 0 THEN 0
+							ELSE 1
+						END AS all_trained
+					FROM training_calendar tc
+					JOIN training_enrollment te ON tc.training_id = te.training_id
+					JOIN membership m ON (
+						m.first_name = te.first_name AND
+						m.last_name = te.last_name
+						)
+					WHERE m.team_id IN (
+						SELECT tt.team_id 
+						FROM trains_and_teams tt
+						JOIN trains_and_teams tt_st ON tt_st.team_id = tt.parent
+						WHERE (tt_st.team_id LIKE '%ST-100%'
+							OR tt_st.parent LIKE '%ST-100%'
+							)
+							
+						UNION
+
+						SELECT team_id
+						FROM trains_and_teams
+						WHERE team_id LIKE '%ST-100%'
+						) 
+					AND status != 'Done';
+					";
+				
+				$result = run_sql($sql);
+					$rows = $result->num_rows;
+					
+					// output data of each row
+					if ($result->num_rows >0) {
+						while($row=$result->fetch_assoc()) {
+							$allTrained = $row["all_trained"];
+						}
+					}
+				
+				$result->close();
+				
+				
+				// Co-located
+				
+				
+				?>
 					<tr>
 						<thead colspan="2"><h3>SAFe Review Comments:</h3></thead>
 					</tr>
 					<tr>
 						<td style="width:200px;"><b>Team Size</b></td>
-						<td></td>
+						<td><?php echo $stSize . ' (at ST), ' . $totalSize . ' (all Agile Teams combined)'?></td>
 					</tr>
 					<tr>
 						<td><b>All Roles Filled</b></td>
-						<td></td>
+						<td>
+							<?php 
+								if($isRoleNotFilled == 0) {
+									echo 'Yes';
+								} else {
+									echo 'No';
+								}
+							?>
+							</td>
 					</tr>
 					<tr>
 						<td><b>All are trained</b></td>
-						<td></td>
+						<td>
+							<?php 
+								echo ($allTrained == 0? 'No': 'Yes');
+							?>
+						</td>
 					</tr>
 					<tr>
 						<td><b>Co-located</b></td>
-						<td><?php echo $location ?></td>
+						<td></td>
 					</tr>
 				</table>
 			</div>
