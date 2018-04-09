@@ -2,6 +2,85 @@
 	//require('db_configuration.php');
 	
 	/**
+	* search_query - provides HTML template for a search query.
+	* @param: $name - an employee name
+	*/
+	function search_query($name) {
+		$startDatatableHTML = '<div class="container-fluid buffer">
+			<!-- Search -->
+			<div class="row">
+				<div class="col-md-9">
+					<h2>Search Page</h2>
+						<table id="info" class="datatable table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>First Name</th>
+									<th>Last Name</th>
+									<th>Email</th>
+									<th>City</th>
+									<th>Country</th>
+									<th>Status</th>
+									<th>Primary Team</th>
+								</tr>
+							</thead>
+							<tbody>';
+		
+		$middleDatatableHTML = '';
+		
+		$endDatatableHTML = '<tfoot></tfoot>
+				</tbody>
+			</table>';
+			
+		// Information query
+		if(empty($name)) {
+			$sql = "SELECT e.employee_nbr AS id,
+					e.first_name,
+					e.last_name,
+					e.email_address AS email,
+					e.city,
+					e.country,
+					e.status,
+					m.team_name AS primary_team
+				FROM employees e
+				JOIN membership m ON m.employee_nbr = e.employee_nbr;";
+		} else {
+			$sql = "SELECT e.employee_nbr AS id,
+					e.first_name,
+					e.last_name,
+					e.email_address AS email,
+					e.city,
+					e.country,
+					e.status,
+					m.team_name AS primary_team
+				FROM employees e
+				JOIN membership m ON m.employee_nbr = e.employee_nbr
+				WHERE e.first_name LIKE '%".$name."%';";
+		}
+		
+		$result = run_sql($sql);
+		
+		// Build table string
+		
+		if($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) {
+				$middleDatatableHTML .= '<tr>
+						<td><a href="./training_summary.php?type=emp&id='.$row["id"].'">' . $row["id"] . "</a></td>
+						<td>" . $row["first_name"] . "</td>
+						<td>" . $row["last_name"] . "</td>
+						<td>" . $row["email"] . "</td>
+						<td>" . $row["city"] . "</td>
+						<td>" . $row["country"] . "</td>
+						<td>" . $row["status"] . "</td>
+						<td>" . $row["primary_team"] . "</td>
+					</tr>";
+			}
+		}
+		
+		// Output HTML string
+		echo $startDatatableHTML . $middleDatatableHTML .$endDatatableHTML;
+	}
+	/**
 	* emp_query - provides HTML template for an employee query.
 	* @param: $id - an employee id
 	*/
