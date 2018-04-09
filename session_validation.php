@@ -49,7 +49,7 @@
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image8.png" />Help</a></li>
 						</ul>
-						<form class="navbar-form navbar-right" action="/ics325/training_summary.php?type=" method="post">
+						<form class="navbar-form navbar-right" action="/ics325/view.php?type=" method="post">
 							<div class="form-group">
 								<input type="text" class="form-control" placeholder="Search">
 							</div>
@@ -77,7 +77,7 @@
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image8.png" />Help</a></li>
 						</ul>
-						<form class="navbar-form navbar-right" action="/ics325/training_summary.php?type=" method="post">
+						<form class="navbar-form navbar-right" action="/ics325/view.php?type=" method="post">
 							<div class="form-group">
 								<input type="text" class="form-control" placeholder="Search">
 							</div>
@@ -105,7 +105,7 @@
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image8.png" />Help</a></li>
 						</ul>
-						<form class="navbar-form navbar-right" action="/ics325/training_summary.php?type=" method="post">
+						<form class="navbar-form navbar-right" action="/ics325/view.php?type=" method="post">
 							<div class="form-group">
 								<input type="text" name="type" id="type" class="form-control" placeholder="Search">
 							</div>

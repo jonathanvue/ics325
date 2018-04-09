@@ -5,7 +5,7 @@ class SolutionTrain
 	private $first_name;
 	private $last_name;
 	private $email_address;
-	private $location
+	private $location;
 	private $st_name;
 	
 	private $team_id;
@@ -93,7 +93,6 @@ class SolutionTrain
 		return $this->release;
 	}
 	
-	}
 
 	public static function queryEmployee($id, $type)
 	{
