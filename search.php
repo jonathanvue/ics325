@@ -43,11 +43,6 @@
 		echo '<pre>'.print_r($name).'</pre>';
 		search_query($name);
 	?>		
-	<div class="container-fluid buffer">
-		<h1>This is the default landing page<p><small>Work in progress</small><p></h1>
-		
-		
-	</div>
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
