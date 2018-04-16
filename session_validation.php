@@ -30,6 +30,12 @@
 	 */
 	function getTopNav() {
 		$topNav = "";
+		$name = '';
+			
+		if(isset($_GET["name"])){
+			$name = $_GET["name"];
+		}
+		
 		if (adminSessionExists()) {
 			$topNav = '
 				<nav class="navbar navbar-fixed-top fill" role="navigation">				
@@ -105,9 +111,9 @@
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image8.png" />Help</a></li>
 						</ul>
-						<form class="navbar-form navbar-right">
+						<form class="navbar-form navbar-right" action="/SAFe_explorer/search.php?' . $name .' method="post">
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Search">
+								<input type="text" name="name" class="form-control" placeholder="Search">
 							</div>
 							<button type="submit" class="btn btn-default">Submit</button>
 						</form>
