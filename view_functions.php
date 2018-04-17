@@ -87,8 +87,8 @@
 	function emp_query($id) {
 		$sql = $result = $row = '';
 		$empNbr = $firstName = $lastName = $emailAddress = $city = $country = '';
-		$managerName = $agileTeamName = $agileReleaseTrainName = $solutionTrainName = '';
-		$role = $status = $courseName = $courseCode = $trainer = $dates = array();
+		$managerName = '';
+		$role = $status = $agileTeamID = $agileReleaseTrainID =$solutionTrainID = $agileTeamName = $agileReleaseTrainName = $solutionTrainName = $courseName = $courseCode = $trainer = $dates = array();
 		
 		if(empty($id)) {
 			$sql = "SELECT e.employee_nbr,
@@ -110,16 +110,20 @@
 			FROM employees e
 			LEFT OUTER JOIN employees m ON e.managers_nbr = m.employee_nbr
 			LEFT OUTER JOIN (
-				SELECT m.employee_nbr,
-					m.role, 
+				SELECT employee_nbr,
+					role,
+					tt_at.team_id AS at_id,
 					tt_at.name AS at_name, 
+					tt_art.team_id AS art_id,
 					tt_art.name AS art_name, 
+					tt_st.team_id AS st_id,
 					tt_st.name AS st_name
 				FROM trains_and_teams tt_at
 				JOIN trains_and_teams tt_art ON tt_at.parent = tt_art.team_id
 				JOIN trains_and_teams tt_st ON tt_art.parent = tt_st.team_id
-				LEFT OUTER JOIN membership m ON tt_at.team_id = m.team_id) mt
-				ON e.employee_nbr = mt.employee_nbr
+				JOIN membership m ON (m.team_id = tt_at.team_id
+					OR m.team_id = tt_art.team_id
+					OR m.team_id = tt_st.team_id)
 			LEFT OUTER JOIN (
 				SELECT te.first_name, 
 					te.last_name,
@@ -147,8 +151,11 @@
 				e.country, 
 				CONCAT(m.first_name, ' ', m.last_name) AS manager_name,
 				mt.role,
+				mt.at_id,
 				mt.at_name,
+				mt.art_id,
 				mt.art_name,
+				mt.st_id,
 				mt.st_name,
 				tec.status,
 				tec.course_name,
@@ -158,16 +165,21 @@
 			FROM employees e
 			LEFT OUTER JOIN employees m ON e.managers_nbr = m.employee_nbr
 			LEFT OUTER JOIN (
-				SELECT m.employee_nbr,
-					m.role, 
+				SELECT employee_nbr,
+					role,
+					tt_at.team_id AS at_id,
 					tt_at.name AS at_name, 
+					tt_art.team_id AS art_id,
 					tt_art.name AS art_name, 
+					tt_st.team_id AS st_id,
 					tt_st.name AS st_name
 				FROM trains_and_teams tt_at
 				JOIN trains_and_teams tt_art ON tt_at.parent = tt_art.team_id
 				JOIN trains_and_teams tt_st ON tt_art.parent = tt_st.team_id
-				LEFT OUTER JOIN membership m ON tt_at.team_id = m.team_id) mt
-				ON e.employee_nbr = mt.employee_nbr
+				JOIN membership m ON (m.team_id = tt_at.team_id
+					OR m.team_id = tt_art.team_id
+					OR m.team_id = tt_st.team_id)
+				) mt ON e.employee_nbr = mt.employee_nbr
 			LEFT OUTER JOIN (
 				SELECT te.first_name, 
 					te.last_name,
@@ -200,9 +212,12 @@
 				$city = $row["city"];
 				$country = $row["country"];
 				$managerName = $row["manager_name"];
-				$agileTeamName = $row["at_name"];
-				$agileReleaseTrainName = $row["art_name"];
-				$solutionTrainName = $row["st_name"];
+				$agileTeamID[] = $row["at_id"];
+				$agileTeamName[] = $row["at_name"];
+				$agileReleaseTrainID[] = $row["art_id"];
+				$agileReleaseTrainName[] = $row["art_name"];
+				$solutionTrainID[] = $row["st_id"];
+				$solutionTrainName[] = $row["st_name"];
 				$role[] = $row["role"];
 				$status[] = $row["status"];
 				$courseName[] = $row["course_name"];
@@ -267,17 +282,17 @@
 						
 						<tr>
 							<td>Agile Team</td>
-							<td>'.$agileTeamName.'</td>
+							'.employeeTable($agileTeamID, $agileTeamName, "AT").'
 							<td>'.displayValues($role).'</td>
 						</tr>
 						<tr>
 							<td>Agile Release Train</td>
-							<td>'.$agileReleaseTrainName.'</td>
+							'.employeeTable($agileReleaseTrainID, $agileReleaseTrainName, "ART").'
 							<td class="disabled"></td>
 						</tr>
 						<tr>
 							<td>Solution Train</td>
-							<td>'.$solutionTrainName.'</td>
+							'.employeeTable($solutionTrainID, $solutionTrainName, "ST").'
 							<td></td>
 						</tr>
 					</table>
@@ -348,14 +363,23 @@
 		
 		// Information query
 		if(empty($id)) {
-			$sql = "SELECT tt_at.team_id, tt_at.name AS name_at, tt_art.name AS name_art, tt_st.name AS name_st 
+			$sql = "SELECT tt_at.team_id, 
+					tt_at.name AS name_at, 
+					tt_art.team_id AS art_id,
+					tt_art.name AS name_art,
+					tt_st.team_id AS st_id,
+					tt_st.name AS name_st 
 				FROM trains_and_teams tt_at
 				JOIN trains_and_teams tt_art ON tt_at.parent = tt_art.team_id
 				JOIN trains_and_teams tt_st ON tt_art.parent = tt_st.team_id
-				ORDER BY tt_at.team_id
 				LIMIT 1";
 		} else {
-			$sql = "SELECT tt_at.team_id, tt_at.name AS name_at, tt_art.name AS name_art, tt_st.name AS name_st 
+			$sql = "SELECT tt_at.team_id, 
+					tt_at.name AS name_at, 
+					tt_art.team_id AS art_id,
+					tt_art.name AS name_art,
+					tt_st.team_id AS st_id,
+					tt_st.name AS name_st 
 				FROM trains_and_teams tt_at
 				JOIN trains_and_teams tt_art ON tt_at.parent = tt_art.team_id
 				JOIN trains_and_teams tt_st ON tt_art.parent = tt_st.team_id
@@ -367,15 +391,18 @@
 		$row = $result->num_rows;
 		
 		while ($row = $result->fetch_assoc()){
+			$agileTeamID = $row["team_id"];
 			$agileTeamName = $row["name_at"];
+			$agileReleaseTrainID = $row["art_id"];
 			$agileReleaseTrainName = $row["name_art"];
+			$solutionTrainID = $row["st_id"];
 			$solutionTrainName = $row["name_st"];
 		}
 		
 		// Team members query
 		if(empty($id)) {
 			$sql = "
-				SELECT 
+				SELECT e.employee_nbr,
 					m.team_id,
 					m.first_name, 
 					m.last_name, 
@@ -398,7 +425,8 @@
 				LIMIT 1;";
 		} else {
 			$sql = "
-				SELECT m.team_id, 
+				SELECT e.employee_nbr,
+					m.team_id, 
 					m.first_name, 
 					m.last_name, 
 					e.email_address, 
@@ -430,8 +458,8 @@
 			$allCerts[] = $row["certification"];
 			
 			$startDatatableHTML .= '<tr>';
-			$startDatatableHTML .= '<td>'.$row["first_name"].'</td>';
-			$startDatatableHTML .= '<td>'.$row["last_name"].'</td>';
+			$startDatatableHTML .= '<td><a href="view.php?type=emp&id='.$row["employee_nbr"].'">'.$row["first_name"].'</a></td>';
+			$startDatatableHTML .= '<td><a href="view.php?type=emp&id='.$row["employee_nbr"].'">'.$row["last_name"].'</a></td>';
 			$startDatatableHTML .= '<td>'.$row["email_address"].'</td>';
 			$startDatatableHTML .= '<td>'.$row["role"].'</td>';
 			$startDatatableHTML .= '<td>'.$row["certification"].'</td>';
@@ -484,11 +512,11 @@
 					</tr>
 					<tr>
 						<td>On Agile Release Train</td>
-						<td>'.$agileReleaseTrainName.'</td>
+						<td><a href="view.php?type=ART&id='.$agileReleaseTrainID.'">'.$agileReleaseTrainName.'</a></td>
 					</tr>
 					<tr>
 						<td>On Solution Train</td>
-						<td>'.$solutionTrainName.'</td>
+						<td><a href="view.php?type=ST&id='.$solutionTrainID.'">'.$solutionTrainName.'</td>
 					</tr>
 				</table>
 			</div>
@@ -572,13 +600,18 @@
 			
 		// Information query
 		if(empty($id)) {
-			$sql = "SELECT tt_art.team_id, tt_art.name AS name_art, tt_st.name AS name_st 
+			$sql = "SELECT tt_art.team_id AS art_id,
+					tt_art.name AS name_art,
+					tt_st.team_id AS st_id,
+					tt_st.name AS name_st 
 				FROM trains_and_teams tt_art
 				JOIN trains_and_teams tt_st ON tt_art.parent = tt_st.team_id
-				ORDER BY tt_art.team_id
 				LIMIT 1";
 		} else {
-			$sql = "SELECT tt_art.team_id, tt_art.name AS name_art, tt_st.name AS name_st 
+			$sql = "SELECT tt_art.team_id AS art_id,
+					tt_art.name AS name_art,
+					tt_st.team_id AS st_id,
+					tt_st.name AS name_st 
 				FROM trains_and_teams tt_art
 				JOIN trains_and_teams tt_st ON tt_art.parent = tt_st.team_id
 				WHERE tt_art.team_id = '".$id."'";
@@ -589,14 +622,16 @@
 		$row = $result->num_rows;
 		
 		while ($row = $result->fetch_assoc()){
+			$agileReleaseTrainID = $row["art_id"];
 			$agileReleaseTrainName = $row["name_art"];
+			$solutionTrainID =$row["st_id"];
 			$solutionTrainName = $row["name_st"];
 		}
 		
 		// Team members query
 		if(empty($id)) {
 			$sql = "
-				SELECT 
+				SELECT e.employee_nbr,
 					m.team_id,
 					m.first_name, 
 					m.last_name, 
@@ -619,7 +654,8 @@
 				LIMIT 1;";
 		} else {
 			$sql = "
-				SELECT m.team_id, 
+				SELECT e.employee_nbr,
+					m.team_id, 
 					m.first_name, 
 					m.last_name, 
 					e.email_address, 
@@ -651,8 +687,8 @@
 			$allCerts[] = $row["certification"];
 			
 			$startDatatableHTML_teamMembers .= '<tr>';
-			$startDatatableHTML_teamMembers .= '<td>'.$row["first_name"].'</td>';
-			$startDatatableHTML_teamMembers .= '<td>'.$row["last_name"].'</td>';
+			$startDatatableHTML_teamMembers .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["first_name"].'</a></td>';
+			$startDatatableHTML_teamMembers .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["last_name"].'</a></td>';
 			$startDatatableHTML_teamMembers .= '<td>'.$row["email_address"].'</td>';
 			$startDatatableHTML_teamMembers .= '<td>'.$row["role"].'</td>';
 			$startDatatableHTML_teamMembers .= '<td>'.$row["certification"].'</td>';
@@ -748,7 +784,7 @@
 					</tr>
 					<tr>
 						<td style="width:200px;"> Team ID</td>
-						<td>'.$teamID.'</td>
+						<td>'.$agileReleaseTrainID.'</td>
 					</tr>
 					<tr>
 						<td>On Agile Release Train</td>
@@ -756,7 +792,7 @@
 					</tr>
 					<tr>
 						<td>On Solution Train</td>
-						<td>'.$solutionTrainName.'</td>
+						<td><a href="view.php?type=ST&id='.$solutionTrainID.'">'.$solutionTrainName.'</a></td>
 					</tr>
 				</table>
 			</div>
@@ -863,7 +899,7 @@
 		// Team members query
 		if(empty($id)) {
 			$sql = "
-				SELECT 
+				SELECT e.employee_nbr,
 					m.team_id,
 					m.first_name, 
 					m.last_name, 
@@ -886,7 +922,8 @@
 				LIMIT 1;";
 		} else {
 			$sql = "
-				SELECT m.team_id, 
+				SELECT e.employee_nbr,
+					m.team_id, 
 					m.first_name, 
 					m.last_name, 
 					e.email_address, 
@@ -918,8 +955,8 @@
 			$allCerts[] = $row["certification"];
 			
 			$startDatatableHTML_teamMembers .= '<tr>';
-			$startDatatableHTML_teamMembers .= '<td>'.$row["first_name"].'</td>';
-			$startDatatableHTML_teamMembers .= '<td>'.$row["last_name"].'</td>';
+			$startDatatableHTML_teamMembers .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["first_name"].'</a></td>';
+			$startDatatableHTML_teamMembers .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["last_name"].'</a></td>';
 			$startDatatableHTML_teamMembers .= '<td>'.$row["email_address"].'</td>';
 			$startDatatableHTML_teamMembers .= '<td>'.$row["role"].'</td>';
 			$startDatatableHTML_teamMembers .= '<td>'.$row["certification"].'</td>';
@@ -1074,5 +1111,22 @@
 			$str .= $v."<br>";
 		}
 		return $str;
+	}
+	
+	/**
+	*
+	*/
+	function employeeTable(&$ids, &$names, $type) {
+		$html = '';
+		$i=0;
+		$length = count($ids);
+
+		$html .= '<td>';
+		for( $i; $i < $length; $i++) {
+			$html .= '<a href="view.php?type='.$type.'&id='.$ids[$i].'">'.$names[$i].'</a><br>';
+		}
+		
+		$html .= '</td>';
+		return $html;
 	}
 ?>
