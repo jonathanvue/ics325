@@ -5,7 +5,7 @@
     session_start();
     require('session_validation.php');
 	require('db_configuration.php');
-	require('view_functions.php');
+	require('view.php');
     ?>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -33,39 +33,16 @@
 	<?php echo getTopNav(); ?>
 
 	<!-- Primary content goes here -->
-	<?php 
-		$type = $id = '';
+	<?php
+		$name = '';
 	
-		// Get params from url
-		if (isset($_GET["id"])) {
-			$id = strtolower($_GET["id"]);
+		if (isset($_GET["name"])) {
+			$name = strtolower($_GET["name"]);
 		} 
 		
-		if (isset($_GET["type"])) {
-			$type = strtolower($_GET["type"]);
-		}
-				
-		// Query type check
-		switch($type){
-			case 'emp':
-				emp_query($id);
-				break;
-			case 'at':
-				at_query($id);
-				break;
-			case 'art':
-				art_query($id);
-				break;
-			case 'st':
-				st_query($id);
-				break;
-			default:
-				// Stuff
-				break;
-		}
-		
-	?>
-
+		echo '<pre>'.print_r($name).'</pre>';
+		search_query($name);
+	?>		
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
