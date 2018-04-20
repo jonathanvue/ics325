@@ -5,7 +5,7 @@
     session_start();
     require('session_validation.php');
 	require('db_configuration.php');
-	require('view.php');
+	require('view_functions.php');
     ?>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
