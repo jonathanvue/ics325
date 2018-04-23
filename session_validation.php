@@ -1,33 +1,33 @@
 <?php
-	/**
-	 * Returns true if user has a valid
-	 * session else false
-	 */
-	function sessionExists() {
-		if ((isset($_SESSION['valid_user'])) && (($_SESSION['valid_user']) != null))  {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	/**
-	 * Returns true if user has a valid session
-	 * and if the user is an admin
-	 */
-	function adminSessionExists() {
-		if ((isset($_SESSION['valid_admin'])) && (($_SESSION['valid_admin']) != null)) {
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
-	/**
-	 * Generates topnav to display admin topnav
-	 * if admin is logged in else displays
-	 * normal navbar
-	 */
+  /**
+   * Returns true if user has a valid
+   * session else false
+   */
+  function sessionExists() {
+    if ((isset($_SESSION['valid_user'])) && (($_SESSION['valid_user']) != null))  {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  /**
+   * Returns true if user has a valid session
+   * and if the user is an admin
+   */
+  function adminSessionExists() {
+    if ((isset($_SESSION['valid_admin'])) && (($_SESSION['valid_admin']) != null)) {
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  /**
+   * Generates topnav to display admin topnav
+   * if admin is logged in else displays
+   * normal navbar
+   */
 	function getTopNav() {
 		$topNav = "";
 		$name = '';
