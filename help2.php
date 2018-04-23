@@ -42,7 +42,7 @@ if (!isset($_SESSION)) {
 		<h3>
 
 <?php
-
+//file
 $file_handle = fopen("help.html", "r");
 while (!feof($file_handle)) {
    $line = fgets($file_handle);
