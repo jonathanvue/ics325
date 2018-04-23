@@ -2,6 +2,7 @@
 session_start();
 require('session_validation.php');
 require('db_configuration.php');
+require('view_functions.php');
 require('Employee.php');
 require('AgileTeam.php');
 require('AgileTeamView.php');
@@ -113,12 +114,7 @@ displayObject($emp);
 <!DOCTYPE html>
 <html>
 <head>
-	 <?PHP
-   
-    require('session_validation.php');
-	require('db_configuration.php');
-	require('view_functions.php');
-    ?>
+	
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
