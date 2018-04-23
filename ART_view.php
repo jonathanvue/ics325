@@ -9,7 +9,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SAFe Explorer</title>
+    <title>View - ART</title>
 	
 	<!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -53,6 +53,7 @@
 			}
 		}
 	?>
+<!--
 	<?php
 		$empNbr = $firstName = $lastName = $emailAddress = $city = $country = $managerName = $employeeType = '';
 		$agileTeamName = $agileReleaseTrainName = $solutionTrainName = '';
@@ -128,6 +129,8 @@
 				e.country, 
 				CONCAT(m.first_name, ' ', m.last_name) AS manager_name,
 				mt.role,
+				mt.at_name,
+				mt.art_name,
 				mt.st_name,
 				tec.status,
 				tec.course_name,
@@ -177,28 +180,32 @@
 		// output data of each row
 		if ($result->num_rows > 0) {
 			while ($row=$result->fetch_assoc()) {
-				$empNbr = $row["employee_nbr"];
-				$firstName = $row["first_name"];
-				$lastName = $row["last_name"];
-				$emailAddress = $row["email_address"];
-				$city = $row["city"];
-				$country = $row["country"];
-				$managerName = $row["manager_name"];
-				$agileTeamName = $row["at_name"];
-				$agileReleaseTrainName = $row["art_name"];
-				$solutionTrainName = $row["st_name"];
-				$role[] = $row["role"];
-				$status[] = $row["status"];
-				$courseName[] = $row["course_name"];
-				$courseCode[] = $row["course_code"];
-				$trainer[] = $row["trainer"];
-				$dates[] = $row["dates"];
+				$empNbr = $row["team_id"];
+				$firstName = $row["art_name"];
+				$lastName = $row["solution_train"];
+				$emailAddress = $row["first_name"];
+				$city = $row["last_name"];
+				$country = $row["email"];
+				$managerName = $row["role"];
+				$agileTeamName = $row["certifications"];
+				$agileReleaseTrainName = $row["location"];
+
+
+				$solutionTrainName = $row["team_id"];
+				$role[] = $row["team_name"];
+				$status[] = $row["scrum_master"];
+				$courseName[] = $row["product_owner"];
+				$courseCode[] = $row["team_size"];
+				$trainer[] = $row["all_roles_filled"];
+				$dates[] = $row["all_are_trained"];
+				$colocated[] = $row["colocated"];
 			}
 		}
 		
 		$result->close();	
 		
 	?>
+-->
 	
 	<div class="container-fluid buffer">
 		<!-- Information -->
@@ -206,14 +213,18 @@
 			<div class="col-md-9">
 				<table class="table table-condensed table-bordered">
 					<tr>
-						<thead colspan="3" ><h3><br><br>Information:</h3></thead>
+						<thead colspan="2" ><h3>Information:</h3></thead>
 					</tr>
 					<tr>
-						<td style="width:200px;"><b>Team ID</b></td>
+						<th style="width:200px;">Team ID</th>
 						<td></td>
 					</tr>
 					<tr>
-						<td><b>Agile Release Train (ART) Name</b></td>
+						<th>Agile Release Train (ART) Name</th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>On Solution Train</th>
 						<td></td>
 					</tr>
 				</table>
@@ -224,10 +235,9 @@
 		<div class="row">
 			<div class="col-md-9">
 				<table class="table table-condensed table-bordered">
-					<hr>
-					<h3>Team Members:</h3>
-					</hr>
-					<thead>
+					<tr>
+						<thead colspan="3" ><h3>Team Members (*): </h3></thead>
+					</tr>
 					<tr>
 						<th style="width:200px;">First Name</th>
 						<th>Last Name</th>
@@ -236,304 +246,70 @@
 						<th>Certifications</th>
 						<th>Location</th>
 					</tr>
-					</thead>
-					<tbody>
-					<?php
-						$sql = "SELECT e.first_name, 
-						e.last_name, 
-						   e.email_address,
-						m.role,
-						   tc.course_name,
-						   CONCAT(e.city, ', ', e.country) AS location
-						FROM employees e
-						JOIN membership m ON e.employee_nbr = m.employee_nbr
-						JOIN training_enrollment te ON (
-						e.first_name = te.first_name AND
-						   e.last_name = te.last_name AND
-						   e.email_address = te.email
-						   )
-						JOIN training_calendar tc ON te.training_id = tc.training_id
-						WHERE m.team_id IN (
-						SELECT team_id 
-						   FROM trains_and_teams
-						   WHERE parent LIKE '%ST-100%'
-						   )";
-						$result = run_sql($sql);
-						
-						// output data of each
-						if ($result->num_rows > 0) {
-							while ($row = $result->fetch_assoc()) {
-								echo '<tr>
-									<td>' . $row["first_name"] . "</td>
-									<td>" . $row["last_name"] . "</td>
-									<td>" . $row["email_address"] . "</td>
-									<td>" . $row["role"] . "</td>
-									<td>" . $row["course_name"] . "</td>
-									<td>" . $row["location"] . "</td>
-								</tr>";
-						}
-					} else {
-						echo "0 results";
-					}
-					$result->close();
-		?>
-					</tbody>
 					
-				</table>
-			</div>
-		</div>	
-		<!-- Participating ARTs -->
-		<div class="row">
-			<div class="col-md-9">
-				<table class="table table-condensed table-bordered">
-					<hr>
-						<h3>Participating Agile Release Trains (ARTs):</h3>
-					</hr>
-					<thead colspan="3" >
 					<tr>
-						<th style="width:200px;">Team ID</th>
-						<th>Team Name</th>
-						<th>Release Train Engineer (RTE)</th>
-						<th>Product Owner (PO)</th>
-					</tr>
-					</thead>
-					<tbody>
-					<?php
-						$sql = "SELECT e.first_name, 
-							e.last_name, 
-							   e.email_address,
-							m.role,
-							   tc.course_name,
-							   CONCAT(e.city, ', ', e.country) AS location
-							FROM employees e
-							JOIN membership m ON e.employee_nbr = m.employee_nbr
-							JOIN training_enrollment te ON (
-							e.first_name = te.first_name AND
-							   e.last_name = te.last_name AND
-							   e.email_address = te.email
-							   )
-							JOIN training_calendar tc ON te.training_id = tc.training_id
-							WHERE m.team_id IN (
-							SELECT team_id 
-							   FROM trains_and_teams
-							   WHERE parent LIKE '%ST-100%'
-							   )";
-						$result = run_sql($sql);
-						
-						// output data of each
-						if ($result->num_rows > 0) {
-							while ($row = $result->fetch_assoc()) {
-								echo '<tr>
-									<td>' . $row["first_name"] . "</td>
-									<td>" . $row["last_name"] . "</td>
-									<td>" . $row["role"] . "</td>
-									<td>" . $row["location"] . "</td>
-								</tr>";
-						}
-					} else {
-						echo "0 results";
-					}
-					$result->close();
-		?>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		
-		<!-- Comments -->
-		<div class="row">
-			<div class="col-md-9">
-				<table class="table table-condensed table-bordered">
-				<?php 
-				$sql = "SELECT e.first_name, 
-					e.last_name, 
-					   e.email_address,
-					m.role,
-					   tc.course_name,
-					   CONCAT(e.city, ', ', e.country) AS location
-					FROM employees e
-					JOIN membership m ON e.employee_nbr = m.employee_nbr
-					JOIN training_enrollment te ON (
-					e.first_name = te.first_name AND
-					   e.last_name = te.last_name AND
-					   e.email_address = te.email
-					   )
-					JOIN training_calendar tc ON te.training_id = tc.training_id
-					WHERE m.team_id IN (
-					SELECT team_id 
-					   FROM trains_and_teams
-					   WHERE parent LIKE '%ST-100%'
-					   )";
-				   $result = run_sql($sql);
-						$rows = $result->num_rows;
-						
-						// output data of each row
-						if ($result->num_rows > 0) {
-							while ($row=$result->fetch_assoc()) {
-								
-								
-								$location[] = $row["location"];
-					}
-				}
-				
-				$result->close();
-				
-				?>
-				
-				<?php
-				
-				// Solution Train Counts
-				$sql = "					
-					SELECT (
-						SELECT COUNT(team_id)
-						FROM membership
-						WHERE team_id LIKE '%ST-100%'
-						) st_team_members,
-						COUNT(*) total_team_members
-					FROM membership
-					WHERE team_id IN (
-						SELECT tt.team_id 
-						FROM trains_and_teams tt
-						JOIN trains_and_teams tt_st ON tt_st.team_id = tt.parent
-						WHERE (tt_st.team_id LIKE '%ST-100%'
-							OR tt_st.parent LIKE '%ST-100%'
-							)
-							
-						UNION
-
-						SELECT team_id
-						FROM trains_and_teams
-						WHERE team_id LIKE '%ST-100%'
-						)
-				";
-				
-				$result = run_sql($sql);
-					$rows = $result->num_rows;
-					
-					// output data of each row
-					if ($result->num_rows >0) {
-						while($row=$result->fetch_assoc()) {
-							$stSize = $row["st_team_members"];
-							$totalSize = $row["total_team_members"];
-						}
-					}
-				
-				$result->close();
-				
-				// Roles
-				$sql = "
-					SELECT MAX(role IS NULL) AS role_not_filled
-					FROM membership
-					WHERE team_id IN (
-						SELECT tt.team_id 
-						FROM trains_and_teams tt
-						JOIN trains_and_teams tt_st ON tt_st.team_id = tt.parent
-						WHERE (tt_st.team_id LIKE '%ST-100%'
-							OR tt_st.parent LIKE '%ST-100%'
-							)
-							
-						UNION
-
-						SELECT team_id
-						FROM trains_and_teams
-						WHERE team_id LIKE '%ST-100%'
-					)";
-				
-				$result = run_sql($sql);
-					$rows = $result->num_rows;
-					
-					// output data of each row
-					if ($result->num_rows >0) {
-						while($row=$result->fetch_assoc()) {
-							$isRoleNotFilled = $row["role_not_filled"];
-						}
-					}
-				
-				$result->close();
-				
-				// Trained
-				$sql = "
-					SELECT 
-						CASE
-							WHEN COUNT(*) > 0 THEN 0
-							ELSE 1
-						END AS all_trained
-					FROM training_calendar tc
-					JOIN training_enrollment te ON tc.training_id = te.training_id
-					JOIN membership m ON (
-						m.first_name = te.first_name AND
-						m.last_name = te.last_name
-						)
-					WHERE m.team_id IN (
-						SELECT tt.team_id 
-						FROM trains_and_teams tt
-						JOIN trains_and_teams tt_st ON tt_st.team_id = tt.parent
-						WHERE (tt_st.team_id LIKE '%ST-100%'
-							OR tt_st.parent LIKE '%ST-100%'
-							)
-							
-						UNION
-
-						SELECT team_id
-						FROM trains_and_teams
-						WHERE team_id LIKE '%ST-100%'
-						) 
-					AND status != 'Done';
-					";
-				
-				$result = run_sql($sql);
-					$rows = $result->num_rows;
-					
-					// output data of each row
-					if ($result->num_rows >0) {
-						while($row=$result->fetch_assoc()) {
-							$allTrained = $row["all_trained"];
-						}
-					}
-				
-				$result->close();
-				
-				
-				// Co-located
-				
-				
-				?>
-					<tr>
-						<thead colspan="2"><h3>SAFe Review Comments:</h3></thead>
-					</tr>
-					<tr>
-						<td style="width:200px;"><b>Team Size</b></td>
-						<td><?php echo $stSize . ' (at ST), ' . $totalSize . ' (all Agile Teams combined)'?></td>
-					</tr>
-					<tr>
-						<td><b>All Roles Filled</b></td>
-						<td>
-							<?php 
-								if($isRoleNotFilled == 0) {
-									echo 'Yes';
-								} else {
-									echo 'No';
-								}
-							?>
-							</td>
-					</tr>
-					<tr>
-						<td><b>All are trained</b></td>
-						<td>
-							<?php 
-								echo ($allTrained == 0? 'No': 'Yes');
-							?>
-						</td>
-					</tr>
-				
-				<tr>
-						<td><b>Co-located</b></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
 						<td></td>
 					</tr>
 				</table>
 			</div>
 		</div>
 		
+		<!-- Team Members -->
+		<div class="row">
+			<div class="col-md-9">
+				<table class="table table-condensed table-bordered">
+					<tr>
+						<thead colspan="3" ><h3>Participating Agile Teams (*): </h3></thead>
+					</tr>
+					<tr>
+						<th style="width:200px;">Team ID</th>
+						<th>Team Name</th>
+						<th>Scrum Master</th>
+						<th>Product Owner</th>
+					</tr>
+					
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+		<!-- SAFe Review Comments -->
+		<div class="row">
+			<div class="col-md-9">
+				<table class="table table-condensed table-bordered">
+					<tr>
+						<thead colspan="2" ><h3>SAFe Review Comments:</h3></thead>
+					</tr>
+					<tr>
+						<th style="width:200px;">Team Size</th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>All Roles Filled</th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>All Are Trained</th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>Co-Located</th>
+						<td></td>
+					</tr>
+				</table>
+			</div>
+		</div>
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>

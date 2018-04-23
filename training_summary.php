@@ -1,3 +1,115 @@
+<?php
+session_start();
+require('session_validation.php');
+require('db_configuration.php');
+require('Employee.php');
+require('AgileTeam.php');
+require('AgileTeamView.php');
+require('AgileReleaseTrain.php');
+require('SolutionTrain.php');
+require('ViewAgileTeams.php');
+require('EmployeeView.php');
+require('SolutionTrainView.php');
+require('AgileReleaseTrainView.php');
+echo getTopNav();
+
+function createObject()
+{
+	$tableObject;
+	$sql;
+
+	if (count($_GET) == 0) //Creates a display message that no information was found.
+	{
+		return null;
+	}
+	else  //If parameters are present, then an appropriate Object can be created.
+	{
+		if (isset($_GET["id"]) && isset($_GET["type"]))
+		{
+			if($_GET["type"] === "EMP")
+			{
+				$sql = Employee::queryEmployee($_GET["id"], $_GET["type"]);
+			}
+			else if($_GET["type"] === "ART")
+			{
+				$sql = AgileReleaseTrain::queryEmployee($_GET["id"], $_GET["type"]);
+			}
+			else if($_GET["type"] === "AT")
+			{
+				$sql = Employee::queryEmployee($_GET["id"], $_GET["type"]); //Change to queryAgileTeam once implemented
+			}
+			else if($_GET["type"] === "ST")
+			{
+				$sql = Employee::queryEmployee($_GET["id"], $_GET["type"]); //Change to querySolutionTrain once implemented
+			}
+		}
+	}
+
+	// Create Object from Query data and return it.
+	if ($result = run_sql($sql))
+	{
+		while ($queryObject = $result->fetch_object())
+		{
+			if($_GET["type"] === "EMP")
+			{
+				return $tableObject = new Employee($queryObject);
+			}
+			else if($_GET["type"] === "ART")
+			{
+				return $tableObject = new AgileReleaseTrain($queryObject);
+			}
+			else if($_GET["type"] === "AT")
+			{
+				return $tableObject = new AgileTeam($queryObject);
+			}
+			else if($_GET["type"] === "ST")
+			{
+				return $tableObject = new SolutionTrain($queryObject);
+			}
+			else
+			{
+				return null;
+			}
+		}
+	}
+
+	$result->close();
+}
+
+	function displayObject($emp)
+	{
+		if($emp instanceof Employee)
+		{
+			EmployeeView::instance()->displayHTML($emp);
+		}
+		elseif($emp instanceof AgileTeam)
+		{
+			AgileTeamView::instance()->displayHTML($emp);
+		}
+		elseif($emp instanceof SolutionTrain)
+		{
+			SolutionTrainView::instance()->displayHTML($emp);
+		}
+		elseif($emp instanceof AgileReleaseTrain)
+		{
+			AgileReleaseTrainView::instance()->displayHTML($emp);
+		}
+		else //No information retrieved
+		{
+			echo '<body><div class="container-fluid buffer"><strong>No Information Found</strong></div></body>';
+		}
+	}
+
+/**
+* Runner for the page. An object type is taken from the URL type= parameter and then queried for the 
+* propper information to populate it. Then the Object is created and passed back. It is then displayed
+*/
+$emp = createObject();
+displayObject($emp);
+
+?>
+
+<!-- Start of the HTML -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,8 +141,6 @@
 	<link rel="stylesheet" href="./styles/navbar_helper.css">
 </head>
 <body>
-    <!-- < ?PHP echo getTopNav(); ?> -->
-	<?php echo getTopNav(); ?>
 	<!-- Side navigation to be placed into -->
 	<div class="sideNav text-center">
 		<div class="sideMenu">
@@ -79,14 +189,12 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
 	<script type="text/javascript">
-
-		$(document).ready(function () {
-
+		$(document).ready(function ()
+		{
 			$('#info').DataTable();
 			$('#info2').DataTable();
 
 		});
-
 	</script>
 </body>
 </html>
