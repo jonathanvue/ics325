@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+	<html>
     <head><title>Help Document</title></head>
     <body>
 
@@ -7,36 +8,40 @@
    <P> Iteration 8</P>
 
  <p>1) Creating a file called view.php<br>  
- 	(this is the contract for all the pages). Have a file management system set up.<br> 
-	This takes the URL parameters.<br>
+ 	This is the contract for all the pages. Have a file management system set up.<br> 
+	This takes the URL parameters and invokes them.<br>
  	To create the page, use _GET["< urlVarName>"]<br>
-	 to get the variable in the URL.</P>
+	to get the variable in the URL.
+	Using the as a function file. The aim is to get the view working<br> 
+	Try to get the query to pull certain items when looping through teams and employees.</p>
 <p>2) Extend the support of searching AT, ART and ST.<br> 
 	You may want to break it out to another file where all the queries reside.<br>
 	That way it should increase readability*<br>
 	Support partial or full string match.<br>
-	One type of item = one table<br>
+	SupplyOne type of item = one table<br>
 	Multiple types = multiple tables.<br>
-	Use if else statements to figure out the tables to display</p>
+	Use if else statements to figure out the tables to display.</p>
 <p>3) Hyperlink should show the VIEW of that respective item.<br>
 	The names of the view and search should be switched to match and have<br>
 	those working as they should so they're linked properly.<br> 
 	For the use of an external hyperlink,<br>
-	This would be a primitive example: <br>
+	This would be a primitive PHP example: <br>
 	echo '< a href="http://www.website.com/page.html">Click here</ a>'.<br>  
-	For an internal link, 
+	For a PHP internal link, 
 	please use: < a href="<?php echo get_page_link( get_page_by_title( PAGE_NAME )->ID ); ?>">Link Title</a></p>
 <p>4) If the view forms have any items, those should also have the HYPERLINKS. <br>
+	Adding hyperlinks will make things easier and faster.
 	One can hop from one item to another item by clicking on the hyper links.  <br>
-	Please see the code used on the search.php page for how to use the hyperlinks<br>
+	Please see the code used on the search.php page for how to use the hyperlinks.<br>
 </p>
 <p>5) For having a setup where a help.php can read a file like help.html <br>
 	Methods like fopen, fget, and fgetss can be a blessing.<br>
 	The fopen methods are probably the most familiar to old-time C<br>
 	and C++ programmers because they're more or less the tools you've had <br>
-	under your belt for years if you've worked with these languages. For any of these methods,<br>
+	under your belt for years if you've worked with these languages. <br><br>  
+	For any of these methods,
 	you go through the standard process of using fopen to open the file,<br>
-	a function to read the data, then fclose to close the file<br>
+	a function to read the data, then fclose to close the file.<br>
 	<p>
 	The fopen function creates the connection to the file. It<br>
 	creates the connection because in addition to opening a file
@@ -46,7 +51,44 @@
 	However, you should change "r" to "rb" if you're reading from binary files for cross-platform compatibility.</p>
 	The feof command detects whether you have already read to the end of the file and returns True or False.dd<br>
 	Skipping ahead to the end of Listing 1, fclose serves the opposite function<br>
-	of fopen: It closes the connection to the file or URL. You are no longer able to read from the file or socket after this function.<br>
+	of fopen: It closes the connection to the file or URL.<br>
+	You are no longer able to read from the file or socket after this function.<br>
+	<p>
+	'r'<br> 
+	Open for reading only; place the file pointer at the beginning of the file.
+		<br>'r+'<br>
+	Open for reading and writing; place the file pointer at the beginning of the file.<br> 
+'w'<br>
+	Open for writing only; place the file pointer at the beginning of the file and truncate the file to zero length.<br> 
+	If the file does not exist, attempt to create it.<br> 
+'w+'<br>
+Open for reading and writing; place the file pointer at the beginning of the file and truncate the file to zero length.
+If the file does not exist, attempt to create it.<br> 
+'a'<br> 
+Open for writing only; place the file pointer at the end of the file.<br> 
+If the file does not exist, attempt to create it. In this mode,<br>  
+fseek() has no effect, writes are always appended.<br> 
+'a+'<br> 
+Open for reading and writing; place the file pointer at the end of the file.<br> 
+If the file does not exist, attempt to create it. In this mode, fseek()<br>  
+only affects the reading position, writes are always appended.<br> 
+'x'<br> 
+Create and open for writing only; place the file pointer at the beginning of the file.<br>  
+If the file already exists, the fopen() call will fail by returning FALSE and generating an error of level E_WARNING.<br>  
+If the file does not exist, attempt to create it. This is equivalent to specifying<br>  
+O_EXCL|O_CREAT flags for the underlying open(2) system call. <br> 
+'x+'<br> 
+Create and open for reading and writing; otherwise it has the same behavior as 'x'. <br> 
+'c'<br> 
+Open the file for writing only. If the file does not exist, it is created. If it exists,<br>  
+it is neither truncated (as opposed to 'w'), nor the call to this function fails (as is the case with 'x').<br>  
+The file pointer is positioned on the beginning of the file. This may be useful if it's desired<br>  
+to get an advisory lock (see flock()) before attempting to modify the file, as using 'w' could truncate<br>  
+the file before the lock was obtained (if truncation is desired, ftruncate() can be used after the lock is requested).<br> 
+'c+'<br> 
+Open the file for reading and writing; otherwise it has the same behavior as 'c'.<br> 
+'e'<br> 
+Set close-on-exec flag on the opened file descriptor. Only available in PHP compiled on POSIX.1-2008 conform systems. 
 
     </body>
 </html>
