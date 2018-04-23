@@ -114,7 +114,7 @@ displayObject($emp);
 <html>
 <head>
 	 <?PHP
-    session_start();
+   
     require('session_validation.php');
 	require('db_configuration.php');
 	require('view_functions.php');
