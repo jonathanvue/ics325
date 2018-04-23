@@ -53,9 +53,9 @@
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image5.png" />Reports</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/admin.png" />Admin</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
-							<li><a class="navImg" href="#"><img class="icon" src="./icons/image8.png" />Help</a></li>
+							<li><a class="navImg" href="help1.php"><img class="icon" src="./icons/image8.png" />Help</a></li>
 						</ul>
-						<form class="navbar-form navbar-right" action="/ics325/training_summary.php?type=" method="post">
+						<form class="navbar-form navbar-right" action="search.php?type=" method="post">
 							<div class="form-group">
 								<input type="text" class="form-control" placeholder="Search">
 							</div>
@@ -81,9 +81,9 @@
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image5.png" />Reports</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/admin.png" />Admin</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
-							<li><a class="navImg" href="#"><img class="icon" src="./icons/image8.png" />Help</a></li>
+							<li><a class="navImg" href="help1.php"><img class="icon" src="./icons/image8.png" />Help</a></li>
 						</ul>
-						<form class="navbar-form navbar-right" action="/ics325/training_summary.php?type=" method="post">
+						<form class="navbar-form navbar-right" action="search.php?type=" method="post">
 							<div class="form-group">
 								<input type="text" class="form-control" placeholder="Search">
 							</div>
@@ -109,9 +109,9 @@
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image5.png" />Reports</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/admin.png" />Admin</a></li>
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
-							<li><a class="navImg" href="#"><img class="icon" src="./icons/image8.png" />Help</a></li>
+							<li><a class="navImg" href="help1.php"><img class="icon" src="./icons/image8.png" />Help</a></li>
 						</ul>
-						<form class="navbar-form navbar-right" action="/ics325/search.php?' . $name .' method="post">
+						<form class="navbar-form navbar-right" action="search.php?' . $name .' method="post">
 							<div class="form-group">
 								<input type="text" name="name" class="form-control" placeholder="Search">
 							</div>
