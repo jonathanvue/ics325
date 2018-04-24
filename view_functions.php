@@ -80,13 +80,15 @@
 		// Output HTML string
 		echo $startDatatableHTML . $middleDatatableHTML .$endDatatableHTML;
 	}
+	
+	
 	/**
 	* emp_query - provides HTML template for an employee query.
 	* @param: $id - an employee id
 	*/
 	function emp_query($id) {
 		$sql = $result = $row = '';
-		$empNbr = $firstName = $lastName = $emailAddress = $city = $country = '';
+		$empNbr = $mgrNbr = $firstName = $lastName = $emailAddress = $city = $country = '';
 		$managerName = '';
 		$role = $status = $agileTeamID = $agileReleaseTrainID =$solutionTrainID = $agileTeamName = $agileReleaseTrainName = $solutionTrainName = $courseName = $courseCode = $trainer = $dates = array();
 		
@@ -96,7 +98,8 @@
 				e.last_name, 
 				e.email_address, 
 				e.city, 
-				e.country, 
+				e.country,
+				m.employee_nbr AS manager_nbr,				
 				CONCAT(m.first_name, ' ', m.last_name) AS manager_name,
 				mt.role,
 				mt.at_name,
@@ -148,7 +151,8 @@
 				e.last_name, 
 				e.email_address, 
 				e.city, 
-				e.country, 
+				e.country,
+				m.employee_nbr AS manager_nbr,
 				CONCAT(m.first_name, ' ', m.last_name) AS manager_name,
 				mt.role,
 				mt.at_id,
@@ -211,6 +215,7 @@
 				$emailAddress = $row["email_address"];
 				$city = $row["city"];
 				$country = $row["country"];
+				$mgrNbr = $row["manager_nbr"];
 				$managerName = $row["manager_name"];
 				$agileTeamID[] = $row["at_id"];
 				$agileTeamName[] = $row["at_name"];
@@ -261,7 +266,7 @@
 						</tr>
 						<tr>
 							<td>Manager\'s Name</td>
-							<td>'.$managerName.'</td>
+							<td><a href="view.php?type=EMP&id='.$mgrNbr.'">'.$managerName.'</a></td>
 						</tr>
 					</table>
 				</div>
@@ -526,13 +531,13 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-9">
+			<div class="col-md-4">
 				<table class="table table-condesnsed table-bordered">
 					<tr>
 						<thead colspan="2"><h3>SAFe Review Comments:</h3></thead>
 					</tr>
 					<tr>
-						<td>Team Size</td>
+						<td style="width:200px;">Team Size</td>
 						<td>'.$numTeamMembers.'</td>
 					</tr>
 					<tr>
@@ -589,7 +594,7 @@
 							<th>Team ID</th>
 							<th>Team Name</th>
 							<th>Scrum Master</th>
-							<th>Product Owner</th>
+							<th>Product Manager</th>
 						</tr>
 					</thead>
 				<tbody>';
@@ -701,7 +706,7 @@
 		
 		// Participating Agile Release Train query
 		if(empty($id)){
-			$sql = "SELECT m.team_id, m.team_name, s.scrum_master, p.product_owner
+			$sql = "SELECT m.team_id, m.team_name, s.scrum_master, p.product_manager
 				FROM membership m
 				LEFT OUTER JOIN (
 					SELECT team_id, CONCAT(first_name, ' ', last_name) AS scrum_master
@@ -709,15 +714,15 @@
 					WHERE role LIKE '%scrum_master%'
 					) s ON m.team_id = s.team_id
 				LEFT OUTER JOIN (
-					SELECT team_id, CONCAT(first_name, ' ', last_name) AS product_owner 
+					SELECT team_id, CONCAT(first_name, ' ', last_name) AS product_manager 
 					FROM membership
-					WHERE role LIKE '%Product Owner%'
+					WHERE role LIKE '%Product Manager%'
 					) p ON m.team_id = p.team_id
-				GROUP BY m.team_id, m.team_name, s.scrum_master, p.product_owner
+				GROUP BY m.team_id, m.team_name, s.scrum_master, p.product_manager
 				ORDER BY m.team_id
 				LIMIT 1";
 		} else {
-			$sql = "SELECT m.team_id, m.team_name, s.scrum_master, p.product_owner
+			$sql = "SELECT m.team_id, m.team_name, s.scrum_master, p.product_manager
 				FROM membership m
 				LEFT OUTER JOIN (
 					SELECT team_id, CONCAT(first_name, ' ', last_name) AS scrum_master
@@ -725,15 +730,15 @@
 					WHERE role LIKE '%scrum_master%'
 					) s ON m.team_id = s.team_id
 				LEFT OUTER JOIN (
-					SELECT team_id, CONCAT(first_name, ' ', last_name) AS product_owner 
+					SELECT team_id, CONCAT(first_name, ' ', last_name) AS product_manager 
 					FROM membership
-					WHERE role LIKE '%Product Owner%'
+					WHERE role LIKE '%Product Manager%'
 					) p ON m.team_id = p.team_id
 				WHERE m.team_id IN (
 					SELECT team_id 
 					FROM trains_and_teams
 					WHERE parent LIKE '%".$id."')
-				GROUP BY m.team_id, m.team_name, s.scrum_master, p.product_owner";
+				GROUP BY m.team_id, m.team_name, s.scrum_master, p.product_manager";
 		}
 		
 		$result = run_sql($sql);
@@ -744,7 +749,7 @@
 			$startDatatableHTML_participatingAgileTeams .= '<td>'.$row["team_id"].'</td>';
 			$startDatatableHTML_participatingAgileTeams .= '<td>'.$row["team_name"].'</td>';
 			$startDatatableHTML_participatingAgileTeams .= '<td>'.$row["scrum_master"].'</td>';
-			$startDatatableHTML_participatingAgileTeams .= '<td>'.$row["product_owner"].'</td>';
+			$startDatatableHTML_participatingAgileTeams .= '<td>'.$row["product_manager"].'</td>';
 			$startDatatableHTML_participatingAgileTeams .= '</tr>';
 		}
 		$startDatatableHTML_participatingAgileTeams .= $endDatatableHTML;
@@ -806,13 +811,13 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-9">
+			<div class="col-md-4">
 				<table class="table table-condesnsed table-bordered">
 					<tr>
 						<thead colspan="2"><h3>SAFe Review Comments:</h3></thead>
 					</tr>
 					<tr>
-						<td>Team Size</td>
+						<td style="width: 200px;">Team Size</td>
 						<td>'.$numTeamMembers.'</td>
 					</tr>
 					<tr>
