@@ -32,31 +32,19 @@
 				</tbody>
 			</table>';
 			
-		// Information query
-		if(empty($name)) {
-			$sql = "SELECT e.employee_nbr AS id,
-					e.first_name,
-					e.last_name,
-					e.email_address AS email,
-					e.city,
-					e.country,
-					e.status,
-					m.team_name AS primary_team
-				FROM employees e
-				JOIN membership m ON m.employee_nbr = e.employee_nbr;";
-		} else {
-			$sql = "SELECT e.employee_nbr AS id,
-					e.first_name,
-					e.last_name,
-					e.email_address AS email,
-					e.city,
-					e.country,
-					e.status,
-					m.team_name AS primary_team
-				FROM employees e
-				JOIN membership m ON m.employee_nbr = e.employee_nbr
-				WHERE e.first_name LIKE '%".$name."%';";
-		}
+		// Information query		
+		$sql = "SELECT e.employee_nbr AS id,
+				e.first_name,
+				e.last_name,
+				e.email_address AS email,
+				e.city,
+				e.country,
+				e.status,
+				m.team_name AS primary_team
+			FROM employees e
+			JOIN membership m ON m.employee_nbr = e.employee_nbr
+			WHERE e.first_name LIKE '%".$name."%';";
+	
 		
 		$result = run_sql($sql);
 		
@@ -90,118 +78,72 @@
 	function emp_query($id) {
 		$sql = $result = $row = '';
 		$empNbr = $mgrNbr = $firstName = $lastName = $emailAddress = $city = $country = '';
-		$managerName = '';
+		$managerName = $f = $l = '';
 		$role = $status = $agileTeamID = $agileReleaseTrainID =$solutionTrainID = $agileTeamName = $agileReleaseTrainName = $solutionTrainName = $courseName = $courseCode = $trainer = $dates = array();
 		
-		if(empty($id)) {
-			$sql = "SELECT e.employee_nbr,
-				e.first_name, 
-				e.last_name, 
-				e.email_address, 
-				e.city, 
-				e.country,
-				m.employee_nbr AS manager_nbr,				
-				CONCAT(m.first_name, ' ', m.last_name) AS manager_name,
-				mt.role,
-				mt.at_name,
-				mt.art_name,
-				mt.st_name,
-				tec.status,
-				tec.course_name,
-				tec.course_code,
-				tec.trainer,
-				tec.dates
-			FROM employees e
-			LEFT OUTER JOIN employees m ON e.managers_nbr = m.employee_nbr
-			LEFT OUTER JOIN (
-				SELECT employee_nbr,
-					role,
-					tt_at.team_id AS at_id,
-					tt_at.name AS at_name, 
-					tt_art.team_id AS art_id,
-					tt_art.name AS art_name, 
-					tt_st.team_id AS st_id,
-					tt_st.name AS st_name
-				FROM trains_and_teams tt_at
-				JOIN trains_and_teams tt_art ON tt_at.parent = tt_art.team_id
-				JOIN trains_and_teams tt_st ON tt_art.parent = tt_st.team_id
-				JOIN membership m ON (m.team_id = tt_at.team_id
-					OR m.team_id = tt_art.team_id
-					OR m.team_id = tt_st.team_id)
-			LEFT OUTER JOIN (
-				SELECT te.first_name, 
-					te.last_name,
-					te.email AS email_address,
-					tc.status, 
-					tc.course_name, 
-					tc.course_code, 
-					CONCAT(tc.trainer_first_name, ' ', tc.trainer_last_name) AS trainer,
-					CONCAT(DATE_FORMAT(tc.start_date, '%m/%d/%Y'), ' - ', DATE_FORMAT(tc.end_date, '%m/%d/%Y')) AS dates
-				FROM training_calendar tc
-				JOIN training_enrollment te ON tc.training_id = te.training_id) tec
-				ON (e.first_name = tec.first_name
-					AND e.last_name = tec.last_name
-					AND e.email_address = tec.email_address
-					)
-				ORDER BY e.employee_nbr
-				LIMIT 1
-				";
-		} else {
-			$sql = "SELECT e.employee_nbr,
-				e.first_name, 
-				e.last_name, 
-				e.email_address, 
-				e.city, 
-				e.country,
-				m.employee_nbr AS manager_nbr,
-				CONCAT(m.first_name, ' ', m.last_name) AS manager_name,
-				mt.role,
-				mt.at_id,
-				mt.at_name,
-				mt.art_id,
-				mt.art_name,
-				mt.st_id,
-				mt.st_name,
-				tec.status,
-				tec.course_name,
-				tec.course_code,
-				tec.trainer,
-				tec.dates
-			FROM employees e
-			LEFT OUTER JOIN employees m ON e.managers_nbr = m.employee_nbr
-			LEFT OUTER JOIN (
-				SELECT employee_nbr,
-					role,
-					tt_at.team_id AS at_id,
-					tt_at.name AS at_name, 
-					tt_art.team_id AS art_id,
-					tt_art.name AS art_name, 
-					tt_st.team_id AS st_id,
-					tt_st.name AS st_name
-				FROM trains_and_teams tt_at
-				JOIN trains_and_teams tt_art ON tt_at.parent = tt_art.team_id
-				JOIN trains_and_teams tt_st ON tt_art.parent = tt_st.team_id
-				JOIN membership m ON (m.team_id = tt_at.team_id
-					OR m.team_id = tt_art.team_id
-					OR m.team_id = tt_st.team_id)
-				) mt ON e.employee_nbr = mt.employee_nbr
-			LEFT OUTER JOIN (
-				SELECT te.first_name, 
-					te.last_name,
-					te.email AS email_address,
-					tc.status, 
-					tc.course_name, 
-					tc.course_code, 
-					CONCAT(tc.trainer_first_name, ' ', tc.trainer_last_name) AS trainer,
-					CONCAT(DATE_FORMAT(tc.start_date, '%m/%d/%Y'), ' - ', DATE_FORMAT(tc.end_date, '%m/%d/%Y')) AS dates
-				FROM training_calendar tc
-				JOIN training_enrollment te ON tc.training_id = te.training_id) tec
-				ON (e.first_name = tec.first_name
-					AND e.last_name = tec.last_name
-					AND e.email_address = tec.email_address
-					)
-			WHERE e.employee_nbr LIKE '%".$id."';";
+		$where = "WHERE e.employee_nbr LIKE '%".$id."';";
+		$f = $l = '';
+		
+		if (strpos($id, ' ')) {
+			$id = explode(' ', $id);
+			$f = $id[0];
+			$l = $id[1];
+			$where = "WHERE e.first_name LIKE '%".$f."%' AND e.last_name LIKE '%".$l."%'";
 		}
+		
+		$sql = "SELECT e.employee_nbr,
+			e.first_name, 
+			e.last_name, 
+			e.email_address, 
+			e.city, 
+			e.country,
+			m.employee_nbr AS manager_nbr,
+			CONCAT(m.first_name, ' ', m.last_name) AS manager_name,
+			mt.role,
+			mt.at_id,
+			mt.at_name,
+			mt.art_id,
+			mt.art_name,
+			mt.st_id,
+			mt.st_name,
+			tec.status,
+			tec.course_name,
+			tec.course_code,
+			tec.trainer,
+			tec.dates
+		FROM employees e
+		LEFT OUTER JOIN employees m ON e.managers_nbr = m.employee_nbr
+		LEFT OUTER JOIN (
+			SELECT employee_nbr,
+				role,
+				tt_at.team_id AS at_id,
+				tt_at.name AS at_name, 
+				tt_art.team_id AS art_id,
+				tt_art.name AS art_name, 
+				tt_st.team_id AS st_id,
+				tt_st.name AS st_name
+			FROM trains_and_teams tt_at
+			JOIN trains_and_teams tt_art ON tt_at.parent = tt_art.team_id
+			JOIN trains_and_teams tt_st ON tt_art.parent = tt_st.team_id
+			JOIN membership m ON (m.team_id = tt_at.team_id
+				OR m.team_id = tt_art.team_id
+				OR m.team_id = tt_st.team_id)
+			) mt ON e.employee_nbr = mt.employee_nbr
+		LEFT OUTER JOIN (
+			SELECT te.first_name, 
+				te.last_name,
+				te.email AS email_address,
+				tc.status, 
+				tc.course_name, 
+				tc.course_code, 
+				CONCAT(tc.trainer_first_name, ' ', tc.trainer_last_name) AS trainer,
+				CONCAT(DATE_FORMAT(tc.start_date, '%m/%d/%Y'), ' - ', DATE_FORMAT(tc.end_date, '%m/%d/%Y')) AS dates
+			FROM training_calendar tc
+			JOIN training_enrollment te ON tc.training_id = te.training_id) tec
+			ON (e.first_name = tec.first_name
+				AND e.last_name = tec.last_name
+				AND e.email_address = tec.email_address
+				) ".$where;
 		
 		// Need to check against SQL injection one day...
 		$result = run_sql($sql);
@@ -304,7 +246,7 @@
 					</table>
 				</div>
 			</div>
-			
+			<div>First - '.$f.' | Last - '.$l.' | ID - '.$id.'</div>
 			<!-- Training -->
 			<div class="row">
 				<div class="col-md-9">
@@ -873,7 +815,7 @@
 							<th>Team ID</th>
 							<th>Team Name</th>
 							<th>Release Train Engineer (RTE)</th>
-							<th>Product Owner</th>
+							<th>Product Manager</th>
 						</tr>
 					</thead>
 				<tbody>';
@@ -975,7 +917,7 @@
 		
 		// Participating Agile Release Train query
 		if(empty($id)){
-			$sql = "SELECT m.team_id, m.team_name, r.release_train_engineer, p.product_owner
+			$sql = "SELECT m.team_id, m.team_name, r.release_train_engineer, p.product_manager
 				FROM membership m
 				LEFT OUTER JOIN (
 					SELECT team_id, CONCAT(first_name, ' ', last_name) AS release_train_engineer
@@ -983,19 +925,19 @@
 					WHERE role LIKE '%Release Train Engineer%'
 					) r ON m.team_id = r.team_id
 				LEFT OUTER JOIN (
-					SELECT team_id, CONCAT(first_name, ' ', last_name) AS product_owner 
+					SELECT team_id, CONCAT(first_name, ' ', last_name) AS product_manager 
 					FROM membership
-					WHERE role LIKE '%Product Owner%'
+					WHERE role LIKE '%Product Manager%'
 					) p ON m.team_id = p.team_id
 				WHERE m.team_id IN (
 					SELECT team_id 
 					FROM trains_and_teams
 					WHERE parent LIKE '%st-100%')
-				GROUP BY m.team_id, m.team_name, r.release_train_engineer, p.product_owner
+				GROUP BY m.team_id, m.team_name, r.release_train_engineer, p.product_manager
 				ORDER BY m.team_id
 				LIMIT 1";
 		} else {
-			$sql = "SELECT m.team_id, m.team_name, r.release_train_engineer, p.product_owner
+			$sql = "SELECT m.team_id, m.team_name, r.release_train_engineer, p.product_manager
 				FROM membership m
 				LEFT OUTER JOIN (
 					SELECT team_id, CONCAT(first_name, ' ', last_name) AS release_train_engineer
@@ -1003,28 +945,74 @@
 					WHERE role LIKE '%Release Train Engineer%'
 					) r ON m.team_id = r.team_id
 				LEFT OUTER JOIN (
-					SELECT team_id, CONCAT(first_name, ' ', last_name) AS product_owner 
+					SELECT team_id, CONCAT(first_name, ' ', last_name) AS product_manager 
 					FROM membership
-					WHERE role LIKE '%Product Owner%'
+					WHERE role LIKE '%Product Manager%'
 					) p ON m.team_id = p.team_id
 				WHERE m.team_id IN (
 					SELECT team_id 
 					FROM trains_and_teams
 					WHERE parent LIKE '%".$id."%')
-				GROUP BY m.team_id, m.team_name, r.release_train_engineer, p.product_owner";
+				GROUP BY m.team_id, m.team_name, r.release_train_engineer, p.product_manager";
 		}
 		
 		$result = run_sql($sql);
 		$row = $result->num_rows;
+		$teams = array();
+		$test = '';
 		
+		// Go through query results
+		while ($row = $result->fetch_assoc()){
+			$teamFound = array_search($row["team_id"], $teams);
+			// Check if team_id does not exist
+			if ($teamFound === false){
+				$teams[$row["team_id"]] = array("team_name" => $row["team_name"], "release_train_engineer" => array($row["release_train_engineer"]), "product_manager" => array($row["product_manager"]));
+			} else {
+				$test = 'dfaslk;j;lkjasd;lkfjsda;lkfj;sldkajfkljsdaflsdalfj';
+				$rteFound = @array_search($row["release_train_engineer"], $teams[$row["team_id"]]["release_train_engineer"]);
+				$pmFound = @array_search($row["product_manager"], $teams[$row["team_id"]]["product_manager"]);
+				
+				if($rteFound !== false) {
+					$teams[$row["team_id"]]["release_train_engineer"][] = $row["release_train_engineer"];
+				}
+				
+				if($pmFound !== false) {
+					$teams[$row["team_id"]]["product_manager"][] = $row["product_manager"];
+				}	
+			}
+		}
+		
+		//$test = $teams["ART-502"]["release_train_engineer"][0];
+		$outputStuff = print_r($teams, true);
+		
+		foreach($teams as $team_id => $teamInfo) {
+			$startDatatableHTML_participatingReleaseTrains .= '<tr>';
+			$startDatatableHTML_participatingReleaseTrains .= '<td><a href="view.php?type=ART&id='.$team_id.'">'.$team_id.'</a></td>';
+			$startDatatableHTML_participatingReleaseTrains .= '<td>'.$teamInfo["team_name"].'</td>';
+			$startDatatableHTML_participatingReleaseTrains .= '<td>';
+			
+			foreach($teamInfo["release_train_engineer"] AS $rte) {
+				$startDatatableHTML_participatingReleaseTrains .= '<a href="view.php?type=EMP&id='.urlencode($rte).'">'.$rte.'</a><br>';
+			}
+			$startDatatableHTML_participatingReleaseTrains .= '</td><td>';
+			
+			foreach($teamInfo["product_manager"] AS $pm) {
+				$startDatatableHTML_participatingReleaseTrains .= '<a href="view.php?type=EMP&id='.urlencode($pm).'">'.$pm.'</a><br>';	
+			} 
+			$startDatatableHTML_participatingReleaseTrains .= '</td></tr>';
+		}
+		
+		/*
 		while ($row = $result->fetch_assoc()){
 			$startDatatableHTML_participatingReleaseTrains .= '<tr>';
-			$startDatatableHTML_participatingReleaseTrains .= '<td>'.$row["team_id"].'</td>';
+			$startDatatableHTML_participatingReleaseTrains .= '<td><a href="view.php?type=ART&id='.$row["team_id"].'">'.$row["team_id"].'</a></td>';
 			$startDatatableHTML_participatingReleaseTrains .= '<td>'.$row["team_name"].'</td>';
-			$startDatatableHTML_participatingReleaseTrains .= '<td>'.$row["release_train_engineer"].'</td>';
-			$startDatatableHTML_participatingReleaseTrains .= '<td>'.$row["product_owner"].'</td>';
+			$startDatatableHTML_participatingReleaseTrains .= '<td><a href="view.php?type=EMP&id='.urlencode($row["release_train_engineer"]).'">'.$row["release_train_engineer"].'</a></td>';
+			$startDatatableHTML_participatingReleaseTrains .= '<td><a href="view.php?type=EMP&id='.urlencode($row["product_manager"]).'">'.$row["product_manager"].'</a></td>';
 			$startDatatableHTML_participatingReleaseTrains .= '</tr>';
 		}
+		*/
+		
 		$startDatatableHTML_participatingReleaseTrains .= $endDatatableHTML;		
 		
 		$result->close();
@@ -1102,7 +1090,7 @@
 					</tr>
 				</table>
 			</div>
-		</div>';
+		</div><pre>'.$outputStuff.'</pre><div>'.$test.'</div>';
 	}
 	
 	/**
@@ -1120,7 +1108,7 @@
 	}
 	
 	/**
-	*
+	* Simple function to display employees into table cell
 	*/
 	function employeeTable(&$ids, &$names, $type) {
 		$html = '';
