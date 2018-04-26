@@ -63,8 +63,9 @@
 		// Build table string
 		
 		if($result->num_rows > 0) {
+			
 			while($row = $result->fetch_assoc()) {
-				$middleDatatableHTML .= '<tr>
+				$middleDatatableHTML = '<tr>
 						<td><a href="./view.php?type=emp&id='.$row["id"].'">' . $row["id"] . "</a></td>
 						<td>" . $row["first_name"] . "</td>
 						<td>" . $row["last_name"] . "</td>
