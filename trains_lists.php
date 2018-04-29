@@ -60,17 +60,7 @@ if (!isset($_SESSION)) {
 	<!-- Primary content goes here -->
 	<div class="container-fluid buffer">
 		<div class="row">
-			<div class="col-md-1">
-				<nav class="nav-left">
-					<ul class="nav nav-stacked">
-						<li><a href="trains_list.php"><img class="icon" src="./icons/image11.png">&nbsp&nbsp&nbsp&nbsp&nbspList</a></li>
-						<li><a href="trains_lists.php"><img style="width:40px;height:50px"  src="./icons/trains_lists.png" /><img src="./icons/image15.png" style="width:20px;height:30px;">&nbsp&nbsp&nbsp&nbspLists</a></li>
-						<li><a href="#"><img class="icon" src="./icons/image12.png" />&nbsp&nbsp&nbsp&nbspGrid</a></li>
-						<li><a href="#"><img class="icon" src="./icons/image14.png" />&nbsp&nbsp&nbsp&nbspTree</a></li>
-						<li><a href="#"><img class="icon" src="./icons/image13.png" />&nbsp&nbspHybrid</a></li>
-					</ul>
-				</nav>
-			</div>
+			
 			<div class="col-md-10">
 				<table style="font-family:arial;" id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
 					   width="100%">

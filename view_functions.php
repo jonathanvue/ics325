@@ -246,11 +246,9 @@
 					</table>
 				</div>
 			</div>
-<<<<<<< Updated upstream
+
 			<div>First - '.$f.' | Last - '.$l.' | ID - '.$id.'</div>
-=======
-	
->>>>>>> Stashed changes
+
 			<!-- Training -->
 			
 			<div class="row">
@@ -352,6 +350,27 @@
 					</table>
 				</div>
 			</div>';
+	}
+	
+	
+	if(0==0){
+		echo '<div class="row">
+				<div class="col-md-9">
+					<table class="table table-condensed table-bordered">
+						<tr>
+							<thead colspan="1" ><h3>Training History</h3></thead>
+						</tr>
+						<tr>
+							<td style="width:200px;">Course Code</td>
+							<td>Course Name</td>				
+							<td>Location</td>						
+							<td>Dates</td>					
+							<td>Count</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>';
 	}}
 	/**
 	* at_query - provides HTML template for an agile team query
@@ -482,7 +501,7 @@
 			$startDatatableHTML .= '<td><a href="view.php?type=emp&id='.$row["employee_nbr"].'">'.$row["first_name"].'</a></td>';
 			$startDatatableHTML .= '<td><a href="view.php?type=emp&id='.$row["employee_nbr"].'">'.$row["last_name"].'</a></td>';
 			$startDatatableHTML .= '<td>'.$row["email_address"].'</td>';
-			$startDatatableHTML .= '<td>'.$row["role"].'</td>';
+			$startDatatableHTML .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["role"].'</a></td>';
 			$startDatatableHTML .= '<td>'.$row["certification"].'</td>';
 			$startDatatableHTML .= '<td>'.$row["location"].'</td>';
 			$startDatatableHTML .= '</tr>';
@@ -529,7 +548,7 @@
 					</tr>
 					<tr>
 						<td>Agile Team Name</td>
-						<td>'.$agileTeamName.'</td>
+						<td><a href="view.php?type=AT&id='.$agileTeamID.'">'.$agileTeamName.'</a></td>
 					</tr>
 					<tr>
 						<td>On Agile Release Train</td>
