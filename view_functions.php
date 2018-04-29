@@ -54,7 +54,7 @@
 			
 			while($row = $result->fetch_assoc()) {
 				$middleDatatableHTML = '<tr>
-						<td><a href="./view.php?type=emp&id='.$row["id"].'">' . $row["id"] . "</a></td>
+						<td><a href="./view.php?type=EMP&id='.$row["id"].'">' . $row["id"] . "</a></td>
 						<td>" . $row["first_name"] . "</td>
 						<td>" . $row["last_name"] . "</td>
 						<td>" . $row["email"] . "</td>
@@ -176,7 +176,7 @@
 		}
 		
 		$result->close();	
-		
+		if(!in_array($row["first_name"], $trainer)){
 		// Output HTML string
 		echo '<div class="container-fluid buffer">
 			<!-- Employee -->
@@ -246,8 +246,13 @@
 					</table>
 				</div>
 			</div>
+<<<<<<< Updated upstream
 			<div>First - '.$f.' | Last - '.$l.' | ID - '.$id.'</div>
+=======
+	
+>>>>>>> Stashed changes
 			<!-- Training -->
+			
 			<div class="row">
 				<div class="col-md-9">
 					<table class="table table-condensed table-bordered">
@@ -278,8 +283,76 @@
 				</div>
 			</div>
 		</div>';
-	}
-
+	} else {
+	echo '<div class="container-fluid buffer">
+			<!-- Employee -->
+			<div class="row">
+				<div class="col-md-9">
+					<h2><img height="50px" src="./icons/employee.png">Employee: '.$firstName.' '.$lastName.' </h2>
+					<table class="table table-condensed table-bordered">
+						<tr>
+							<thead colspan="2" ><h3>Information</h3></thead>
+						</tr>
+						<tr>
+							<td style="width:200px;">First Name</td>
+							<td>'.$firstName.'</td>
+						</tr>
+						<tr>
+							<td>Last Name</td>
+							<td>'.$lastName.'</td>
+						</tr>
+						<tr>
+							<td>Email</td>
+							<td>'.$emailAddress.'</td>
+						</tr>
+						<tr>
+							<td>City</td>
+							<td>'.$city.'</td>
+						</tr>
+						<tr>
+							<td>Country</td>
+							<td>'.$country.'</td>
+						</tr>
+						<tr>
+							<td>Manager\'s Name</td>
+							<td><a href="view.php?type=EMP&id='.$mgrNbr.'">'.$managerName.'</a></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			
+			<!-- Teams -->
+			<div class="row">
+				<div class="col-md-9">
+					<table class="table table-condensed table-bordered">
+						<tr>
+							<thead colspan="3" ><h3>Teams</h3></thead>
+						</tr>
+						<tr>
+							<th style="width:200px;">Team</th>
+							<th>Team Name</th>
+							<th>Role</th>
+						</tr>
+						
+						<tr>
+							<td>Agile Team</td>
+							'.employeeTable($agileTeamID, $agileTeamName, "AT").'
+							<td>'.displayValues($role).'</td>
+						</tr>
+						<tr>
+							<td>Agile Release Train</td>
+							'.employeeTable($agileReleaseTrainID, $agileReleaseTrainName, "ART").'
+							<td class="disabled"></td>
+						</tr>
+						<tr>
+							<td>Solution Train</td>
+							'.employeeTable($solutionTrainID, $solutionTrainName, "ST").'
+							<td></td>
+						</tr>
+					</table>
+				</div>
+			</div>';
+	}}
 	/**
 	* at_query - provides HTML template for an agile team query
 	* @param: $id - agile team id
