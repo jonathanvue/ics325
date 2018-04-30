@@ -37,7 +37,7 @@ if (!isset($_SESSION)) {
 		<div class="sideMenu">
 			<ul class="sideMenuItem text-center">
 				<li><a class="navImg" href="#"><img class="icon" src="./icons/search_list.png" />List</a></li>
-				<li><a class="navImg" href="../SAfe_explorer/org_grid.php"> <img class="icon" src="./icons/org_lists.png" />Grid</a></li>
+				<li><a class="navImg" href="org_grid.php"> <img class="icon" src="./icons/org_lists.png" />Grid</a></li>
 			</ul>
 		</div>
 	</div>
