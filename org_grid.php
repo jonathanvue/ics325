@@ -43,18 +43,17 @@ if (!isset($_SESSION)) {
 
 			
 <?php
-$keywords = array();
-$domain = array('http://www.google.com');
-$doc = new DOMDocument;
-$doc->preserveWhiteSpace = FALSE;
-foreach ($domain as $key => $value) {
-    @$doc->loadHTMLFile($value);
-    $anchor_tags = $doc->getElementsByTagName('a');
-    foreach ($anchor_tags as $tag) {
-        $keywords[] = strtolower($tag->nodeValue);
-    }
-}
+$ch = curl_init("http://www.google.com/");
+curl_exec($ch);
+?> 
+
+
+<?php
+$image = 'http://www.google.com/doodle4google/images/d4g_logo_global.jpg';
+$imageData = base64_encode(file_get_contents($image));
+echo '<img src="data:image/jpeg;base64,'.$imageData.'">';
 ?>
+
 
 
 <a href="<?php echo "http://www.google.com"; ?>">
