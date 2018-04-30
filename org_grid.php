@@ -40,11 +40,14 @@ if (!isset($_SESSION)) {
 	<div class="container-fluid buffer">
 		<hr>
 		<h3>
+
+			
 <?php
 $ch = curl_init("http://www.google.com/");
 curl_exec($ch);
 
 ?>
+
 <a href="<?php echo "http://www.google.com"; ?>">
 
 
