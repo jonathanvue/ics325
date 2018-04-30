@@ -492,20 +492,23 @@
 		$row = $result->num_rows;
 		
 		while ($row = $result->fetch_assoc()){
-			$multipleLocations[] =$row["location"];
-			$teamID = $row["team_id"];
-			$allRoles[] = $row["role"];
-			$allCerts[] = $row["certification"];
-			
-			$startDatatableHTML .= '<tr>';
-			$startDatatableHTML .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["first_name"].'</a></td>';
-			$startDatatableHTML .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["last_name"].'</a></td>';
-			$startDatatableHTML .= '<td>'.$row["email_address"].'</td>';
-			$startDatatableHTML .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["role"].'</a></td>';
-			$startDatatableHTML .= '<td>'.$row["certification"].'</td>';
-			$startDatatableHTML .= '<td>'.$row["location"].'</td>';
-			$startDatatableHTML .= '</tr>';
-			
+
+			if($numTeamMembers %2 === 0)
+			{
+				//Do nothing if it is the duplicated row that was displaying.
+			}
+			else
+			{
+				$startDatatableHTML .= '<tr>';
+				$startDatatableHTML .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["first_name"].'</a></td>';
+				$startDatatableHTML .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["last_name"].'</a></td>';
+				$startDatatableHTML .= '<td>'.$row["email_address"].'</td>';
+				$startDatatableHTML .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["role"].'</a></td>';
+				$startDatatableHTML .= '<td>'.$row["certification"].'</td>';
+				$startDatatableHTML .= '<td>'.$row["location"].'</td>';
+				$startDatatableHTML .= '</tr>';
+			}
+
 			$numTeamMembers++;
 		}
 		$startDatatableHTML .= $endDatatableHTML;
