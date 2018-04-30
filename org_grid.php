@@ -43,10 +43,19 @@ if (!isset($_SESSION)) {
 
 			
 <?php
-$ch = curl_init("http://www.google.com/");
-curl_exec($ch);
-
+$keywords = array();
+$domain = array('http://www.google.com');
+$doc = new DOMDocument;
+$doc->preserveWhiteSpace = FALSE;
+foreach ($domain as $key => $value) {
+    @$doc->loadHTMLFile($value);
+    $anchor_tags = $doc->getElementsByTagName('a');
+    foreach ($anchor_tags as $tag) {
+        $keywords[] = strtolower($tag->nodeValue);
+    }
+}
 ?>
+
 
 <a href="<?php echo "http://www.google.com"; ?>">
 
