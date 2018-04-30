@@ -353,7 +353,7 @@
 	}
 	
 	
-	if(0==0){
+	if($firstName == $trainer){
 		echo '<div class="row">
 				<div class="col-md-9">
 					<table class="table table-condensed table-bordered">
@@ -498,8 +498,8 @@
 			$allCerts[] = $row["certification"];
 			
 			$startDatatableHTML .= '<tr>';
-			$startDatatableHTML .= '<td><a href="view.php?type=emp&id='.$row["employee_nbr"].'">'.$row["first_name"].'</a></td>';
-			$startDatatableHTML .= '<td><a href="view.php?type=emp&id='.$row["employee_nbr"].'">'.$row["last_name"].'</a></td>';
+			$startDatatableHTML .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["first_name"].'</a></td>';
+			$startDatatableHTML .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["last_name"].'</a></td>';
 			$startDatatableHTML .= '<td>'.$row["email_address"].'</td>';
 			$startDatatableHTML .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["role"].'</a></td>';
 			$startDatatableHTML .= '<td>'.$row["certification"].'</td>';
