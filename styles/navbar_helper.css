@@ -101,7 +101,7 @@ a, a:hover {
 .dropdown-info {
 	display: none;
 	position:absolute;
-	left: 100px;
+	left: 50px;
 	top: 0px;
 	/*background-color: white;*/
 	width: 200px;

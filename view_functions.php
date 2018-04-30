@@ -78,72 +78,83 @@
 	function emp_query($id) {
 		$sql = $result = $row = '';
 		$empNbr = $mgrNbr = $firstName = $lastName = $emailAddress = $city = $country = '';
-		$managerName = $f = $l = '';
+		$managerName = $f = $l = $employeeStatus = '';
 		$role = $status = $agileTeamID = $agileReleaseTrainID =$solutionTrainID = $agileTeamName = $agileReleaseTrainName = $solutionTrainName = $courseName = $courseCode = $trainer = $dates = array();
 		
 		$where = "WHERE e.employee_nbr LIKE '%".$id."';";
 		$f = $l = '';
 		
+		// Drop down div
+		$dropdown = '<div class="dropdown-info dropdown-menu">
+				<ul>
+					<li><a href="#">Some stuff here</a></li>
+					<li><a href="#">Some stuff here</a></li>
+					<li><a href="#">Some stuff here</a></li>
+				</ul>
+		</div>';
+		
+		//If id is first and last name instead of an integer employee_id
 		if (strpos($id, ' ')) {
 			$id = explode(' ', $id);
 			$f = $id[0];
 			$l = $id[1];
-			$where = "WHERE e.first_name LIKE '%".$f."%' AND e.last_name LIKE '%".$l."%'";
+			$where = "WHERE e.first_name = '".$f."' AND e.last_name = '".$l."'";
 		}
 		
 		$sql = "SELECT e.employee_nbr,
-			e.first_name, 
-			e.last_name, 
-			e.email_address, 
-			e.city, 
-			e.country,
-			m.employee_nbr AS manager_nbr,
-			CONCAT(m.first_name, ' ', m.last_name) AS manager_name,
-			mt.role,
-			mt.at_id,
-			mt.at_name,
-			mt.art_id,
-			mt.art_name,
-			mt.st_id,
-			mt.st_name,
-			tec.status,
-			tec.course_name,
-			tec.course_code,
-			tec.trainer,
-			tec.dates
-		FROM employees e
-		LEFT OUTER JOIN employees m ON e.managers_nbr = m.employee_nbr
-		LEFT OUTER JOIN (
-			SELECT employee_nbr,
-				role,
-				tt_at.team_id AS at_id,
-				tt_at.name AS at_name, 
-				tt_art.team_id AS art_id,
-				tt_art.name AS art_name, 
-				tt_st.team_id AS st_id,
-				tt_st.name AS st_name
-			FROM trains_and_teams tt_at
-			JOIN trains_and_teams tt_art ON tt_at.parent = tt_art.team_id
-			JOIN trains_and_teams tt_st ON tt_art.parent = tt_st.team_id
-			JOIN membership m ON (m.team_id = tt_at.team_id
-				OR m.team_id = tt_art.team_id
-				OR m.team_id = tt_st.team_id)
-			) mt ON e.employee_nbr = mt.employee_nbr
-		LEFT OUTER JOIN (
-			SELECT te.first_name, 
-				te.last_name,
-				te.email AS email_address,
-				tc.status, 
-				tc.course_name, 
-				tc.course_code, 
-				CONCAT(tc.trainer_first_name, ' ', tc.trainer_last_name) AS trainer,
-				CONCAT(DATE_FORMAT(tc.start_date, '%m/%d/%Y'), ' - ', DATE_FORMAT(tc.end_date, '%m/%d/%Y')) AS dates
-			FROM training_calendar tc
-			JOIN training_enrollment te ON tc.training_id = te.training_id) tec
-			ON (e.first_name = tec.first_name
-				AND e.last_name = tec.last_name
-				AND e.email_address = tec.email_address
-				) ".$where;
+				e.first_name, 
+				e.last_name, 
+				e.email_address, 
+				e.city, 
+				e.country,
+				e.status AS employee_status,
+				m.employee_nbr AS manager_nbr,
+				CONCAT(m.first_name, ' ', m.last_name) AS manager_name,
+				mt.role,
+				mt.at_id,
+				mt.at_name,
+				mt.art_id,
+				mt.art_name,
+				mt.st_id,
+				mt.st_name,
+				tec.status,
+				tec.course_name,
+				tec.course_code,
+				tec.trainer,
+				tec.dates
+			FROM employees e
+			LEFT OUTER JOIN employees m ON e.managers_nbr = m.employee_nbr
+			LEFT OUTER JOIN (
+				SELECT employee_nbr,
+					role,
+					tt_at.team_id AS at_id,
+					tt_at.name AS at_name, 
+					tt_art.team_id AS art_id,
+					tt_art.name AS art_name, 
+					tt_st.team_id AS st_id,
+					tt_st.name AS st_name
+				FROM trains_and_teams tt_at
+				JOIN trains_and_teams tt_art ON tt_at.parent = tt_art.team_id
+				JOIN trains_and_teams tt_st ON tt_art.parent = tt_st.team_id
+				JOIN membership m ON (m.team_id = tt_at.team_id
+					OR m.team_id = tt_art.team_id
+					OR m.team_id = tt_st.team_id)
+				) mt ON e.employee_nbr = mt.employee_nbr
+			LEFT OUTER JOIN (
+				SELECT te.first_name, 
+					te.last_name,
+					te.email AS email_address,
+					tc.status, 
+					tc.course_name, 
+					tc.course_code, 
+					CONCAT(tc.trainer_first_name, ' ', tc.trainer_last_name) AS trainer,
+					CONCAT(DATE_FORMAT(tc.start_date, '%m/%d/%Y'), ' - ', DATE_FORMAT(tc.end_date, '%m/%d/%Y')) AS dates
+				FROM training_calendar tc
+				JOIN training_enrollment te ON tc.training_id = te.training_id) tec
+				ON (e.first_name = tec.first_name
+					AND e.last_name = tec.last_name
+					AND e.email_address = tec.email_address
+					) ".$where;
 		
 		// Need to check against SQL injection one day...
 		$result = run_sql($sql);
@@ -158,6 +169,7 @@
 				$emailAddress = $row["email_address"];
 				$city = $row["city"];
 				$country = $row["country"];
+				$employeeStatus = $row["employee_status"];
 				$mgrNbr = $row["manager_nbr"];
 				$managerName = $row["manager_name"];
 				$agileTeamID[] = $row["at_id"];
@@ -176,9 +188,9 @@
 		}
 		
 		$result->close();	
-		if(!in_array($row["first_name"], $trainer)){
+
 		// Output HTML string
-		echo '<div class="container-fluid buffer">
+		$htmlOutput = '<div class="container-fluid buffer">
 			<!-- Employee -->
 			<div class="row">
 				<div class="col-md-9">
@@ -214,164 +226,122 @@
 					</table>
 				</div>
 			</div>
+			';
 			
-			<!-- Teams -->
-			<div class="row">
+		// Check if employee is a trainer
+		if ($employeeStatus === 'Trainer') {
+			// Init html
+			$htmlOutput .= '<div class="row">
 				<div class="col-md-9">
 					<table class="table table-condensed table-bordered">
 						<tr>
-							<thead colspan="3" ><h3>Teams</h3></thead>
+							<thead colspan="3"><h3>Training History</h3></thead>
 						</tr>
 						<tr>
-							<th style="width:200px;">Team</th>
-							<th>Team Name</th>
-							<th>Role</th>
-						</tr>
-						
-						<tr>
-							<td>Agile Team</td>
-							'.employeeTable($agileTeamID, $agileTeamName, "AT").'
-							<td>'.displayValues($role).'</td>
-						</tr>
-						<tr>
-							<td>Agile Release Train</td>
-							'.employeeTable($agileReleaseTrainID, $agileReleaseTrainName, "ART").'
-							<td class="disabled"></td>
-						</tr>
-						<tr>
-							<td>Solution Train</td>
-							'.employeeTable($solutionTrainID, $solutionTrainName, "ST").'
-							<td></td>
-						</tr>
-					</table>
+							<th style="width:300px;">Course Code</th>
+							<th>Course Name</th>
+							<th>Location</th>
+							<th>Dates</th>
+							<th>Count</th>
+						</tr>';
+			
+			// Query database for trainer information
+			$sql = "SELECT course_name,
+					course_code,
+					location,
+					CONCAT(start_date, ' to ', end_date) AS dates,
+					COUNT(te.training_id) AS count
+				FROM training_calendar tc
+				JOIN training_enrollment te ON tc.training_id = te.training_id
+				WHERE trainer_first_name = '".$f."'
+				AND trainer_last_name = '".$l."'
+				GROUP BY tc.training_id;";
+			
+			$result = run_sql($sql);
+			
+			if ($result->num_rows > 0) {
+				while($row = $result->fetch_assoc()) {
+					$htmlOutput .= '<tr>
+						<td>'.$row["course_name"].'</td>
+						<td>'.$row["course_code"].'</td>
+						<td>'.$row["location"].'</td>
+						<td>'.$row["dates"].'</td>
+						<td class="dropdown"><a href="search.php?name='.$f.'">'.$row["count"].'</a>'.$dropdown.'</td>
+						</tr>';
+				}
+			}
+			
+			// Close tags in html
+			$htmlOutput .= '</table></div></div>';
+		} else {
+			$htmlOutput .= '<!-- Teams -->
+				<div class="row">
+					<div class="col-md-9">
+						<table class="table table-condensed table-bordered">
+							<tr>
+								<thead colspan="3" ><h3>Teams</h3></thead>
+							</tr>
+							<tr>
+								<th style="width:200px;">Team</th>
+								<th>Team Name</th>
+								<th>Role</th>
+							</tr>
+							
+							<tr>
+								<td>Agile Team</td>
+								'.employeeTable($agileTeamID, $agileTeamName, "AT").'
+								<td>'.displayValues($role).'</td>
+							</tr>
+							<tr>
+								<td>Agile Release Train</td>
+								'.employeeTable($agileReleaseTrainID, $agileReleaseTrainName, "ART").'
+								<td class="disabled"></td>
+							</tr>
+							<tr>
+								<td>Solution Train</td>
+								'.employeeTable($solutionTrainID, $solutionTrainName, "ST").'
+								<td></td>
+							</tr>
+						</table>
+					</div>
 				</div>
-			</div>
 
-			<div>First - '.$f.' | Last - '.$l.' | ID - '.$id.'</div>
-
-			<!-- Training -->
-			
-			<div class="row">
-				<div class="col-md-9">
-					<table class="table table-condensed table-bordered">
-						<tr>
-							<thead colspan="2"><h3>Training</h3></thead>
-						</tr>
-						<tr>
-							<td style="width:200px;">Status</td>
-							<td>'.displayValues($status).'</td>
-						</tr>
-						<tr>
-							<td>Course Name</td>
-							<td>'.displayValues($courseName).'</td>
-						</tr>
-						<tr>
-							<td>Course Code</td>
-							<td>'.displayValues($courseCode).'</td>
-						</tr>
-						<tr>
-							<td>Trainer</td>
-							<td>'.displayValues($trainer).'</td>
-						</tr>
-						<tr>
-							<td>Dates</td>
-							<td>'.displayValues($dates).'</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-		</div>';
-	} else {
-	echo '<div class="container-fluid buffer">
-			<!-- Employee -->
-			<div class="row">
-				<div class="col-md-9">
-					<h2><img height="50px" src="./icons/employee.png">Employee: '.$firstName.' '.$lastName.' </h2>
-					<table class="table table-condensed table-bordered">
-						<tr>
-							<thead colspan="2" ><h3>Information</h3></thead>
-						</tr>
-						<tr>
-							<td style="width:200px;">First Name</td>
-							<td>'.$firstName.'</td>
-						</tr>
-						<tr>
-							<td>Last Name</td>
-							<td>'.$lastName.'</td>
-						</tr>
-						<tr>
-							<td>Email</td>
-							<td>'.$emailAddress.'</td>
-						</tr>
-						<tr>
-							<td>City</td>
-							<td>'.$city.'</td>
-						</tr>
-						<tr>
-							<td>Country</td>
-							<td>'.$country.'</td>
-						</tr>
-						<tr>
-							<td>Manager\'s Name</td>
-							<td><a href="view.php?type=EMP&id='.$mgrNbr.'">'.$managerName.'</a></td>
-						</tr>
-					</table>
-				</div>
-			</div>
-			
-			<!-- Teams -->
-			<div class="row">
-				<div class="col-md-9">
-					<table class="table table-condensed table-bordered">
-						<tr>
-							<thead colspan="3" ><h3>Teams</h3></thead>
-						</tr>
-						<tr>
-							<th style="width:200px;">Team</th>
-							<th>Team Name</th>
-							<th>Role</th>
-						</tr>
-						
-						<tr>
-							<td>Agile Team</td>
-							'.employeeTable($agileTeamID, $agileTeamName, "AT").'
-							<td>'.displayValues($role).'</td>
-						</tr>
-						<tr>
-							<td>Agile Release Train</td>
-							'.employeeTable($agileReleaseTrainID, $agileReleaseTrainName, "ART").'
-							<td class="disabled"></td>
-						</tr>
-						<tr>
-							<td>Solution Train</td>
-							'.employeeTable($solutionTrainID, $solutionTrainName, "ST").'
-							<td></td>
-						</tr>
-					</table>
+				<!-- Training -->
+				<div class="row">
+					<div class="col-md-9">
+						<table class="table table-condensed table-bordered">
+							<tr>
+								<thead colspan="2"><h3>Training</h3></thead>
+							</tr>
+							<tr>
+								<td style="width:200px;">Status</td>
+								<td>'.displayValues($status).'</td>
+							</tr>
+							<tr>
+								<td>Course Name</td>
+								<td>'.displayValues($courseName).'</td>
+							</tr>
+							<tr>
+								<td>Course Code</td>
+								<td>'.displayValues($courseCode).'</td>
+							</tr>
+							<tr>
+								<td>Trainer</td>
+								<td>'.displayValues($trainer).'</td>
+							</tr>
+							<tr>
+								<td>Dates</td>
+								<td>'.displayValues($dates).'</td>
+							</tr>
+						</table>
+					</div>
 				</div>
 			</div>';
-	}
+		}
+		
+		echo $htmlOutput;
+}	
 	
-	
-	if($firstName == $trainer){
-		echo '<div class="row">
-				<div class="col-md-9">
-					<table class="table table-condensed table-bordered">
-						<tr>
-							<thead colspan="1" ><h3>Training History</h3></thead>
-						</tr>
-						<tr>
-							<td style="width:200px;">Course Code</td>
-							<td>Course Name</td>				
-							<td>Location</td>						
-							<td>Dates</td>					
-							<td>Count</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-		</div>';
-	}}
 	/**
 	* at_query - provides HTML template for an agile team query
 	* @param: $id - agile team id
@@ -499,10 +469,10 @@
 			}
 			else
 			{
-							$multipleLocations[] =$row["location"];
-			$teamID = $row["team_id"];
-			$allRoles[] = $row["role"];
-			$allCerts[] = $row["certification"];
+				$multipleLocations[] =$row["location"];
+				$teamID = $row["team_id"];
+				$allRoles[] = $row["role"];
+				$allCerts[] = $row["certification"];
 			
 			
 				$startDatatableHTML .= '<tr>';
@@ -1012,10 +982,10 @@
 			}
 			else
 			{
-							$multipleLocations[] =$row["location"];
-			$teamID = $row["team_id"];
-			$allRoles[] = $row["role"];
-			$allCerts[] = $row["certification"];
+				$multipleLocations[] =$row["location"];
+				$teamID = $row["team_id"];
+				$allRoles[] = $row["role"];
+				$allCerts[] = $row["certification"];
 			
 			$startDatatableHTML_teamMembers .= '<tr>';
 			$startDatatableHTML_teamMembers .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["first_name"].'</a></td>';
@@ -1083,7 +1053,6 @@
 			if ($teamFound === false){
 				$teams[$row["team_id"]] = array("team_name" => $row["team_name"], "release_train_engineer" => array($row["release_train_engineer"]), "product_manager" => array($row["product_manager"]));
 			} else {
-				$test = 'dfaslk;j;lkjasd;lkfjsda;lkfj;sldkajfkljsdaflsdalfj';
 				$rteFound = @array_search($row["release_train_engineer"], $teams[$row["team_id"]]["release_train_engineer"]);
 				$pmFound = @array_search($row["product_manager"], $teams[$row["team_id"]]["product_manager"]);
 				
@@ -1096,8 +1065,8 @@
 				}	
 			}
 		}
+	
 		
-		//$test = $teams["ART-502"]["release_train_engineer"][0];
 		$outputStuff = print_r($teams, true);
 		
 		foreach($teams as $team_id => $teamInfo) {
@@ -1205,8 +1174,8 @@
 					</tr>
 				</table>
 			</div>
-		</div>';
-		//<pre>'.$outputStuff.'</pre><div>'.$test.'</div>'; //Test Data
+		</div>
+		<pre>'.$outputStuff.'</pre><div>'.$test.'</div>'; //Test Data
 	}
 	
 	/**
