@@ -8,7 +8,7 @@ img#search.icon {
 	overflow-y: scroll;
 }*/
 
-a {
+a, a:hover {
 	text-decoration: none;
 }
 
@@ -92,4 +92,22 @@ a {
 .search {
 	height: 75px;
 	margin-top: 25px;
+}
+
+.dropdown {
+	position: relative;
+}
+
+.dropdown-info {
+	display: none;
+	position:absolute;
+	left: 100px;
+	top: 0px;
+	/*background-color: white;*/
+	width: 200px;
+	z-index: 1;
+}
+
+.dropdown:hover .dropdown-info {
+	display: block;
 }
