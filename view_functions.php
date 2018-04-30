@@ -724,11 +724,12 @@
 		$row = $result->num_rows;
 		
 		while ($row = $result->fetch_assoc()){
-			$multipleLocations[] =$row["location"];
-			$teamID = $row["team_id"];
-			$allRoles[] = $row["role"];
-			$allCerts[] = $row["certification"];
-			
+			if($numTeamMembers %2 === 0)
+			{
+				//Do nothing if it is the duplicated row that was displaying.
+			}
+			else
+			{
 			$startDatatableHTML_teamMembers .= '<tr>';
 			$startDatatableHTML_teamMembers .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["first_name"].'</a></td>';
 			$startDatatableHTML_teamMembers .= '<td><a href="view.php?type=EMP&id='.$row["employee_nbr"].'">'.$row["last_name"].'</a></td>';
@@ -737,7 +738,8 @@
 			$startDatatableHTML_teamMembers .= '<td>'.$row["certification"].'</td>';
 			$startDatatableHTML_teamMembers .= '<td>'.$row["location"].'</td>';
 			$startDatatableHTML_teamMembers .= '</tr>';
-			
+			}
+
 			$numTeamMembers++;
 		}
 		$startDatatableHTML_teamMembers .= $endDatatableHTML;
