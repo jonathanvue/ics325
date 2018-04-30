@@ -51,17 +51,6 @@ if (!isset($_SESSION)) {
 	<div class="container-fluid buffer">
 	
 		<div class="row">
-			<div class="col-md-1">
-				<nav class="nav-left">
-					<ul class="nav nav-stacked">
-						<li><a href="capacity_activePI.php"><img src="./icons/capacity_active_pi.png" style="width:40px;height:50px;">Active PI</a></li>
-						<li><a href="capacity_cadence.php"><img style="width:40px;height:50px;" src="./icons/capacity_cadence.png" /><img src="./icons/image15.png" style="width:20px;height:30px;">Cadence</a></li>
-						<li><a href="capacity_calculate.php"><img class="icon" src="./icons/capacity_calculate.png" />Calculate</a></li>
-						<li><a href="capacity_summary.php"><img class="icon" src="./icons/capacity_summary.png" />Summary</a></li>
-						<li><a href="#"><img class="icon" src="./icons/capacity_trend.png" />Trend</a></li>
-					</ul>
-				</nav>
-			</div>
 			<div class="col-md-10">
 			<hr>
 			<h3><font size="4" color="blue">Cadence:</font></h3>
