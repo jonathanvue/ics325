@@ -32,8 +32,8 @@
 		$topNav = "";
 		$name = '';
 			
-		if(isset($_GET["name"])){
-			$name = $_GET["name"];
+		if(isset($_POST["name"])){
+			$name = $_POST["name"];
 		}
 		
 		if (adminSessionExists()) {
@@ -111,9 +111,9 @@
 							<li><a class="navImg" href="#"><img class="icon" src="./icons/image7.png" />Login</a></li>
 							<li><a class="navImg" href="help1.php"><img class="icon" src="./icons/image8.png" />Help</a></li>
 						</ul>
-						<form class="navbar-form navbar-right" action="search.php?' . $name .' method="post">
+						<form class="navbar-form navbar-right" action="search.php" method="post">
 							<div class="form-group">
-								<input type="text" name="name" class="form-control" placeholder="Search">
+								<input type="text" name="name" class="form-control" placeholder="Search" value="'.$name.'">
 							</div>
 							<button type="submit" class="btn btn-default">Submit</button>
 						</form>

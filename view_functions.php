@@ -6,70 +6,114 @@
 	* @param: $name - an employee name
 	*/
 	function search_query($name) {
-		$startDatatableHTML = '<div class="container-fluid buffer">
-			<!-- Search -->
-			<div class="row">
-				<div class="col-md-9">
-					<h2>Search Page</h2>
-						<table id="info" class="datatable table table-striped table-bordered">
-							<thead>
-								<tr>
-									<th>ID</th>
-									<th>First Name</th>
-									<th>Last Name</th>
-									<th>Email</th>
-									<th>City</th>
-									<th>Country</th>
-									<th>Status</th>
-									<th>Primary Team</th>
-								</tr>
-							</thead>
-							<tbody>';
-		
-		$middleDatatableHTML = '';
-		
-		$endDatatableHTML = '<tfoot></tfoot>
-				</tbody>
-			</table>';
-			
-		// Information query		
-		$sql = "SELECT e.employee_nbr AS id,
-				e.first_name,
-				e.last_name,
-				e.email_address AS email,
-				e.city,
-				e.country,
-				e.status,
-				m.team_name AS primary_team
-			FROM employees e
-			JOIN membership m ON m.employee_nbr = e.employee_nbr
-			WHERE e.first_name LIKE '%".$name."%';";
-	
+		// Run search query and find all different types
+		$employees = $agileTeams = $agileReleaseTrains = $solutionTrains = array();
+		$htmlStart = $htmlEnd = '';
+		$sql = "SELECT * 
+			FROM search
+			WHERE (id LIKE '%".$name."%' OR name LIKE '%".$name."%')
+		";
 		
 		$result = run_sql($sql);
+		$rows = $result->num_rows;
 		
-		// Build table string
-		
-		if($result->num_rows > 0) {
-			
+		// Separate Employees and Teams from query results
+		if ($rows > 0) {
 			while($row = $result->fetch_assoc()) {
-				$middleDatatableHTML = '<tr>
-						<td><a href="./view.php?type=EMP&id='.$row["id"].'">' . $row["id"] . "</a></td>
-						<td>" . $row["first_name"] . "</td>
-						<td>" . $row["last_name"] . "</td>
-						<td>" . $row["email"] . "</td>
-						<td>" . $row["city"] . "</td>
-						<td>" . $row["country"] . "</td>
-						<td>" . $row["status"] . "</td>
-						<td>" . $row["primary_team"] . "</td>
-					</tr>";
+				switch ($row["type"]) {
+					case "EMP":
+						$employees[] = array("id"=>$row["id"], "type"=>$row["type"], "name"=>$row["name"]);
+						break;
+					case "AT":
+						$agileTeams[] = array("id"=>$row["id"], "type"=>$row["type"], "name"=>$row["name"]);
+						break;
+					case "ART":
+						$agileReleaseTrains[] = array("id"=>$row["id"], "type"=>$row["type"], "name"=>$row["name"]);
+						break;
+					case "ST":
+						$solutionTrains[] = array("id"=>$row["id"], "type"=>$row["type"], "name"=>$row["name"]);
+						break;
+					default:
+						break;
+				}
 			}
 		}
 		
-		// Output HTML string
-		echo $startDatatableHTML . $middleDatatableHTML .$endDatatableHTML;
+		// Build search page
+		$htmlStart = '<hr><div class="container-fluid buffer"><hr><h1>Searched for: '.$name.'</h1>';
+		$htmlEnd = '</div>';
+		$htmlOutput = 	$htmlStart . basic_datatable($employees, 'Employees');
+		$htmlOutput .= basic_datatable($agileTeams, 'Agile Teams');
+		$htmlOutput .= basic_datatable($agileReleaseTrains, 'Agile Release Trains');
+		$htmlOutput .= basic_datatable($solutionTrains, 'Solution Trains');
+		$htmlOutput .= $htmlEnd;
+		
+		echo $htmlOutput;
 	}
 	
+	/**
+	* basic_datatable - builds a basic table with rows and columns
+	* @param: $data - an array of associative array values
+	* 				$title - name of table
+	* @return: html string
+	*/ 
+	function basic_datatable ($data, $title) {
+		if (!$data) {
+			return '';
+		}
+		
+		$keys = array_keys($data[0]);
+		$cols = count($keys);
+		$titleID = str_replace(" ", "_", strtolower($title));
+		
+		$startTableHeader = '<h2>'.$title.'</h2><div class="row"><div class="col-md-8"><colgroup></colgroup>
+			<table id="'.$titleID.'" class="datatable table table-striped table-bordered search-tables" >
+			<thead><tr>';
+		$endTableHeader = '</tr></thead>';
+		$tableBody = '<tbody>';
+		$tableFooter = '</tbody></table></div></div>';
+		
+		// Add column names to table
+		foreach($keys as $key) {
+			$startTableHeader .= '<th>'.ucfirst($key).'</th>';
+		}
+		
+		// Add row data to table
+		foreach($data as $row) {
+			$tableBody .= '<tr>';
+			$link = 'view.php?type='.$row["type"].'&id='.$row["id"];
+			
+			foreach($row as $key=>$value) {
+				if ($key !== "id") {
+					$tableBody .= '<td>'.$value.'</td>';
+				} else {
+					$tableBody .= '<td><a href="'.$link.'">'.$value.'</a></td>';
+				}
+				
+			}
+			$tableBody .= '</a></tr>';
+		}
+		
+		return $startTableHeader . $endTableHeader . $tableBody . $tableFooter;
+	}
+	
+	/**
+	* add_datatable_script - NO USE
+	*
+	*/
+	function add_datatable_script($data) {
+		$script = '<script type="text/javascript">
+			$(document).ready(function() {';
+			
+		foreach($data as $id) {
+			$script .= "$('#".$id."').DataTable();
+			";
+		}
+		
+		$script .= "});";
+		
+		return $script;
+	}
 	
 	/**
 	* emp_query - provides HTML template for an employee query.
@@ -517,7 +561,7 @@
 		<div class="row">
 			<div class="col-md-9">
 				<h2><img height="50px" src="./icons/agile_team.png">Agile Team: '.$agileTeamName.' </h2>
-				<table class="table table-condesnsed table-bordered">
+				<table class="table table-condensed table-bordered">
 					<tr>
 						<thead colspan="2"><h3>Information</h3></thead>
 					</tr>
@@ -546,7 +590,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-4">
-				<table class="table table-condesnsed table-bordered">
+				<table class="table table-condensed table-bordered">
 					<tr>
 						<thead colspan="2"><h3>SAFe Review Comments:</h3></thead>
 					</tr>
@@ -804,7 +848,7 @@
 		<div class="row">
 			<div class="col-md-9">
 				<h2><img height="50px" src="./icons/agile_release_train.png">Agile Release Train: '.$agileReleaseTrainName.' </h2>
-				<table class="table table-condesnsed table-bordered">
+				<table class="table table-condensed table-bordered">
 					<tr>
 						<thead colspan="2"><h3>Information</h3></thead>
 					</tr>
@@ -833,7 +877,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-4">
-				<table class="table table-condesnsed table-bordered">
+				<table class="table table-condensed table-bordered">
 					<tr>
 						<thead colspan="2"><h3>SAFe Review Comments:</h3></thead>
 					</tr>
@@ -1127,7 +1171,7 @@
 		<div class="row">
 			<div class="col-md-9">
 				<h2><img height="50px" src="./icons/solution_train.png">Solution Train: '.$solutionTrainName.' </h2>
-				<table class="table table-condesnsed table-bordered">
+				<table class="table table-condensed table-bordered">
 					<tr>
 						<thead colspan="2"><h3>Information</h3></thead>
 					</tr>
@@ -1152,7 +1196,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-9">
-				<table class="table table-condesnsed table-bordered">
+				<table class="table table-condensed table-bordered">
 					<tr>
 						<thead colspan="2"><h3>SAFe Review Comments:</h3></thead>
 					</tr>
